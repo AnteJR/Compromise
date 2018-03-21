@@ -1,15 +1,8 @@
 //importation des méthodes
 import { Template } from 'meteor/templating';
+import { Meteor } from 'meteor/meteor';
+import { Semaine } from '../api/semaine.js';
 
 //importation des fichiers
 import './body.html';
 import '../templates/template1.html';
-import { Semaine } from '../api/db_methods.js';
-
-//on dit bonjour
-Template.bonjour1.helpers({
-	texte: function(){
-		monTxt = "Salut";
-		return monTxt;
-	}
-});
