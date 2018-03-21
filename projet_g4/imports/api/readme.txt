@@ -1,0 +1,1 @@
+Le dossier "./imports/api" sert à stocker nos bases de données

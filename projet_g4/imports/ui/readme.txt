@@ -1,0 +1,2 @@
+Le dossier "./imports/ui" sert à stocker nos body#.js qui serviront à ajouter des events et des helpers à nos templates, au format .js !
+Le dosser "./imports/ui/templates" sert à stocker nos templates au format .html !
