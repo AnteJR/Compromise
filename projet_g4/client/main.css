@@ -1,1 +1,29 @@
 /* CSS declarations go here */
+body{
+    font-family:helvetica;
+}
+button{
+    font-family:helvetica;
+}
+th{
+    width: 100px;
+  }
+  table{
+    width: 700px;
+    border: 2px solid grey;
+  }
+  .default{
+    width: 100 px;
+    height: 20px;
+    border: 1px solid grey;
+    text-align: center;
+    background-color: pink;
+  }
+ td{
+    width: 100 px;
+    height: 20px;
+    border: 1px solid grey;
+    text-align: center;
+    font-family: helvetica;
+  }
+  

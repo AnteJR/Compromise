@@ -1,13 +1,4 @@
-<body>
-
-
-          <link rel="stylesheet" href="testproj.css">
-          <button id=pink>PINK</button>
-          <button id=blue>BLUE</button>
-          
-          <table id=message><th>lundi</th><th>mardi</th><th>mercredi</th><th>jeudi</th><th>vendredi</th><th>samedi</th><th>dimanche</th><tr>
-            <script>
-              let stat="";
+let stat="";
               function setpink(){
                 stat="pink";
                 document.getElementById("pink");
@@ -54,7 +45,3 @@
         
         document.getElementById("blue");
         blue.addEventListener("click",setblue)
-        </script>
-        </tr>
-        </table>
-      </body>
