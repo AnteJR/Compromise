@@ -16,7 +16,7 @@ import '../templates/semaine.html';
 import '../templates/newTr.html';
 import '../templates/newTd.html';
 
-Template.tableauSemaines.helpers({
+/*Template.tableauSemaines.helpers({
 	jour: [
 		{nomJour: "lundi"},
 		{nomJour: "mardi"},
@@ -51,9 +51,9 @@ Template.newTr.helpers({
 Template.newTd.events({
 	'click .mesTd': function(event){
 		console.log("s")
-		
+
     }
-});
+});*/
 
 
 
