@@ -4,5 +4,4 @@ import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 
 //Création de constantes qui serviront à référencer les BD dans le code
-export const Semaine = new Mongo.Collection('semaines');
-
+export const Mercredi = new Mongo.Collection('semaineMercredi');
