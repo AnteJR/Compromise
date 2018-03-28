@@ -1,14 +1,4 @@
-<body>
-
-
-          <link rel="stylesheet" href="testproj.css">
-          <button id=pink>PINK</button>
-          <button id=blue>BLUE</button>
-          
-          <table id=message><th>lundi</th><th>mardi</th><th>mercredi</th><th>jeudi</th><th>vendredi</th><th>samedi</th><th>dimanche</th><tr>
-            <script>
-              let stat="";
-              let donnees = 0;
+let stat="";
               function setpink(){
                 stat="pink";
                 document.getElementById("pink");
@@ -27,8 +17,6 @@
             let cell=document.createElement("TD");
             message.appendChild(cell);
             cell.innerHTML+=(`${i}:00`);
-            //ajoute un id au cell
-            cell.setAttribute("id", i+String.fromCharCode(j+64));
             //fonction incrémenter cellule dans BDD quand cliqué, pour l'instant ça change simplement la couleur.
             let count=0;
             function inc(){
@@ -57,7 +45,3 @@
         
         document.getElementById("blue");
         blue.addEventListener("click",setblue)
-        </script>
-        </tr>
-        </table>
-      </body>
