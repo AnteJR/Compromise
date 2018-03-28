@@ -1,0 +1,38 @@
+<template name="lundi">
+	<style>
+		td{
+			display: inline-block;
+			border: 1px solid black;
+			height: 30px;
+			width: 150px;
+			margin: -2px;
+		}
+	</style>
+	<table id="table">
+		<h1>Ajouter un horaire</h1>
+		<div id="resultat"></div>
+		
+		<script>
+			let resultat = document.getElementById("resultat");
+			let table = document.getElementById("table");
+			let tab = [];
+			let donnees = 1;
+			for(let i=0; i<15; i++){
+    			tab[i]=[];
+
+      			//cree des input qui ont chacun un id
+      			let tableau = document.createElement("td");
+     			tableau.setAttribute("id", donnees+"L");
+      			table.appendChild(tableau);
+      			donnees++;
+    
+ 				let br = document.createElement("br");
+  				table.appendChild(br);
+ 			}
+
+ resultat.innerHTML = tab;
+
+		</script>
+		<br><input type="submit" name="submit" clss="valider" value="Valider"><br><br>
+	</table>
+</template>

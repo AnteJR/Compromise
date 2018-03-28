@@ -8,6 +8,7 @@
           <table id=message><th>lundi</th><th>mardi</th><th>mercredi</th><th>jeudi</th><th>vendredi</th><th>samedi</th><th>dimanche</th><tr>
             <script>
               let stat="";
+              let donnees = 0;
               function setpink(){
                 stat="pink";
                 document.getElementById("pink");
@@ -26,6 +27,8 @@
             let cell=document.createElement("TD");
             message.appendChild(cell);
             cell.innerHTML+=(`${i}:00`);
+            //ajoute un id au cell
+            cell.setAttribute("id", i+String.fromCharCode(j+64));
             //fonction incrémenter cellule dans BDD quand cliqué, pour l'instant ça change simplement la couleur.
             let count=0;
             function inc(){
