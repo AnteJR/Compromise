@@ -1,7 +1,28 @@
 <template name="newTd">
-	<td value=0 class="mesTd">
-		{{heure}}
-	</td>
+	{{#each periode}}
+	<tr>
+		<td id="lundi{{heure}}" class="mesTd">
+			{{heure}}:00
+		</td>
+		<td id="mardi{{heure}}" class="mesTd">
+			{{heure}}:00
+		</td>
+		<td id="mercredi{{heure}}" class="mesTd">
+			{{heure}}:00
+		</td>
+		<td id="jeudi{{heure}}" class="mesTd">
+			{{heure}}:00
+		</td>
+		<td id="vendredi{{heure}}" class="mesTd">
+			{{heure}}:00
+		</td>
+		<td id="samedi{{heure}}" class="mesTd">
+			{{heure}}:00
+		</td>
+		<td id="dimanche{{heure}}" class="mesTd">
+			{{heure}}:00
+		</td>																			</tr>	
+	{{/each}}
 </template>
 
 <!--Jeudi.find(

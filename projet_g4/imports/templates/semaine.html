@@ -1,7 +1,9 @@
 <template name="tableauSemaines">
 	<table border=1>
-		{{#each jour}}
+		<tr>{{#each jour}}
 			{{> newTr}}
 		{{/each}}
+	</tr>
+	{{> newTd}}
 	</table>
 </template>
