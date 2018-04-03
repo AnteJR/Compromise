@@ -28,7 +28,7 @@ Template.tableauSemaines.helpers({
 	],
 });
 
-Template.newTr.helpers({
+Template.newTd.helpers({
 	jour: [
 		{nomJour: "lundi"},
 		{nomJour: "mardi"},
