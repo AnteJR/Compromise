@@ -59,7 +59,7 @@ Template.newTd.helpers({
 
 Template.newTd.events({
 	'click .mesTd': function(event){
-		console.log("s")
+		console.log(event.target)
 		
     }
 });
