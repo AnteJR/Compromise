@@ -5,7 +5,7 @@ accounts-ui-unstyled@1.4.0
 allow-deny@1.1.0
 autopublish@1.0.7
 autoupdate@1.4.0
-babel-compiler@7.0.0
+babel-compiler@7.0.6
 babel-runtime@1.2.0
 base64@1.0.10
 binary-heap@1.0.10
@@ -25,7 +25,7 @@ ddp-server@2.1.2
 deps@1.0.12
 diff-sequence@1.1.0
 dynamic-import@0.3.0
-ecmascript@0.10.0
+ecmascript@0.10.6
 ecmascript-runtime@0.5.0
 ecmascript-runtime-client@0.6.0
 ecmascript-runtime-server@0.5.0
@@ -38,7 +38,6 @@ html-tools@1.0.11
 htmljs@1.0.11
 http@1.4.0
 id-map@1.1.0
-insecure@1.0.7
 jquery@1.11.10
 launch-screen@1.1.1
 less@2.7.11
