@@ -60,7 +60,7 @@ Template.newTd.helpers({
 Template.newTd.events({
 	'click .mesTd': function(event){
 		console.log(event.target)
-		
+		$(event.target).css({"background-color":"lightgreen"});
     }
 });
 
