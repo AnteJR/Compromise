@@ -57,12 +57,31 @@ Template.newTd.helpers({
 	],
 });
 
+
+Template.tableauSemaines.events({
+	'click #red': function(event){
+		event.preventDefault();
+		$(event.target).css({"background-color":"red"});
+	},
+	'click #yellow': function(event){
+		event.preventDefault();
+		$(event.target).css({"background-color":"yellow"});
+	},
+	'click #green': function(event){
+		event.preventDefault();
+		$(event.target).css({"background-color":"lightgreen"});
+	}
+});
+
 Template.newTd.events({
 	'click .mesTd': function(event){
+		event.preventDefault();
 		console.log(event.target)
-		$(event.target).css({"background-color":"lightgreen"});
-    }
+		$(event.target).css({"background-color":"red"});	
+	}
 });
+
+
 
 
 
