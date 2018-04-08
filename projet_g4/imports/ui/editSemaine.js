@@ -86,14 +86,15 @@ Template.tableauSemaines.events({
 Template.newTd.events({
 	'click .mesTd': function(event){
 		event.preventDefault();
-		console.log(event.target)
+		console.log(event.target.id)
 		console.log(val);
+		var idJourHeure = event.target.id.split("_");
+		Meteor.call("semaines.updateTable", Meteor.userId(), idJourHeure[0], idJourHeure[1], score);
 		if(val==1){
 		$(event.target).css({"background-color":"red"});
 		
 		} else if(val==2){
 			$(event.target).css({"background-color":"yellow"});
-			console.log(val)
 		} else if(val==3){
 			$(event.target).css({"background-color":"lightgreen"});
 		}
