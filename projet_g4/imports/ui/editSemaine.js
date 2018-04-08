@@ -57,19 +57,29 @@ Template.newTd.helpers({
 	],
 });
 
+var val;
 
 Template.tableauSemaines.events({
 	'click #red': function(event){
 		event.preventDefault();
 		$(event.target).css({"background-color":"red"});
+		$("#yellow").css({"background-color":"white"});
+		$("#green").css({"background-color":"white"});
+		val = 1;
 	},
 	'click #yellow': function(event){
 		event.preventDefault();
 		$(event.target).css({"background-color":"yellow"});
+		$("#red").css({"background-color":"white"});
+		$("#green").css({"background-color":"white"});
+		val = 2;
 	},
 	'click #green': function(event){
 		event.preventDefault();
 		$(event.target).css({"background-color":"lightgreen"});
+		$("#yellow").css({"background-color":"white"});
+		$("#red").css({"background-color":"white"});
+		val = 3;
 	}
 });
 
@@ -77,7 +87,16 @@ Template.newTd.events({
 	'click .mesTd': function(event){
 		event.preventDefault();
 		console.log(event.target)
-		$(event.target).css({"background-color":"red"});	
+		console.log(val);
+		if(val==1){
+		$(event.target).css({"background-color":"red"});
+		
+		} else if(val==2){
+			$(event.target).css({"background-color":"yellow"});
+			console.log(val)
+		} else if(val==3){
+			$(event.target).css({"background-color":"lightgreen"});
+		}
 	}
 });
 
