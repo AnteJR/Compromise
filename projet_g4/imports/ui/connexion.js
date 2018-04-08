@@ -8,11 +8,11 @@ import { Semaines } from '../api/semaines.js';
 import './login.html';
 import '../templates/login.html';
 
-Template.login.events({
-	'click #emptyTab': function(event){
-      event.preventDefault();
-      Meteor.call("semaines.createDefault", Meteor.userId());
-      console.log(Semaines.find({}));
-    }
+//quand un utilisateur se connecte...
+Accounts.onLogin(function(user){
+	//...si il n'a pas de document avec son id dans la collection Semaines..
+	if(Semaines.find({id_utilisateur: Meteor.userId()}).count() == 0){
+		//...on lui assigne un document semaine par défaut (valeurs de 0 pour chaque cellules)
+		Meteor.call("semaines.createDefault", Meteor.userId());
+	}
 });
-//Meteor.call("createDefault", Meteor.userId());
