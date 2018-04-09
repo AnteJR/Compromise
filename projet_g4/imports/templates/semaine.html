@@ -1,7 +1,12 @@
 <template name="tableauSemaines">
+	<button id="red">Pas Disponible</button>
+	<button id="yellow">Maybe</button>
+	<button id="green">Disponible</button><br><br>
 	<table border=1>
-		{{#each jour}}
+		<tr>{{#each jour}}
 			{{> newTr}}
 		{{/each}}
+	</tr>
+	{{> newTd}}
 	</table>
 </template>
