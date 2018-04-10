@@ -75,9 +75,13 @@ Template.newTd.events({
 		event.preventDefault();
 		console.log(event.target.id)
 		var idJourHeure = event.target.id.split("_");
-		console.log(idJourHeure);
-		var heure = parseInt(idJourHeure[1],10);
-		Meteor.call("semaines.updateTable", Meteor.userId(), idJourHeure[0], heure, score);
+		var heure = parseInt(idJourHeure[1],10)-8;
+		console.log(heure);
+		var laSemaine = Semaines.find().fetch();
+		var myId = laSemaine[0]._id;
+		console.log(myId);
+		Meteor.call("semaines.updateTable", myId, idJourHeure[0], heure, score);
+		
 		if(score==1){
 			$(event.target).css({"background-color":"red"});
 		} else if(score==2){

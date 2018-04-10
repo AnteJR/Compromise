@@ -26,9 +26,9 @@ Meteor.methods({
   'semaines.updateTable'(idSemaine, day, hour, score){
   	check(idSemaine, String);
     check(day, String);
-  	check(hour, Int);
-  	check(score, Int);
-  	if(day=="lundi"){Semaines.update({},{$set : {"jours.lundi.$[hour]" : score}});}
+  	check(hour, Number);
+  	check(score, Number);
+  	if(day=="lundi"){Semaines.update({},{$set : {"jours.lundi["hour"]" : score}});}
   	else if(day=="mardi"){Semaines.update({},{$set : {"jours.mardi.$[hour]" : score}});}
   	else if(day=="mercredi"){Semaines.update({},{$set : {"jours.mercredi.$[hour]" : score}});}
   	else if(day=="jeudi"){Semaines.update({},{$set : {"jours.jeudi.$[hour]" : score}});}
