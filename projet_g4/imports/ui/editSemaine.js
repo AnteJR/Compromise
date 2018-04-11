@@ -76,11 +76,12 @@ Template.newTd.events({
 		console.log(event.target.id)
 		var idJourHeure = event.target.id.split("_");
 		var heure = parseInt(idJourHeure[1],10)-8;
-		console.log(heure);
+		var jour = idJourHeure[0]
+		console.log(jour + " " + heure);
 		var laSemaine = Semaines.find().fetch();
 		var myId = laSemaine[0]._id;
 		console.log(myId);
-		Meteor.call("semaines.updateTable", myId, idJourHeure[0], heure, score);
+		Meteor.call("semaines.updateTable", myId, jour, heure, score);
 		
 		if(score==1){
 			$(event.target).css({"background-color":"red"});

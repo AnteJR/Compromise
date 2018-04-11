@@ -27,13 +27,13 @@ Meteor.methods({
   	check(idSemaine, String);
     check(day, String);
   	check(hour, Number);
-  	check(score, Number);
-  	if(day=="lundi"){Semaines.update({},{$set : {"jours.lundi.$[hour]" : score}});}
-  	else if(day=="mardi"){Semaines.update({},{$set : {"jours.mardi.$[hour]" : score}});}
-  	else if(day=="mercredi"){Semaines.update({},{$set : {"jours.mercredi.$[hour]" : score}});}
-  	else if(day=="jeudi"){Semaines.update({},{$set : {"jours.jeudi.$[hour]" : score}});}
-  	else if(day=="vendredi"){Semaines.update({},{$set : {"jours.vendredi.$[hour]" : score}});}
-  	else if(day=="samedi"){Semaines.update({},{$set : {"jours.samedi.$[hour]" : score}});}
-  	else if(day=="dimanche"){Semaines.update({},{$set : {"jours.dimanche.$[hour]" : score}});}
+		check(score, Number);
+  	if(day=="lundi"){Semaines.update(idSemaine,{$set : {"jours.lundi.4" : score}});}
+  	else if(day=="mardi"){Semaines.update(idSemaine,{$set : {"jours.mardi.$[hour]" : score}});}
+  	else if(day=="mercredi"){Semaines.update(idSemaine,{$set : {"jours.mercredi.$[hour]" : score}});}
+  	else if(day=="jeudi"){Semaines.update(idSemaine,{$set : {"jours.jeudi.$[hour]" : score}});}
+  	else if(day=="vendredi"){Semaines.update(idSemaine,{$set : {"jours.vendredi.$[hour]" : score}});}
+  	else if(day=="samedi"){Semaines.update(idSemaine,{$set : {"jours.samedi.$[hour]" : score}});}
+  	else if(day=="dimanche"){Semaines.update(idSemaine,{$set : {"jours.dimanche.$[hour]" : score}});}
   }
 });
