@@ -16,3 +16,17 @@ Accounts.onLogin(function(user){
 		Meteor.call("semaines.createDefault", Meteor.userId());
 	}
 });
+
+Template.login.events({
+	'click .semaine': function(event){
+		event.preventDefault();
+		const elemVal = parseInt(event.currentTarget.value);
+		const elem = event.currentTarget.id;
+		let elemStr = String(elem);
+		let elemTab = elemStr.split("_");
+		let jour = elemTab[0];
+		let heure = parseInt(elemTab[1]);
+		console.log(Meteor.userId()+" "+jour+" "+heure+" "+elemVal);
+		Meteor.call("semaines.updateTable", Meteor.userId(), elemTab[0], heure, elemVal);
+	},
+})
