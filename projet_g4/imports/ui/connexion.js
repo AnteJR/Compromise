@@ -17,16 +17,23 @@ Accounts.onLogin(function(user){
 	}
 });
 
+//quand on clique sur le bouton ayant pour class "semaine" (fonctionnera avec un tableau dont les td ont cette class)
 Template.login.events({
 	'click .semaine': function(event){
+		//on empêche le comportement par défaut
 		event.preventDefault();
+		//on récupère la value (le score) de l'élément sur lequel au clique
 		const elemVal = parseInt(event.currentTarget.value);
+		//on récupère son id, qu'on sépare à l'underscore pour avoir d'un côté le jour et de l'autre l'id de l'heure
 		const elem = event.currentTarget.id;
 		let elemStr = String(elem);
 		let elemTab = elemStr.split("_");
 		let jour = elemTab[0];
 		let heure = parseInt(elemTab[1]);
+		//vérification des infos envoyées (à supprimer pour le projet final)
 		console.log(Meteor.userId()+" "+jour+" "+heure+" "+elemVal);
-		Meteor.call("semaines.updateTable", Meteor.userId(), elemTab[0], heure, elemVal);
+		//appel de la méthode semaines.updateTable
+		//à voir si l'id de la semaine n'est pas plus pertinent. Cependant il faut voir où le stocker pour le vérifier dans la méthode
+		Meteor.call("semaines.updateTable", Meteor.userId(), jour, heure, elemVal);
 	},
 })
