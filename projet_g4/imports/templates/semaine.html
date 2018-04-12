@@ -1,6 +1,12 @@
 <template name="tableauSemaines">
 	<table border=1>
-		{{#each jour}}
+		<tr>
+			<th></th>
+			{{#each jour}}
+				{{> jours}}
+			{{/each}}
+		</tr>
+		{{#each periode}}
 			{{> newTr}}
 		{{/each}}
 	</table>

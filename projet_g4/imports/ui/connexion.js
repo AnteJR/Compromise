@@ -7,6 +7,10 @@ import { Semaines } from '../api/semaines.js';
 //importation des fichiers
 import './login.html';
 import '../templates/login.html';
+/*import '../templates/semaine.html';
+import '../templates/newTr.html';
+import '../templates/newTd.html';
+import '../templates/semaineDays.html';*/
 
 //quand un utilisateur se connecte...
 Accounts.onLogin(function(user){
@@ -15,7 +19,30 @@ Accounts.onLogin(function(user){
 		//...on lui assigne un document semaine par défaut (valeurs de 0 pour chaque cellules)
 		Meteor.call("semaines.createDefault", Meteor.userId());
 	}
+	const mesJours = [
+      		"lundi",
+      		"mardi",
+     		"mercredi",
+      		"jeudi",
+      		"vendredi",
+      		"samedi",
+      		"dimanche"
+    ];
+    //tableau vie pour accueillir les scores
+    const mesScores = [];
+    //boucle qui va chercher les scres de chaque jour et les stocke dans un array à deux dimensions
+    for(let i=0;i<7;i++){
+      	const doc = Semaines.findOne({ id_utilisateur: Meteor.userId() });
+      	const array = doc[mesJours[i]];
+      	mesScores.push(array);
+    }
+    //lancement de la fonction de création de tableaux
+    creerTableau(mesScores)
 });
+
+function creerTableau(scores){
+	console.log(scores);
+}
 
 Template.login.events({
 	//quand on clique sur le bouton ayant pour class "semaine" (fonctionnera avec un tableau dont les td ont cette class)
@@ -36,28 +63,5 @@ Template.login.events({
 		//à voir si l'id de la semaine n'est pas plus pertinent. Cependant il faut voir où le stocker pour le vérifier dans la méthode
 		Meteor.call("semaines.updateTable", Meteor.userId(), jour, heure, elemVal);
 	},
-	//quand on clique sur le bouton ayant pour class "testRecuperation" (fonctionnera au moment où l'utilisateur se connecte)
-	'click .testonsLaRecuperation': function(event){
-		event.preventDefault();
-		//tableau contenant les jours
-		const mesJours = [
-      		"lundi",
-      		"mardi",
-     		"mercredi",
-      		"jeudi",
-      		"vendredi",
-      		"samedi",
-      		"dimanche"
-    	];
-    	//tableau vie pour accueillir les scores
-    	const mesScores = [];
-    	//boucle qui va chercher les scres de chaque jour et les stocke dans un array à deux dimensions
-    	for(let i=0;i<7;i++){
-      		const doc = Semaines.findOne({ id_utilisateur: Meteor.userId() });
-      		const array = doc[mesJours[i]];
-      		mesScores.push(array);
-    	}
-    	//console.log pour tester
-    	console.log(mesScores)
-	}
+	
 });

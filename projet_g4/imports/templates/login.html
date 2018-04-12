@@ -1,6 +1,11 @@
 <template name="login">
 	<h1>El Dood (WIP)</h1>
-	{{> loginButtons}}
-	<button id="samedi_2" class="semaine" value="10">Test modification de la base</button>
-	<button id="testRecup" class="testonsLaRecuperation">Test récupération de la base</button>
+	{{#if currentUser }}
+		{{> loginButtons}}
+  		<p>Vous êtes connectés !</p>
+  		<!--{{> tableauSemaines}}-->
+	{{else}}
+		{{> loginButtons}}
+		<p>Vous n'êtes pas connectés !</p>
+	{{/if}}
 </template>
