@@ -17,8 +17,8 @@ Accounts.onLogin(function(user){
 	}
 });
 
-//quand on clique sur le bouton ayant pour class "semaine" (fonctionnera avec un tableau dont les td ont cette class)
 Template.login.events({
+	//quand on clique sur le bouton ayant pour class "semaine" (fonctionnera avec un tableau dont les td ont cette class)
 	'click .semaine': function(event){
 		//on empêche le comportement par défaut
 		event.preventDefault();
@@ -36,4 +36,28 @@ Template.login.events({
 		//à voir si l'id de la semaine n'est pas plus pertinent. Cependant il faut voir où le stocker pour le vérifier dans la méthode
 		Meteor.call("semaines.updateTable", Meteor.userId(), jour, heure, elemVal);
 	},
-})
+	//quand on clique sur le bouton ayant pour class "testRecuperation" (fonctionnera au moment où l'utilisateur se connecte)
+	'click .testonsLaRecuperation': function(event){
+		event.preventDefault();
+		//tableau contenant les jours
+		const mesJours = [
+      		"lundi",
+      		"mardi",
+     		"mercredi",
+      		"jeudi",
+      		"vendredi",
+      		"samedi",
+      		"dimanche"
+    	];
+    	//tableau vie pour accueillir les scores
+    	const mesScores = [];
+    	//boucle qui va chercher les scres de chaque jour et les stocke dans un array à deux dimensions
+    	for(let i=0;i<7;i++){
+      		const doc = Semaines.findOne({ id_utilisateur: Meteor.userId() });
+      		const array = doc[mesJours[i]];
+      		mesScores.push(array);
+    	}
+    	//console.log pour tester
+    	console.log(mesScores)
+	}
+});
