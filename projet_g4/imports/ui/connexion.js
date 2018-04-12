@@ -63,5 +63,44 @@ Template.login.events({
 		//à voir si l'id de la semaine n'est pas plus pertinent. Cependant il faut voir où le stocker pour le vérifier dans la méthode
 		Meteor.call("semaines.updateTable", Meteor.userId(), jour, heure, elemVal);
 	},
-	
+	'click .pressMe': function(event){
+		event.preventDefault();
+		const mesJours = [
+      		"lundi",
+      		"mardi",
+     		"mercredi",
+      		"jeudi",
+      		"vendredi",
+      		"samedi",
+      		"dimanche"
+    	];
+    	let idUt2 = event.currentTarget.id;
+    	//tableau vie pour accueillir les scores
+    	const mesScores1 = [];
+    	const mesScores2 = [];
+    	//boucle qui va chercher les scres de chaque jour et les stocke dans un array à deux dimensions
+    	for(let i=0;i<7;i++){
+      		const doc = Semaines.findOne({ id_utilisateur: Meteor.userId() });
+      		const array = doc[mesJours[i]];
+      		mesScores1.push(array);
+    	}
+    	//boucle qui va chercher les scores de chaque jour pour le deuxième utilisateur et les stocke dans un array à deux dimensions
+    	for(let i=0;i<7;i++){
+      		const doc = Semaines.findOne({ id_utilisateur: idUt2 });
+      		const array = doc[mesJours[i]];
+      		mesScores2.push(array);
+    	}
+    	console.log(mesScores1);
+    	console.log(mesScores2);
+    	const mesScores3 = [];
+    	for(let i=0;i<mesScores1.length;i++){
+    		let placeHolder = [];
+    		for(let j=0;j<mesScores1[i].length;j++){
+    			let calcul = mesScores1[i][j] + mesScores2[i][j];
+    			placeHolder.push(calcul);
+    		}
+    		mesScores3.push(placeHolder);
+    	}
+    	console.log(mesScores3);
+	}
 });
