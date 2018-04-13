@@ -96,7 +96,7 @@ Template.login.events({
     	for(let i=0;i<mesScores1.length;i++){
     		let placeHolder = [];
     		for(let j=0;j<mesScores1[i].length;j++){
-    			let calcul = mesScores1[i][j] + mesScores2[i][j];
+    			let calcul = (mesScores1[i][j] + mesScores2[i][j])/2;
     			placeHolder.push(calcul);
     		}
     		mesScores3.push(placeHolder);
