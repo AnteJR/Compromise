@@ -28,7 +28,7 @@ Accounts.onLogin(function(user){
       		"samedi",
       		"dimanche"
     ];
-    //tableau vie pour accueillir les scores
+    //tableau vide pour accueillir les scores
     const mesScores = [];
     //boucle qui va chercher les scres de chaque jour et les stocke dans un array à deux dimensions
     for(let i=0;i<7;i++){
@@ -37,11 +37,34 @@ Accounts.onLogin(function(user){
       	mesScores.push(array);
     }
     //lancement de la fonction de création de tableaux
-    creerTableau(mesScores)
+    creerTableau(mesScores, mesJours)
 });
 
-function creerTableau(scores){
+//fonction pour créer un tableau
+function creerTableau(scores, jours){
+	//test de l'envoi de données
 	console.log(scores);
+	//création d'un élément tableau, ajout d'un id
+	let monTab = document.createElement("table");
+	monTab.setAttribute("id", "semaine");
+	document.body.appendChild(monTab);
+	//tentative d'avoir un truc pour supprimer les éléments du tableau
+	/*let monTabEmptier = document.getElementById("semaine");
+	while(monTabEmptier.hasChildNodes()){monTabEmptier.removeChild(firstChild())}*/
+	//système de deux boucles pour peupler le tableau
+	for(let i=0;i<scores.length;i++){
+		let monTr = document.createElement("tr");
+		monTab.appendChild(monTr);
+		for(let j=0;j<scores[i].length;j++){
+			let monTd = document.createElement("td");
+			//on ajoute aux td un id suivant le modèle "jour_heure"
+			monTd.setAttribute("id", jours[i]+"_"+j);
+			//on affiche son score
+			monTd.value = scores[i][j];
+			monTd.innerHTML = monTd.value;
+			monTr.appendChild(monTd);
+		}
+	}
 }
 
 Template.login.events({
@@ -101,6 +124,6 @@ Template.login.events({
     		}
     		mesScores3.push(placeHolder);
     	}
-    	console.log(mesScores3);
+    	creerTableau(mesScores3, mesJours);
 	}
 });
