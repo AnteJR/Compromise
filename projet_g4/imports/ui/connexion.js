@@ -7,10 +7,10 @@ import { Semaines } from '../api/semaines.js';
 //importation des fichiers
 import './login.html';
 import '../templates/login.html';
-/*import '../templates/semaine.html';
+import '../templates/semaine.html';
 import '../templates/newTr.html';
 import '../templates/newTd.html';
-import '../templates/semaineDays.html';*/
+import '../templates/semaineDays.html';
 
 //variable constante pour faciliter le parcours de la base de donnée
 const mesJours = [

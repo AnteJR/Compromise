@@ -1,5 +1,26 @@
 <template name="newTd">
-	<td value="0" class="semaine">
-		{{heure}}
-	</td>
+	{{#each periode}}
+	<tr>
+		<td id="lundi_{{heure}}" class="semaine">
+			&nbsp;
+		</td>
+		<td id="mardi_{{heure}}" class="semaine">
+			&nbsp;
+		</td>
+		<td id="mercredi_{{heure}}" class="semaine">
+			&nbsp;
+		</td>
+		<td id="jeudi_{{heure}}" class="semaine">
+			&nbsp;
+		</td>
+		<td id="vendredi_{{heure}}" class="semaine">
+			&nbsp;
+		</td>
+		<td id="samedi_{{heure}}" class="semaine">
+			&nbsp;
+		</td>
+		<td id="dimanche_{{heure}}" class="semaine">
+			&nbsp;
+		</td>																			</tr>	
+	{{/each}}
 </template>
