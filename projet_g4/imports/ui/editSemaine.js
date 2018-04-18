@@ -74,8 +74,47 @@ Template.newTd.helpers({
 	],
 });
 
+var value;
 
+Template.tableauSemaines.events({
+	'click #red': function(event){
+		event.preventDefault();
+		$(event.target).css({"background-color":"red"});
+		$("#yellow").css({"background-color":"white"});
+		$("#green").css({"background-color":"white"});
+		value = 0;
+	},
+	'click #yellow': function(event){
+		event.preventDefault();
+		$(event.target).css({"background-color":"yellow"});
+		$("#red").css({"background-color":"white"});
+		$("#green").css({"background-color":"white"});
+		value = 4;
+	},
+	'click #green': function(event){
+		event.preventDefault();
+		$(event.target).css({"background-color":"lightgreen"});
+		$("#yellow").css({"background-color":"white"});
+		$("#red").css({"background-color":"white"});
+		value = 10;
+	}
+});
 
+Template.newTd.events({
+	'click .semaine': function(event){
+		event.preventDefault();
+		console.log(event.target.id+value);
+		//Meteor.call("semaines.updateTable", myId, jour, heure, score);
+		
+		if(value==0){
+			$(event.target).css({"background-color":"red"});
+		} else if(value==4){
+			$(event.target).css({"background-color":"yellow"});
+		} else if(value==10){
+			$(event.target).css({"background-color":"lightgreen"});
+		}
+	}
+});
 
 
 
