@@ -12,14 +12,8 @@ import '../templates/newTr.html';
 import '../templates/newTd.html';
 import '../templates/semaineDays.html';*/
 
-//quand un utilisateur se connecte...
-Accounts.onLogin(function(user){
-	//...si il n'a pas de document avec son id dans la collection Semaines..
-	if(Semaines.find({id_utilisateur: Meteor.userId()}).count() == 0){
-		//...on lui assigne un document semaine par défaut (valeurs de 0 pour chaque cellules)
-		Meteor.call("semaines.createDefault", Meteor.userId());
-	}
-	const mesJours = [
+//variable constante pour faciliter le parcours de la base de donnée
+const mesJours = [
       		"lundi",
       		"mardi",
      		"mercredi",
@@ -28,14 +22,15 @@ Accounts.onLogin(function(user){
       		"samedi",
       		"dimanche"
     ];
-    //tableau vide pour accueillir les scores
-    const mesScores = [];
-    //boucle qui va chercher les scres de chaque jour et les stocke dans un array à deux dimensions
-    for(let i=0;i<7;i++){
-      	const doc = Semaines.findOne({ id_utilisateur: Meteor.userId() });
-      	const array = doc[mesJours[i]];
-      	mesScores.push(array);
-    }
+
+//quand un utilisateur se connecte...
+Accounts.onLogin(function(user){
+	//...si il n'a pas de document avec son id dans la collection Semaines..
+	if(Semaines.find({id_utilisateur: Meteor.userId()}).count() == 0){
+		//...on lui assigne un document semaine par défaut (valeurs de 0 pour chaque cellules)
+		Meteor.call("semaines.createDefault", Meteor.userId());
+	}
+	let mesScores = scoresUtilisateurCourant(Meteor.userId());
     //lancement de la fonction de création de tableaux
     creerTableau(mesScores, mesJours)
 });
@@ -67,6 +62,19 @@ function creerTableau(scores, jours){
 	}
 }
 
+//Fonction qui retourne au tableau contenant les disponibilités d'un utilisateur donné
+function scoresUtilisateurCourant(idUt){
+    //tableau vide pour accueillir les scores
+    const mesScores = [];
+    //boucle qui va chercher les scres de chaque jour et les stocke dans un array à deux dimensions
+    for(let i=0;i<7;i++){
+      	const doc = Semaines.findOne({ id_utilisateur: idUt });
+      	const array = doc[mesJours[i]];
+      	mesScores.push(array);
+    }
+    return(mesScores);
+}
+
 Template.login.events({
 	//quand on clique sur le bouton ayant pour class "semaine" (fonctionnera avec un tableau dont les td ont cette class)
 	'click .semaine': function(event){
@@ -88,33 +96,11 @@ Template.login.events({
 	},
 	'click .pressMe': function(event){
 		event.preventDefault();
-		const mesJours = [
-      		"lundi",
-      		"mardi",
-     		"mercredi",
-      		"jeudi",
-      		"vendredi",
-      		"samedi",
-      		"dimanche"
-    	];
     	let idUt2 = event.currentTarget.id;
     	//tableau vie pour accueillir les scores
-    	const mesScores1 = [];
-    	const mesScores2 = [];
-    	//boucle qui va chercher les scres de chaque jour et les stocke dans un array à deux dimensions
-    	for(let i=0;i<7;i++){
-      		const doc = Semaines.findOne({ id_utilisateur: Meteor.userId() });
-      		const array = doc[mesJours[i]];
-      		mesScores1.push(array);
-    	}
-    	//boucle qui va chercher les scores de chaque jour pour le deuxième utilisateur et les stocke dans un array à deux dimensions
-    	for(let i=0;i<7;i++){
-      		const doc = Semaines.findOne({ id_utilisateur: idUt2 });
-      		const array = doc[mesJours[i]];
-      		mesScores2.push(array);
-    	}
-    	console.log(mesScores1);
-    	console.log(mesScores2);
+    	const mesScores1 = scoresUtilisateurCourant(Meteor.userId());
+    	const mesScores2 = scoresUtilisateurCourant(idUt2);
+    	//double boucles imbriquées qui stockent les informations compilées de deux tableaux de disponibilité sous la forme d'un array à deux dimensions
     	const mesScores3 = [];
     	for(let i=0;i<mesScores1.length;i++){
     		let placeHolder = [];
@@ -124,6 +110,7 @@ Template.login.events({
     		}
     		mesScores3.push(placeHolder);
     	}
+    	//lancement de la fonction de création de tableau avec, en donnée, l'array compilant les deux tableaux
     	creerTableau(mesScores3, mesJours);
 	}
 });
