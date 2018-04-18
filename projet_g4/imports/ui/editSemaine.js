@@ -56,29 +56,22 @@ Template.newTr.helpers({
 
 Template.newTd.helpers({
 	periode: [
-		{heure: "08:00"},
-		{heure: "09:00"},
-		{heure: "10:00"},
-		{heure: "11:00"},
-		{heure: "12:00"},
-		{heure: "13:00"},
-		{heure: "14:00"},
-		{heure: "15:00"},
-		{heure: "16:00"},
-		{heure: "17:00"},
-		{heure: "18:00"},
-		{heure: "19:00"},
-		{heure: "20:00"},
-		{heure: "21:00"},
-		{heure: "22:00"},
+		{heure: "8:00", id_heure: 0},
+		{heure: "9:00", id_heure: 1},
+		{heure: "10:00", id_heure: 2},
+		{heure: "11:00", id_heure: 3},
+		{heure: "12:00", id_heure: 4},
+		{heure: "13:00", id_heure: 5},
+		{heure: "14:00", id_heure: 6},
+		{heure: "15:00", id_heure: 7},
+		{heure: "16:00", id_heure: 8},
+		{heure: "17:00", id_heure: 9},
+		{heure: "18:00", id_heure: 10},
+		{heure: "19:00", id_heure: 11},
+		{heure: "20:00", id_heure: 12},
+		{heure: "21:00", id_heure: 13},
+		{heure: "22:00", id_heure: 14},
 	],
-});
-
-Template.newTd.events({
-	'click .mesTd': function(event){
-		console.log("s")
-		
-    }
 });
 
 
