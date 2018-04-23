@@ -22,23 +22,6 @@ Template.tableauSemaines.helpers({
 		{nomJour: "samedi"},
 		{nomJour: "dimanche"},
 	],
-	periode: [
-		{heure: "08:00"},
-		{heure: "09:00"},
-		{heure: "10:00"},
-		{heure: "11:00"},
-		{heure: "12:00"},
-		{heure: "13:00"},
-		{heure: "14:00"},
-		{heure: "15:00"},
-		{heure: "16:00"},
-		{heure: "17:00"},
-		{heure: "18:00"},
-		{heure: "19:00"},
-		{heure: "20:00"},
-		{heure: "21:00"},
-		{heure: "22:00"},
-	],
 });
 
 Template.newTr.helpers({
@@ -56,7 +39,7 @@ Template.newTr.helpers({
 
 Template.newTd.helpers({
 	periode: [
-		{heure: "8:00", id_heure: 0},
+		{heure: "8:00", id_heure: 0, valeur: scores[0][0],},
 		{heure: "9:00", id_heure: 1},
 		{heure: "10:00", id_heure: 2},
 		{heure: "11:00", id_heure: 3},
@@ -74,7 +57,7 @@ Template.newTd.helpers({
 	],
 });
 
-var value;
+var valeur;
 
 Template.tableauSemaines.events({
 	'click #red': function(event){
@@ -82,36 +65,39 @@ Template.tableauSemaines.events({
 		$(event.target).css({"background-color":"red"});
 		$("#yellow").css({"background-color":"white"});
 		$("#green").css({"background-color":"white"});
-		value = 0;
+		valeur = 0;
 	},
 	'click #yellow': function(event){
 		event.preventDefault();
 		$(event.target).css({"background-color":"yellow"});
 		$("#red").css({"background-color":"white"});
 		$("#green").css({"background-color":"white"});
-		value = 4;
+		valeur = 4;
 	},
 	'click #green': function(event){
 		event.preventDefault();
 		$(event.target).css({"background-color":"lightgreen"});
 		$("#yellow").css({"background-color":"white"});
 		$("#red").css({"background-color":"white"});
-		value = 10;
+		valeur = 10;
 	}
 });
 
 Template.newTd.events({
 	'click .semaine': function(event){
 		event.preventDefault();
-		console.log(event.target.id+value);
+		//console.log(event.target.id+value);
 		//Meteor.call("semaines.updateTable", myId, jour, heure, score);
 		
-		if(value==0){
+		if(valeur==0){
 			$(event.target).css({"background-color":"red"});
-		} else if(value==4){
+			$(event.target).val(valeur);
+		} else if(valeur==4){
 			$(event.target).css({"background-color":"yellow"});
-		} else if(value==10){
+			$(event.target).val(valeur);
+		} else if(valeur==10){
 			$(event.target).css({"background-color":"lightgreen"});
+			$(event.target).val(valeur);
 		}
 	}
 });

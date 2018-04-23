@@ -114,3 +114,94 @@ Template.login.events({
     	creerTableau(mesScores3, mesJours);
 	}
 });
+
+//Helpers pour les tableaux
+Template.tableauSemaines.helpers({
+	jour: [
+		{nomJour: "lundi"},
+		{nomJour: "mardi"},
+		{nomJour: "mercredi"},
+		{nomJour: "jeudi"},
+		{nomJour: "vendredi"},
+		{nomJour: "samedi"},
+		{nomJour: "dimanche"},
+	],
+});
+
+Template.newTr.helpers({
+	jour: [
+		{nbreJour:1},
+		{nbreJour:2},
+		{nbreJour:3},
+		{nbreJour:4},
+		{nbreJour:5},
+		{nbreJour:6},
+		{nbreJour:7},
+		{nbreJour:8},
+	],
+});
+
+Template.newTd.helpers({
+	periode: [
+		{heure: "8:00", id_heure: 0, valeur: scoresUtilisateurCourant(Meteor.userId())},
+		{heure: "9:00", id_heure: 1},
+		{heure: "10:00", id_heure: 2},
+		{heure: "11:00", id_heure: 3},
+		{heure: "12:00", id_heure: 4},
+		{heure: "13:00", id_heure: 5},
+		{heure: "14:00", id_heure: 6},
+		{heure: "15:00", id_heure: 7},
+		{heure: "16:00", id_heure: 8},
+		{heure: "17:00", id_heure: 9},
+		{heure: "18:00", id_heure: 10},
+		{heure: "19:00", id_heure: 11},
+		{heure: "20:00", id_heure: 12},
+		{heure: "21:00", id_heure: 13},
+		{heure: "22:00", id_heure: 14},
+	],
+});
+
+var valeur;
+
+Template.tableauSemaines.events({
+	'click #red': function(event){
+		event.preventDefault();
+		$(event.target).css({"background-color":"red"});
+		$("#yellow").css({"background-color":"white"});
+		$("#green").css({"background-color":"white"});
+		valeur = 0;
+	},
+	'click #yellow': function(event){
+		event.preventDefault();
+		$(event.target).css({"background-color":"yellow"});
+		$("#red").css({"background-color":"white"});
+		$("#green").css({"background-color":"white"});
+		valeur = 4;
+	},
+	'click #green': function(event){
+		event.preventDefault();
+		$(event.target).css({"background-color":"lightgreen"});
+		$("#yellow").css({"background-color":"white"});
+		$("#red").css({"background-color":"white"});
+		valeur = 10;
+	}
+});
+
+Template.newTd.events({
+	'click .semaine': function(event){
+		event.preventDefault();
+		//console.log(event.target.id+value);
+		//Meteor.call("semaines.updateTable", myId, jour, heure, score);
+		
+		if(valeur==0){
+			$(event.target).css({"background-color":"red"});
+			$(event.target).val(valeur);
+		} else if(valeur==4){
+			$(event.target).css({"background-color":"yellow"});
+			$(event.target).val(valeur);
+		} else if(valeur==10){
+			$(event.target).css({"background-color":"lightgreen"});
+			$(event.target).val(valeur);
+		}
+	}
+});
