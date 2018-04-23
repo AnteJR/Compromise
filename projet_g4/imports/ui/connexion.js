@@ -143,7 +143,7 @@ Template.newTr.helpers({
 
 Template.newTd.helpers({
 	periode: [
-		{heure: "8:00", id_heure: 0, valeur: scoresUtilisateurCourant(Meteor.userId())},
+		{heure: "8:00", id_heure: 0},
 		{heure: "9:00", id_heure: 1},
 		{heure: "10:00", id_heure: 2},
 		{heure: "11:00", id_heure: 3},
