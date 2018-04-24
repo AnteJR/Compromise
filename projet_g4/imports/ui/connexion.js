@@ -32,7 +32,7 @@ Accounts.onLogin(function(user){
 	}
 	let mesScores = scoresUtilisateurCourant(Meteor.userId());
     //lancement de la fonction de création de tableaux
-    creerTableau(mesScores);
+    //creerTableau(mesScores);
     //Helpers pour les tableaux
 	Template.tableauSemaines.helpers({
 		jour: [
@@ -48,9 +48,16 @@ Accounts.onLogin(function(user){
 });
 
 //fonction pour créer un tableau
-function creerTableau(mesScores){
+//function creerTableau(mesScores){
 	Template.newTd.helpers({
-		periode: [
+		periode:function(){
+			let mesScores = [];
+			for(let i=0;i<7;i++){
+		      	const doc = Semaines.findOne({ id_utilisateur: Meteor.userId() });
+		      	const array = doc[mesJours[i]];
+		      	mesScores.push(array);
+	    	}
+			return [
 			{
 				heure: "8:00", 
 				id_heure: 0, 
@@ -216,9 +223,10 @@ function creerTableau(mesScores){
 				valeurSamedi: mesScores[5][14],
 				valeurDimanche: mesScores[6][14]
 			},
-		],
+		]
+		}
 	});
-}
+//}
 
 //Fonction qui retourne au tableau contenant les disponibilités d'un utilisateur donné
 function scoresUtilisateurCourant(idUt){
@@ -269,7 +277,7 @@ Template.login.events({
     		mesScores3.push(placeHolder);
     	}
     	//lancement de la fonction de création de tableau avec, en donnée, l'array compilant les deux tableaux
-    	creerTableau(mesScores3);
+    	//creerTableau(mesScores3);
 	}
 });
 
