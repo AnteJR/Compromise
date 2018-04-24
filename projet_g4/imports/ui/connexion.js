@@ -278,6 +278,7 @@ Template.login.events({
     	}
     	//lancement de la fonction de création de tableau avec, en donnée, l'array compilant les deux tableaux
     	//creerTableau(mesScores3);
+    	console.log(mesScores3)
 	}
 });
 
