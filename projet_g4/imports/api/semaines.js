@@ -40,5 +40,17 @@ Meteor.methods({
         { id_utilisateur: idUt },
         { $set : { [day]: array } },
     );
+  },
+  'semaines.dayFill'(idUt, day, score){
+    check(idUt, String);
+    check(day, String);
+    check(score, Number);
+    const doc = Semaines.findOne({ id_utilisateur: idUt });
+    let array = doc[day];
+    array = [score, score, score, score, score, score, score, score, score, score, score, score, score, score, score];
+    Semaines.update(
+        { id_utilisateur: idUt },
+        { $set : { [day]: array } },
+    );
   }
 });

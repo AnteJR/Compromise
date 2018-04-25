@@ -36,13 +36,27 @@ Accounts.onLogin(function(user){
     //Helpers pour les tableaux
 	Template.tableauSemaines.helpers({
 		jour: [
-			{nomJour: "lundi"},
-			{nomJour: "mardi"},
-			{nomJour: "mercredi"},
-			{nomJour: "jeudi"},
-			{nomJour: "vendredi"},
-			{nomJour: "samedi"},
-			{nomJour: "dimanche"},
+			{
+				nomJour: "lundi"
+			},
+			{
+				nomJour: "mardi"
+			},
+			{
+				nomJour: "mercredi"
+			},
+			{
+				nomJour: "jeudi"
+			},
+			{
+				nomJour: "vendredi"
+			},
+			{
+				nomJour: "samedi"
+			},
+			{
+				nomJour: "dimanche"
+			},
 		],
 	});
 });
@@ -279,6 +293,13 @@ Template.login.events({
     	//lancement de la fonction de création de tableau avec, en donnée, l'array compilant les deux tableaux
     	//creerTableau(mesScores3);
     	console.log(mesScores3)
+	},
+	'click .joursSemaine': function(event){
+		event.preventDefault();
+		const jour = event.currentTarget.id;
+		const elemVal = parseInt(event.currentTarget.value);
+		console.log(elemVal);
+		if(!isNaN(elemVal)){Meteor.call("semaines.dayFill", Meteor.userId(), jour, elemVal)};
 	}
 });
 
@@ -287,21 +308,21 @@ var valeur;
 Template.tableauSemaines.events({
 	'click #red': function(event){
 		event.preventDefault();
-		$(event.target).css({"background-color":"red"});
+		$(event.target).css({"background-color":"hsl(0, 100%, 54%, 1)"});
 		$("#yellow").css({"background-color":"white"});
 		$("#green").css({"background-color":"white"});
 		valeur = 0;
 	},
 	'click #yellow': function(event){
 		event.preventDefault();
-		$(event.target).css({"background-color":"yellow"});
+		$(event.target).css({"background-color":"hsl(40, 100%, 54%, 1)"});
 		$("#red").css({"background-color":"white"});
 		$("#green").css({"background-color":"white"});
 		valeur = 4;
 	},
 	'click #green': function(event){
 		event.preventDefault();
-		$(event.target).css({"background-color":"lightgreen"});
+		$(event.target).css({"background-color":"hsl(100, 100%, 54%, 1)"});
 		$("#yellow").css({"background-color":"white"});
 		$("#red").css({"background-color":"white"});
 		valeur = 10;
@@ -315,14 +336,30 @@ Template.newTd.events({
 		//Meteor.call("semaines.updateTable", myId, jour, heure, score);
 		
 		if(valeur==0){
-			$(event.target).css({"background-color":"red"});
+			$(event.target).css({"background-color":"hsl(0, 100%, 54%, 1)"});
 			$(event.target).val(valeur);
 		} else if(valeur==4){
-			$(event.target).css({"background-color":"yellow"});
+			$(event.target).css({"background-color":"hsl(40, 100%, 54%, 1)"});
 			$(event.target).val(valeur);
 		} else if(valeur==10){
-			$(event.target).css({"background-color":"lightgreen"});
+			$(event.target).css({"background-color":"hsl(100, 100%, 54%, 1)"});
 			$(event.target).val(valeur);
 		}
 	}
+});
+
+Template.newTr.events({
+	'click .joursSemaine': function(event){
+		event.preventDefault();
+		//console.log(event.target.id+value);
+		//Meteor.call("semaines.updateTable", myId, jour, heure, score);
+		
+		if(valeur==0){
+			$(event.target).val(valeur);
+		} else if(valeur==4){
+			$(event.target).val(valeur);
+		} else if(valeur==10){
+			$(event.target).val(valeur);
+		}
+	},
 });
