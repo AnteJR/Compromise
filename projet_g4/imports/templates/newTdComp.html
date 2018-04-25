@@ -1,0 +1,28 @@
+<template name="newTdComp">
+	{{#each periode}}
+	<tr>
+		<td>{{heure}}</td>
+		<td id="lundi_{{id_heure}}" class="semaine" value={{valeurLundi}} style="background-color:hsla({{valeurLundi}}0, 100%, 54%, 1)">
+			&nbsp;
+		</td>
+		<td id="mardi_{{id_heure}}" class="semaine" value={{valeurMardi}} style="background-color:hsla({{valeurMardi}}0, 100%, 54%, 1)">
+			&nbsp;
+		</td>
+		<td id="mercredi_{{id_heure}}" class="semaine" value={{valeurMercredi}} style="background-color:hsla({{valeurMercredi}}0, 100%, 54%, 1)">
+			&nbsp;
+		</td>
+		<td id="jeudi_{{id_heure}}" class="semaine" value={{valeurJeudi}} style="background-color:hsla({{valeurJeudi}}0, 100%, 54%, 1)">
+			&nbsp;
+		</td>
+		<td id="vendredi_{{id_heure}}" class="semaine" value={{valeurVendredi}} style="background-color:hsla({{valeurVendredi}}0, 100%, 54%, 1)">
+			&nbsp;
+		</td>
+		<td id="samedi_{{id_heure}}" class="semaine" value={{valeurSamedi}} style="background-color:hsla({{valeurSamedi}}0, 100%, 54%, 1)">
+			&nbsp;
+		</td>
+		<td id="dimanche_{{id_heure}}" class="semaine" value={{valeurDimanche}} style="background-color:hsla({{valeurDimanche}}0, 100%, 54%, 1)">
+			&nbsp;
+		</td>
+	</tr>	
+	{{/each}}
+</template>
