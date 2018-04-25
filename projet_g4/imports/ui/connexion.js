@@ -11,6 +11,7 @@ import '../templates/semaine.html';
 import '../templates/newTr.html';
 import '../templates/newTd.html';
 import '../templates/semaineDays.html';
+import '../templates/header.html';
 
 //variable constante pour faciliter le parcours de la base de donnée
 const mesJours = [

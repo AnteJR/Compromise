@@ -1,18 +1,12 @@
 <template name="login">
-	<h1>El Dood (WIP)</h1>
 	{{#if currentUser }}
-		{{> loginButtons}}
-  		<p>Vous êtes connecté !</p>
-  		<!--{{> tableauSemaines}}-->
   		{{#if estCompare}}
   			{{> semaineComparee}}
   			{{else}}
   				<button class="pressMe" id="z4BSMbg6x6eGbkhoJ">test comparaison</button><br>
 		  		{{> tableauSemaines}}
-  			}
   		{{/if}}
 	{{else}}
-		{{> loginButtons}}
 		
 	{{/if}}
 </template>
