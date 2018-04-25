@@ -4,8 +4,13 @@
 		{{> loginButtons}}
   		<p>Vous êtes connectés !</p>
   		<!--{{> tableauSemaines}}-->
-		<button class="pressMe" id="z4BSMbg6x6eGbkhoJ">test comparaison</button><br>
-		  {{> tableauSemaines}}
+  		{{#if estCompare}}
+  			{{> semaineComparee}}
+  			{{else}}
+  				<button class="pressMe" id="z4BSMbg6x6eGbkhoJ">test comparaison</button><br>
+		  		{{> tableauSemaines}}
+  			}
+  		{{/if}}
 	{{else}}
 		{{> loginButtons}}
 		<p>Vous n'êtes pas connectés !</p>
