@@ -15,6 +15,7 @@ Meteor.methods({
     Semaines.insert({
         id_utilisateur: idUt,
         isCreated: true,
+        isPrivate: false,
         lundi: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
         mardi: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
         mercredi: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],

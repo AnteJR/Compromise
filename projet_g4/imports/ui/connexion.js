@@ -14,6 +14,7 @@ import '../templates/semaineDays.html';
 import '../templates/header.html';
 import '../templates/newTdComp.html';
 import '../templates/semaineComparee.html';
+import '../templates/recherche.html';
 
 //variable constante pour faciliter le parcours de la base de donnée
 const mesJours = [
@@ -293,7 +294,7 @@ Template.login.events({
 		//on empêche le comportement par défaut
 		event.preventDefault();
 		//on récupère la value (le score) de l'élément sur lequel au clique
-		const elemVal = parseInt(event.currentTarget.value);
+		let elemVal = parseInt(event.currentTarget.value);
 		//on récupère son id, qu'on sépare à l'underscore pour avoir d'un côté le jour et de l'autre l'id de l'heure
 		const elem = event.currentTarget.id;
 		let elemStr = String(elem);
