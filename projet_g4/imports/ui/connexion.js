@@ -40,6 +40,7 @@ Accounts.onLogin(function(user){
     //creerTableau(mesScores);
 });
 
+
 //fonction pour créer un tableau
 //function creerTableau(mesScores){
 	//Helpers pour les tableaux
@@ -383,6 +384,26 @@ Template.newTd.events({
 		}
 	}
 });
+
+
+//La recherche d'utilisateurs par adresse mail
+Template.maRecherche.events({
+		'.searchInput': function(){
+			//récupérer l'input
+			let mySearch = document.getElementById(mySearch)
+			let searchVal = mySearch.value
+		},
+		'click .searchButton': function(){
+			let re = /\S+@\S+\.\S+/;
+			let searchVal = mySearch.value;
+			//si l'adresse correspond au format habituel défini sous "re", le stocker dans le console.
+			console.log(searchVal.match(re));
+			let searchRes = Meteor.users.findOne({"emails.address": searchVal});
+			console.log(searchRes);
+		}
+	})
+
+
 
 Template.newTr.events({
 	'click .joursSemaine': function(event){
