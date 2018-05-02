@@ -21,5 +21,4 @@ accounts-ui@1.3.0
 accounts-password@1.5.0
 msavin:mongol
 check@1.3.0
-autopublish
 twbs:bootstrap
