@@ -3,6 +3,7 @@ import { Template } from 'meteor/templating';
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { Semaines } from '../api/semaines.js';
+import { ReactiveVar } from 'meteor/reactive-var';
 
 //importation des fichiers
 import './login.html';
@@ -26,7 +27,31 @@ const mesJours = [
       		"samedi",
       		"dimanche"
 	];
+const mesHeures = [
+  		"08:00",
+  		"09:00",
+  		"10:00",
+  		"11:00",
+  		"12:00",
+  		"13:00",
+  		"14:00",
+  		"15:00",
+  		"16:00",
+  		"17:00",
+  		"18:00",
+  		"19:00",
+  		"20:00",
+  		"21:00",
+  		"22:00"
+];
 let valeursComparees;
+let estCompare = false;
+
+Template.login.onCreated(function(){
+	this.comparaisonTriggered = new ReactiveVar( false );
+	tableauCompare = new ReactiveVar( null );
+	console.log(tableauCompare)
+})
 
 //quand un utilisateur se connecte...
 Accounts.onLogin(function(user){
@@ -40,7 +65,145 @@ Accounts.onLogin(function(user){
     //creerTableau(mesScores);
 });
 
+Template.login.helpers({
+	comparaisonTriggered: function(){
+		return Template.instance().comparaisonTriggered.get();
+	},
+	tableauDeComparaison: function(){
+		return tableauCompare;
+	}
+})
 
+Template.login.events({
+	//quand on clique sur le bouton ayant pour class "semaine" (fonctionnera avec un tableau dont les td ont cette class)
+	'click .semaine': function(event){
+		//on empêche le comportement par défaut
+		event.preventDefault();
+		//on récupère la value (le score) de l'élément sur lequel au clique
+		let elemVal = parseInt(event.currentTarget.value);
+		//on récupère son id, qu'on sépare à l'underscore pour avoir d'un côté le jour et de l'autre l'id de l'heure
+		const elem = event.currentTarget.id;
+		let elemStr = String(elem);
+		let elemTab = elemStr.split("_");
+		let jour = elemTab[0];
+		let heure = parseInt(elemTab[1]);
+		//vérification des infos envoyées (à supprimer pour le projet final)
+		console.log(Meteor.userId()+" "+jour+" "+heure+" "+elemVal);
+		//appel de la méthode semaines.updateTable
+		//à voir si l'id de la semaine n'est pas plus pertinent. Cependant il faut voir où le stocker pour le vérifier dans la méthode
+		if(!isNaN(elemVal)){Meteor.call("semaines.updateTable", Meteor.userId(), jour, heure, elemVal)};
+	},
+	'click .joursSemaine': function(event){
+		event.preventDefault();
+		const jour = event.currentTarget.id;
+		const elemVal = parseInt(event.currentTarget.value);
+		console.log(elemVal);
+		if(!isNaN(elemVal)){Meteor.call("semaines.dayFill", Meteor.userId(), jour, elemVal)};
+	},
+	'submit form': function(event, template){
+		event.preventDefault();
+		let re = /\S+@\S+\.\S+/;
+		//let searchVal = mySearch.value;
+		let searchVal = event.target.mySearch.value;
+		//si l'adresse correspond au format habituel défini sous "re", le stocker dans le console.
+		console.log(searchVal.match(re));
+		let searchRes = Meteor.users.findOne({"emails.address": searchVal});
+		if(searchRes != null){
+			console.log(searchRes);
+    		let idUt2 = searchRes._id;
+    		//tableau vie pour accueillir les scores
+    		const mesScores1 = scoresUtilisateurCourant(Meteor.userId());
+   			const mesScores2 = scoresUtilisateurCourant(idUt2);
+    		//double boucles imbriquées qui stockent les informations compilées de deux tableaux de disponibilité sous la forme d'un array à deux dimensions
+    		const mesScores3 = [];
+    		for(let i=0;i<mesScores1.length;i++){
+   				let placeHolder = [];
+   				for(let j=0;j<mesScores1[i].length;j++){
+   					let calcul = (mesScores1[i][j] + mesScores2[i][j])/2;
+   					placeHolder.push(calcul);
+    			}
+    			mesScores3.push(placeHolder);
+    		}
+    		//lancement de la fonction de création de tableau avec, en donnée, l'array compilant les deux tableaux
+    		//creerTableau(mesScores3);
+			if(template.comparaisonTriggered.get() == false){
+				template.comparaisonTriggered.set(true);
+			}
+			let monTableau = document.createElement("table");
+			monTableau.setAttribute("border",1);
+			monTableau.setAttribute("id","tableauComparaison")
+			document.body.appendChild(monTableau);
+			for(let i=0;i<mesHeures.length;i++){
+				if(i==0){
+					let unTr = document.createElement("tr");
+					monTableau.appendChild(unTr);
+					let unTd = document.createElement("td");
+					unTd.style = "width:100px;"
+          			unTd.innerHTML = " "
+					unTr.appendChild(unTd);
+					for(let k=0;k<mesScores3.length;k++){
+						let mesTh = document.createElement("th");
+						mesTh.innerHTML = mesJours[k];
+						mesTh.style = "width:100px;"
+						unTr.appendChild(mesTh);
+					}
+				}
+				let monTr = document.createElement("tr");
+        		monTableau.appendChild(monTr);
+        		for(let j=0;j<mesScores3.length;j++){
+          			if(j==0){
+            			let unTd = document.createElement("td");
+  		  	  			unTd.style = "width:100px;"
+            			unTd.innerHTML = mesHeures[i];
+            			monTr.appendChild(unTd)
+          			}
+          			monTd = document.createElement("td");
+				  	monTd.style = "background-color:hsla("+mesScores3[j][i]+"0, 100%, 54%, 1);width:100px;height:30px;";
+          			monTd.innerHTML = " ";
+          			monTd.setAttribute("value",mesScores3[j][i]);
+				  	monTr.appendChild(monTd);
+        		}
+			}
+		}
+		else{
+			alert("Email invalide !");
+		}
+	},
+	'click .goBack': function(event, template){
+		event.preventDefault();
+		if(template.comparaisonTriggered.get() == true){
+				template.comparaisonTriggered.set(false);
+		}
+		let tableauASupprimer = document.getElementById("tableauComparaison");
+		tableauASupprimer.remove();
+	}
+});
+
+Template.newTr.events({
+	'click .joursSemaine': function(event){
+		event.preventDefault();
+		if(valeur==0){
+			$(event.target).val(valeur);
+		} else if(valeur==4){
+			$(event.target).val(valeur);
+		} else if(valeur==10){
+			$(event.target).val(valeur);
+		}
+	},
+});
+
+//Fonction qui retourne au tableau contenant les disponibilités d'un utilisateur donné
+function scoresUtilisateurCourant(idUt){
+    //tableau vide pour accueillir les scores
+    const mesScores = [];
+    //boucle qui va chercher les scres de chaque jour et les stocke dans un array à deux dimensions
+    for(let i=0;i<7;i++){
+      	const doc = Semaines.findOne({ id_utilisateur: idUt });
+      	const array = doc[mesJours[i]];
+      	mesScores.push(array);
+    }
+    return(mesScores);
+}
 
 //Helpers pour les tableaux
 Template.tableauSemaines.helpers({
@@ -270,153 +433,12 @@ Template.newTd.helpers({
 	]
 	}
 });
-
-//Fonction qui retourne au tableau contenant les disponibilités d'un utilisateur donné
-function scoresUtilisateurCourant(idUt){
-    //tableau vide pour accueillir les scores
-    const mesScores = [];
-    //boucle qui va chercher les scres de chaque jour et les stocke dans un array à deux dimensions
-    for(let i=0;i<7;i++){
-      	const doc = Semaines.findOne({ id_utilisateur: idUt });
-      	const array = doc[mesJours[i]];
-      	mesScores.push(array);
-    }
-    return(mesScores);
-}
-
-Template.login.events({
-	//quand on clique sur le bouton ayant pour class "semaine" (fonctionnera avec un tableau dont les td ont cette class)
-	'click .semaine': function(event){
-		//on empêche le comportement par défaut
-		event.preventDefault();
-		//on récupère la value (le score) de l'élément sur lequel au clique
-		let elemVal = parseInt(event.currentTarget.value);
-		//on récupère son id, qu'on sépare à l'underscore pour avoir d'un côté le jour et de l'autre l'id de l'heure
-		const elem = event.currentTarget.id;
-		let elemStr = String(elem);
-		let elemTab = elemStr.split("_");
-		let jour = elemTab[0];
-		let heure = parseInt(elemTab[1]);
-		//vérification des infos envoyées (à supprimer pour le projet final)
-		console.log(Meteor.userId()+" "+jour+" "+heure+" "+elemVal);
-		//appel de la méthode semaines.updateTable
-		//à voir si l'id de la semaine n'est pas plus pertinent. Cependant il faut voir où le stocker pour le vérifier dans la méthode
-		if(!isNaN(elemVal)){Meteor.call("semaines.updateTable", Meteor.userId(), jour, heure, elemVal)};
+/*Template.newTdComp.helpers({
+	tableauCompare: function(){
+			return Template.instance().data.tableauCompare.get();
 	},
-	'click .joursSemaine': function(event){
-		event.preventDefault();
-		const jour = event.currentTarget.id;
-		const elemVal = parseInt(event.currentTarget.value);
-		console.log(elemVal);
-		if(!isNaN(elemVal)){Meteor.call("semaines.dayFill", Meteor.userId(), jour, elemVal)};
-	}
-});
-
-var valeur;
-
-Template.tableauSemaines.events({
-	'click #red': function(event){
-		event.preventDefault();
-		$(event.target).css({"background-color":"hsl(0, 100%, 54%, 1)"});
-		$("#yellow").css({"background-color":"white"});
-		$("#green").css({"background-color":"white"});
-		valeur = 0;
-	},
-	'click #yellow': function(event){
-		event.preventDefault();
-		$(event.target).css({"background-color":"hsl(40, 100%, 54%, 1)"});
-		$("#red").css({"background-color":"white"});
-		$("#green").css({"background-color":"white"});
-		valeur = 4;
-	},
-	'click #green': function(event){
-		event.preventDefault();
-		$(event.target).css({"background-color":"hsl(100, 100%, 54%, 1)"});
-		$("#yellow").css({"background-color":"white"});
-		$("#red").css({"background-color":"white"});
-		valeur = 10;
-	}
-});
-
-Template.newTd.events({
-	'click .semaine': function(event){
-		event.preventDefault();
-		//console.log(event.target.id+value);
-		//Meteor.call("semaines.updateTable", myId, jour, heure, score);
-		
-		if(valeur==0){
-			$(event.target).css({"background-color":"hsl(0, 100%, 54%, 1)"});
-			$(event.target).val(valeur);
-		} else if(valeur==4){
-			$(event.target).css({"background-color":"hsl(40, 100%, 54%, 1)"});
-			$(event.target).val(valeur);
-		} else if(valeur==10){
-			$(event.target).css({"background-color":"hsl(100, 100%, 54%, 1)"});
-			$(event.target).val(valeur);
-		}
-	}
-});
-
-
-//La recherche d'utilisateurs par adresse mail
-Template.maRecherche.events({
-		'submit form': function(event){
-			event.preventDefault();
-			let re = /\S+@\S+\.\S+/;
-			//let searchVal = mySearch.value;
-			let searchVal = event.target.mySearch.value;
-			//si l'adresse correspond au format habituel défini sous "re", le stocker dans le console.
-			console.log(searchVal.match(re));
-			let searchRes = Meteor.users.findOne({"emails.address": searchVal});
-			if(searchRes != null){
-				console.log(searchRes);
-    			let idUt2 = searchRes._id;
-    			//tableau vie pour accueillir les scores
-	    		const mesScores1 = scoresUtilisateurCourant(Meteor.userId());
-    			const mesScores2 = scoresUtilisateurCourant(idUt2);
-    			//double boucles imbriquées qui stockent les informations compilées de deux tableaux de disponibilité sous la forme d'un array à deux dimensions
-    			const mesScores3 = [];
-    			for(let i=0;i<mesScores1.length;i++){
-    				let placeHolder = [];
-    				for(let j=0;j<mesScores1[i].length;j++){
-    					let calcul = (mesScores1[i][j] + mesScores2[i][j])/2;
-    					placeHolder.push(calcul);
-    				}
-    				mesScores3.push(placeHolder);
-    			}
-	    		//lancement de la fonction de création de tableau avec, en donnée, l'array compilant les deux tableaux
-    			//creerTableau(mesScores3);
-				console.log(mesScores3);
-				valeursComparees = mesScores3;
-				//Session.set(mesScoresComp, valeursComparees)
-			}
-			else{
-				alert("Email invalide !");
-			}
-		}
-	})
-
-
-
-Template.newTr.events({
-	'click .joursSemaine': function(event){
-		event.preventDefault();
-		//console.log(event.target.id+value);
-		//Meteor.call("semaines.updateTable", myId, jour, heure, score);
-		
-		if(valeur==0){
-			$(event.target).val(valeur);
-		} else if(valeur==4){
-			$(event.target).val(valeur);
-		} else if(valeur==10){
-			$(event.target).val(valeur);
-		}
-	},
-});
-
-Template.newTdComp.helpers({
 	periode:function(){
-		//let mesScores = Session.get(mesScoresComp);
+		mesScores = tableauCompare;
 		return [
 		{
 			heure: "8:00", 
@@ -584,5 +606,50 @@ Template.newTdComp.helpers({
 			valeurDimanche: mesScores[6][14]
 		},
 	]
+	}
+});*/
+
+var valeur;
+
+Template.tableauSemaines.events({
+	'click #red': function(event){
+		event.preventDefault();
+		$(event.target).css({"background-color":"hsl(0, 100%, 54%, 1)"});
+		$("#yellow").css({"background-color":"white"});
+		$("#green").css({"background-color":"white"});
+		valeur = 0;
+	},
+	'click #yellow': function(event){
+		event.preventDefault();
+		$(event.target).css({"background-color":"hsl(40, 100%, 54%, 1)"});
+		$("#red").css({"background-color":"white"});
+		$("#green").css({"background-color":"white"});
+		valeur = 4;
+	},
+	'click #green': function(event){
+		event.preventDefault();
+		$(event.target).css({"background-color":"hsl(100, 100%, 54%, 1)"});
+		$("#yellow").css({"background-color":"white"});
+		$("#red").css({"background-color":"white"});
+		valeur = 10;
+	}
+});
+
+Template.newTd.events({
+	'click .semaine': function(event){
+		event.preventDefault();
+		//console.log(event.target.id+value);
+		//Meteor.call("semaines.updateTable", myId, jour, heure, score);
+		
+		if(valeur==0){
+			$(event.target).css({"background-color":"hsl(0, 100%, 54%, 1)"});
+			$(event.target).val(valeur);
+		} else if(valeur==4){
+			$(event.target).css({"background-color":"hsl(40, 100%, 54%, 1)"});
+			$(event.target).val(valeur);
+		} else if(valeur==10){
+			$(event.target).css({"background-color":"hsl(100, 100%, 54%, 1)"});
+			$(event.target).val(valeur);
+		}
 	}
 });

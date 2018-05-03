@@ -1,10 +1,11 @@
 <template name="login">
 	{{#if currentUser }}
-  		
+  		{{#if comparaisonTriggered}}
   			{{> semaineComparee}}
+  		{{else}}
+  			{{> maRecherche}}
 		  	{{> tableauSemaines}}
-  		
+  		{{/if}}
 	{{else}}
-		
 	{{/if}}
 </template>
