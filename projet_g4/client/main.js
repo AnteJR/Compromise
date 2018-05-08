@@ -13,7 +13,7 @@ Meteor.startup(()=>{
             return Meteor.users.find();
         })
         Meteor.subscribe('semaines', function (_id) {
-            return Semaines.find({isPrivate:false});
+        return Semaines.find({/*isPrivate:false*/});
                 });
             });
        });

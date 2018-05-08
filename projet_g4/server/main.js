@@ -9,6 +9,7 @@ import '../imports/api/semaines.js';
 
 Meteor.startup(() => {
   Tracker.autorun(()=>{
+		console.log("pub")
 		Meteor.publish('semaines', function () {
 			return Semaines.find({
 				'isPrivate':false
