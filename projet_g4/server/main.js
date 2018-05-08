@@ -11,8 +11,16 @@ Meteor.startup(() => {
   Tracker.autorun(()=>{
 		console.log("pub")
 		Meteor.publish('semaines', function () {
-			return Semaines.find({
-				'isPrivate':false
+			return Semaines.find({},{
+				'_id':1,
+				'id_utilisateur':1,
+				'lundi':1,
+				'mardi':1,
+				'mercredi':1,
+				'jeudi':1,
+				'vendredi':1,
+				'samedi':1,
+				'dimanche':1,
 			});
 		});
 		Meteor.publish('users', function () {

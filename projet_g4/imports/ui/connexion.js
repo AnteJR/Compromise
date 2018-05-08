@@ -59,12 +59,12 @@ Accounts.onLogin(function(user){
 	if(Semaines.find({id_utilisateur: Meteor.userId()}).count() == 0){
 		//...on lui assigne un document semaine par défaut (valeurs de 0 pour chaque cellules)
 		Meteor.call("semaines.createDefault", Meteor.userId());
+		console.log(Semaines.find({id_utilisateur: Meteor.userId()}).count())
 		let mesScores = scoresUtilisateurCourant(Meteor.userId());
 	}
 	else{
-	let mesScores = scoresUtilisateurCourant(Meteor.userId());}
-    //lancement de la fonction de création de tableaux
-    //creerTableau(mesScores);
+		let mesScores = scoresUtilisateurCourant(Meteor.userId());
+	}
 });
 
 Template.login.helpers({
@@ -103,6 +103,7 @@ Template.login.events({
 		if(!isNaN(elemVal)){Meteor.call("semaines.dayFill", Meteor.userId(), jour, elemVal)};
 	},
 	'submit form': function(event, template){
+		console.log(Semaines.find({id_utilisateur: Meteor.userId()}).count())
 		event.preventDefault();
 		let re = /\S+@\S+\.\S+/;
 		//let searchVal = mySearch.value;
