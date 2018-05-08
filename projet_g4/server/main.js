@@ -1,30 +1,25 @@
+//importation des méthodes
+import { Template } from 'meteor/templating';
 import { Meteor } from 'meteor/meteor';
+import { Mongo } from 'meteor/mongo';
+import { Semaines } from '../imports/api/semaines.js';
+import { ReactiveVar } from 'meteor/reactive-var';
+import { Tracker } from 'meteor/tracker';
 import '../imports/api/semaines.js';
 
 Meteor.startup(() => {
-  // code to run on server at startup
-  Meteor.publish('semaines',function () {
-    return semaines.find({isPrivate:false},{
-    	'id_utilisateur': 1,
-    	'lundi': 1,
-    	'mardi': 1,
-    	'mercredi': 1,
-    	'jeudi': 1,
-    	'vendredi': 1,
-    	'samedi': 1,
-    	'dimanche': 1,
-    	'_id': 0,
-    });
-  });
-
-	Meteor.publish('users', function () {
-	//publish some of users' information to client
-	return Meteor.users.find({},{
-  	//specify information to publish from the users' collection
-    	fields:{ 
-    		'emails': 1,
-     		'_id':1,
-     	}
+  Tracker.autorun(()=>{
+		Meteor.publish('semaines', function () {
+			return Semaines.find({
+				'isPrivate':false
+			});
 		});
+		Meteor.publish('users', function () {
+				return Meteor.users.find({},{
+					fields:{'emails':1,
+					'_id':1,
+				}
+				});
+			});
 	});
 });

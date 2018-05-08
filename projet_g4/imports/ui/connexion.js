@@ -56,11 +56,13 @@ Template.login.onCreated(function(){
 //quand un utilisateur se connecte...
 Accounts.onLogin(function(user){
 	//...si il n'a pas de document avec son id dans la collection Semaines..
-	if(Semaines.find({id_utilisateur: Meteor.userId()}).count() == 0){
+	if(Semaines.count({id_utilisateur: Meteor.userId()}) == 0){
 		//...on lui assigne un document semaine par défaut (valeurs de 0 pour chaque cellules)
 		Meteor.call("semaines.createDefault", Meteor.userId());
+		let mesScores = scoresUtilisateurCourant(Meteor.userId());
 	}
-	let mesScores = scoresUtilisateurCourant(Meteor.userId());
+	else{
+	let mesScores = scoresUtilisateurCourant(Meteor.userId());}
     //lancement de la fonction de création de tableaux
     //creerTableau(mesScores);
 });
