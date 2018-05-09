@@ -28,12 +28,7 @@ Template.addGroup.events({
 	document.body.appendChild(monBtnGroupe);
     Meteor.call('groups.create', Meteor.userId());
     
-    FlowRouter.route('/blog/:postId', {
-        action: function(params, queryParams) {
-            console.log("Yeah! We are on the post:", params.postId);
-        }
-    });
 
-    FlowRouter.go('/blog/my-post-id');
+    FlowRouter.go('/groupe');
 }
 })

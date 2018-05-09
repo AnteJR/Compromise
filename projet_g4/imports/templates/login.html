@@ -1,4 +1,5 @@
 <template name="login">
+	{{> Template.dynamic template=main}}
 	{{#if currentUser }}
 		<header>{{> header}}</header>
   		{{#if comparaisonTriggered}}
