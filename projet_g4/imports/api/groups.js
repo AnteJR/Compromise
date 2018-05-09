@@ -10,11 +10,18 @@ export const Groups = new Mongo.Collection('groups');
 
 Meteor.methods({
     'groups.create'(idUt){
-    check(idUt, String);
-    Groups.insert({
-        'admin':idUt,
-        'isCreated': true,
-        'name': 'Mon groupe',
-    })
+    	check(idUt, String);
+    	Groups.insert({
+        	'admin':idUt,
+        	'isCreated': true,
+        	'name': 'Mon groupe',
+    	});
+    },
+    'groups.insertUser'(numeroUt, idUt){
+    	check(idUt, String);
+    	check(numeroUt, Number);
+    	Groups.insert({
+    		'membre'+numeroUt: idUt;
+    	});
     }
 })
