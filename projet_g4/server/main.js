@@ -3,13 +3,12 @@ import { Template } from 'meteor/templating';
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { Semaines } from '../imports/api/semaines.js';
+import { Groups } from '../imports/api/groups.js'
 import { ReactiveVar } from 'meteor/reactive-var';
 import { Tracker } from 'meteor/tracker';
-import '../imports/api/semaines.js';
 
 Meteor.startup(() => {
   Tracker.autorun(()=>{
-		console.log("pub");
 		Meteor.publish('semaines', function () {
 			return Semaines.find({},{
 				'_id':1,
@@ -30,5 +29,8 @@ Meteor.startup(() => {
 				}
 				});
 			});
+		Meteor.publish('groups',function(){
+			return Groups.find();
+		});
 	});
 });

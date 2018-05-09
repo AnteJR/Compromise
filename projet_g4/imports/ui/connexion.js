@@ -14,6 +14,7 @@ import '../templates/newTd.html';
 import '../templates/header.html';
 import '../templates/semaineComparee.html';
 import '../templates/recherche.html';
+import '../templates/addGroup.html';
 
 //variable constante pour faciliter le parcours de la base de donnée
 const mesJours = [

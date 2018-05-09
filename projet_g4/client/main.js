@@ -1,10 +1,10 @@
-//import '../imports/ui/editSemaine.js';
 import { Meteor } from 'meteor/meteor'
 import { Mongo } from 'meteor/mongo'
 import { Semaines } from '../imports/api/semaines.js';
-//import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { Tracker } from 'meteor/tracker';
+import { Groups } from '../imports/api/groups.js';
+import '../imports/ui/editGroup.js';
 import '../imports/ui/connexion.js';
 import '../imports/ui/editSemaine.js';
 
@@ -14,7 +14,10 @@ Meteor.startup(()=>{
             return Meteor.users.find();
         })
         Meteor.subscribe('semaines', function (_id) {
-        	return Semaines.find({/*isPrivate:false*/});
+        	return Semaines.find({});
+        });
+        Meteor.subscribe('groups',function(){
+            return Groups.find({});
         });
     });
 });
