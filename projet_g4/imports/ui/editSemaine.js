@@ -271,22 +271,22 @@ Template.tableauSemaines.events({
 	'click #red': function(event){
 		event.preventDefault();
 		$(event.target).css({"background-color":"hsl(0, 100%, 54%, 1)"});
-		$("#yellow").css({"background-color":"white"});
-		$("#green").css({"background-color":"white"});
+		$("#yellow").css({"background-color":"rgb(0,132,255)"});
+		$("#green").css({"background-color":"rgb(0,132,255)"});
 		valeur = 0;
 	},
 	'click #yellow': function(event){
 		event.preventDefault();
 		$(event.target).css({"background-color":"hsl(40, 100%, 54%, 1)"});
-		$("#red").css({"background-color":"white"});
-		$("#green").css({"background-color":"white"});
+		$("#red").css({"background-color":"rgb(0,132,255)"});
+		$("#green").css({"background-color":"rgb(0,132,255)"});
 		valeur = 4;
 	},
 	'click #green': function(event){
 		event.preventDefault();
 		$(event.target).css({"background-color":"hsl(100, 100%, 54%, 1)"});
-		$("#yellow").css({"background-color":"white"});
-		$("#red").css({"background-color":"white"});
+		$("#yellow").css({"background-color":"rgb(0,132,255)"});
+		$("#red").css({"background-color":"rgb(0,132,255)"});
 		valeur = 10;
 	}
 });

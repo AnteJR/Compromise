@@ -1,17 +1,31 @@
-<style>
-    .searchButton {
-        background-color: rgb(0,132,255);
-        color: white;
-        padding:15px 32px;
-        text-align: center;
-
-
-    }
-</style>     
 <template name="maRecherche">
+        <style>
+                .Button {
+                    background-color: rgb(0,132,255);
+                    color: white;
+                    padding:10px 20px;
+                    text-align: center;
+                    border: none;
+                    height: 40px;
+                    margin-bottom: 4px;
+                    cursor: pointer;
+                    
+            
+               
+                }
+                .searchButton{
+                    background-color: lightgoldenrodyellow;
+                    border: none;
+                    height: 40px;
+                    margin-bottom: 4px;
+
+
+                    
+                }    
+            </style>     
     <h4>Rechercher un autre utilisateur par son adresse mail.</h4>
     <form class="searchUser">
     	<input type=text id="mySearch" class="searchButton" placeholder="Entrer l'email de l'utilisateur">
-    	<input type=submit id=mySearchButton class="searchButton" value="Go">
+    	<input type=submit id=mySearchButton class="Button" value="Go">
     </form>
 </template>
