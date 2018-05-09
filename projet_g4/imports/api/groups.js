@@ -2,7 +2,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
-import { Semaines } from '../api/semaines.js';
 
 export const Groups = new Mongo.Collection('groups');
 
@@ -12,9 +11,10 @@ Meteor.methods({
     'groups.create'(idUt){
     check(idUt, String);
     Groups.insert({
-        'admin':idUt,
-        'isCreated': true,
-        'name': 'Mon groupe',
+        admin:idUt,
+        isCreated: true,
+        name: 'Mon groupe',
     })
+    console.log(Groups.find().fetch())
     }
 })
