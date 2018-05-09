@@ -1,7 +1,7 @@
 <template name="newTd">
 	{{#each periode}}
 	<tr>
-		<td>{{heure}}</td>
+		<td id="{{id_heure}}" class="heureSemaine" value="0">{{heure}}</td>
 		<td id="lundi_{{id_heure}}" class="semaine" value={{valeurLundi}} style="background-color:hsla({{valeurLundi}}0, 100%, 54%, 1)">
 			&nbsp;
 		</td>

@@ -61,7 +61,7 @@ Accounts.onLogin(function(user){
 		else{
 			let mesScores = scoresUtilisateurCourant(Meteor.userId());
 		}
-	}, 100);
+	}, 500);
 });
 
 Template.login.helpers({
@@ -93,6 +93,13 @@ Template.login.events({
 		const elemVal = parseInt(event.currentTarget.value);
 		if(!isNaN(elemVal)){Meteor.call("semaines.dayFill", Meteor.userId(), jour, elemVal)};
 	},
+	'click .heureSemaine': function(event){
+		event.preventDefault();
+		const heure = parseInt(event.currentTarget.id);
+		const elemVal = parseInt(event.currentTarget.value);
+		console.log(elemVal);
+		if(!isNaN(elemVal)){Meteor.call("semaines.hourFill", Meteor.userId(), heure, elemVal)};
+	},
 	'submit form': function(event, template){
 		event.preventDefault();
 		let re = /\S+@\S+\.\S+/;
@@ -100,7 +107,12 @@ Template.login.events({
 		let searchVal = event.target.mySearch.value;
 		let searchRes = Meteor.users.findOne({"emails.address": searchVal});
 		if(searchRes != null){
-    		let idUt2 = searchRes._id;
+			let idUt2 = searchRes._id;
+			let utilisateurTeste = Semaines.findOne({id_utilisateur: idUt2});
+			if(utilisateurTeste.isPrivate){
+				alert("Cet utilisateur ne désire pas partager ses informations")
+			}
+			else{
     		//tableau vie pour accueillir les scores
     		const mesScores1 = scoresUtilisateurCourant(Meteor.userId());
    			const mesScores2 = scoresUtilisateurCourant(idUt2);
@@ -163,6 +175,7 @@ Template.login.events({
 				  	monTr.appendChild(monTd);
         		}
 			}
+		}
 		}
 		else{
 			alert("Email invalide !");

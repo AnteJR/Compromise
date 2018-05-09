@@ -304,6 +304,16 @@ Template.newTd.events({
 			$(event.target).css({"background-color":"hsl(100, 100%, 54%, 1)"});
 			$(event.target).val(valeur);
 		}
+	},
+	'click .heureSemaine': function(event){
+		event.preventDefault();
+		if(valeur==0){
+			$(event.target).val(valeur);
+		} else if(valeur==4){
+			$(event.target).val(valeur);
+		} else if(valeur==10){
+			$(event.target).val(valeur);
+		}
 	}
 });
 
@@ -319,7 +329,20 @@ Template.newTr.events({
 		}
 	},
 });
-
+Template.header.events({
+	'click #prive': function(event){
+		event.preventDefault();
+		const doc = Semaines.findOne({ id_utilisateur: Meteor.userId() });
+		if(event.target.value == "oui"){
+			event.target.value = "non";
+			console.log(doc._id);
+			Meteor.call("semaines.updateFalse", Meteor.userId());
+		} else if(event.target.value == "non"){
+			event.target.value = "oui";
+			Meteor.call("semaines.updateTrue", Meteor.userId());
+		}
+	}
+});
 
 
 
