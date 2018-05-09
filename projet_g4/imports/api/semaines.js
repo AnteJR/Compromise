@@ -53,5 +53,76 @@ Meteor.methods({
         { id_utilisateur: idUt },
         { $set : { [day]: array } },
     );
+  },
+  'semaines.hourFill'(idUt, hour, score){
+    check(idUt, String);
+    check(hour, Number);
+    check(score, Number);
+    const doc = Semaines.findOne({ id_utilisateur: idUt });
+    let day = "lundi";
+    let array = doc[day];
+    array[hour] = score;
+    Semaines.update(
+        { id_utilisateur: idUt },
+        { $set : { [day]: array } },
+    );
+    day = "mardi";
+    array = doc[day];
+    array[hour] = score;
+    Semaines.update(
+        { id_utilisateur: idUt },
+        { $set : { [day]: array } },
+    );
+    day = "mercredi";
+    array = doc[day];
+    array[hour] = score;
+    Semaines.update(
+        { id_utilisateur: idUt },
+        { $set : { [day]: array } },
+    );
+    day = "jeudi";
+    array = doc[day];
+    array[hour] = score;
+    Semaines.update(
+        { id_utilisateur: idUt },
+        { $set : { [day]: array } },
+    );
+    day = "vendredi";
+    array = doc[day];
+    array[hour] = score;
+    Semaines.update(
+        { id_utilisateur: idUt },
+        { $set : { [day]: array } },
+    );
+    day = "samedi";
+    array = doc[day];
+    array[hour] = score;
+    Semaines.update(
+        { id_utilisateur: idUt },
+        { $set : { [day]: array } },
+    );
+    day = "dimanche";
+    array = doc[day];
+    array[hour] = score;
+    Semaines.update(
+        { id_utilisateur: idUt },
+        { $set : { [day]: array } },
+    );
+  },
+  'semaines.updateTrue'(idUt){
+  	check(idUt, String);
+    const doc = Semaines.findOne({ id_utilisateur: idUt });
+    Semaines.update(
+        { id_utilisateur: idUt },
+        { $set : { isPrivate : true } },
+    );
+  },
+  'semaines.updateFalse'(idUt){
+  	check(idUt, String);
+    const doc = Semaines.findOne({ id_utilisateur: idUt });
+    Semaines.update(
+        { id_utilisateur: idUt },
+        { $set : { isPrivate : false } },
+    );
   }
 });
