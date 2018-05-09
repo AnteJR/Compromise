@@ -6,6 +6,7 @@ import { Semaines } from '../imports/api/semaines.js';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { Tracker } from 'meteor/tracker';
 import '../imports/ui/connexion.js';
+import '../imports/ui/editSemaine.js';
 
 Meteor.startup(()=>{
 	Tracker.autorun(()=> {
@@ -13,9 +14,7 @@ Meteor.startup(()=>{
             return Meteor.users.find();
         })
         Meteor.subscribe('semaines', function (_id) {
-        return Semaines.find({/*isPrivate:false*/});
-                });
-            });
-       });
-
- 
+        	return Semaines.find({/*isPrivate:false*/});
+        });
+    });
+});
