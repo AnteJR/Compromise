@@ -5,6 +5,7 @@ import { Mongo } from 'meteor/mongo';
 import { Semaines } from '../api/semaines.js';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { Groups } from '../api/groups.js';
+import { FlowRouter } from 'meteor/kadira:flow-router';
 
 //importation des fichiers
 import './login.html';
@@ -19,8 +20,20 @@ import '../templates/addGroup.html';
 
 Template.addGroup.events({
 'click #myGroupButton': function(event){
-    //on empêche le comportement par défaut
-	event.preventDefault();
+    event.preventDefault();
+
+    let monBtnGroupe = document.createElement("input");
+    monBtnGroupe.setAttribute("type","button");
+    monBtnGroupe.setAttribute("id","monBtnGroupe")
+	document.body.appendChild(monBtnGroupe);
     Meteor.call('groups.create', Meteor.userId());
+    
+    FlowRouter.route('/blog/:postId', {
+        action: function(params, queryParams) {
+            console.log("Yeah! We are on the post:", params.postId);
+        }
+    });
+
+    FlowRouter.go('/blog/my-post-id');
 }
 })
