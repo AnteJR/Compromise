@@ -8,9 +8,16 @@
 					border: none;
 					cursor: pointer;
                     margin-top: 4px;
-            
+                    }
+                .groupInput {    
+                    background-color: lightgoldenrodyellow;
+                    border: none;
+                    height: 40px;
+                    margin-bottom: 4px;    
             
                 }
-		</style>   
-    <input type=button id="myGroupButton" class="groupButton" value="Créer un nouveau groupe">
+        </style>  
+        <input type="text" id="nomGroupe" class="groupInput" placeholder="Nom de groupe">
+        <input type="button" id="btnCreer" class="groupButton" value="Créer">
+        <div id="groupes"></div>
 </template>

@@ -205,3 +205,4 @@ function scoresUtilisateurCourant(idUt){
     }
     return(mesScores);
 }
+

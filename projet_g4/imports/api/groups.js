@@ -8,12 +8,12 @@ export const Groups = new Mongo.Collection('groups');
 //méthodes
 
 Meteor.methods({
-    'groups.create'(idUt){
+    'groups.create'(idUt, nom){
         check(idUt, String);
         Groups.insert({
             admin:idUt,
             isCreated: true,
-            name: 'Mon groupe',
+            name: nom,
         });
     }
 })

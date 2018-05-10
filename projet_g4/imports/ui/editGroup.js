@@ -5,7 +5,7 @@ import { Mongo } from 'meteor/mongo';
 import { Semaines } from '../api/semaines.js';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { Groups } from '../api/groups.js';
-import { FlowRouter } from 'meteor/kadira:flow-router';
+
 
 //importation des fichiers
 import './login.html';
@@ -19,16 +19,28 @@ import '../templates/recherche.html';
 import '../templates/addGroup.html';
 
 Template.addGroup.events({
-'click #myGroupButton': function(event){
-    event.preventDefault();
+    'click #btnCreer': function(event, template){
+        event.preventDefault();
 
-    let monBtnGroupe = document.createElement("input");
-    monBtnGroupe.setAttribute("type","button");
-    monBtnGroupe.setAttribute("id","monBtnGroupe")
-	document.body.appendChild(monBtnGroupe);
-    Meteor.call('groups.create', Meteor.userId());
+        //let leGroupe = event.target.nomGroupe.value;
+        let leGroupe = document.getElementById("nomGroupe").value;
+        let groupes = document.getElementById("groupes");
     
+        Meteor.call('groups.create', Meteor.userId(), leGroupe);
+    
+        let btnGroupe = document.createElement("input");
+        btnGroupe.setAttribute("type","button");
+        btnGroupe.setAttribute("id","btnGroupe");
+        btnGroupe.setAttribute("value",leGroupe)
+        groupes.appendChild(btnGroupe);
+        console.log(btnGroupe.id);
 
-    FlowRouter.go('/groupe');
+},
+    'click #btnGroupe': function(event){
+        event.preventDefault();
+        console.log("click");
+
+
+        FlowRouter.go('/groupe');
 }
-})
+});

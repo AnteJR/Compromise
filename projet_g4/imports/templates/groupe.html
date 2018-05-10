@@ -1,4 +1,10 @@
 <template name="groupe">
+    <header>{{> header}}</header>
 	<h1>Votre horaire de groupe comparé</h1>
-	<a href="/" class="goBack">Retour</a><br/>
+    <a href="/" class="goBack">Retour</a><br/>
+    <h4>Ajouter un autre utilisateur au groupe</h4>
+    <form class="searchUser">
+    	<input type="text" id="mySearch" class="searchButton" placeholder="marche pas encore">
+    	<input type="submit" id=mySearchButton class="Button" value="Ajouter">
+    </form>
 </template>
