@@ -1,15 +1,13 @@
 FlowRouter.route('/', {
     name: 'home',
     action(){
-        console.log("route home");
         BlazeLayout.render('login');
     }
 });
 
-FlowRouter.route('/groupe', {
+FlowRouter.route('/groupe/:_id', {
     name: 'groupe',
     action(){
-        console.log("la route test marche");
         BlazeLayout.render('groupe');
     }
 });

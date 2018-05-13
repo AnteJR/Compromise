@@ -15,7 +15,20 @@ Meteor.methods({
             admin: idUt,
             isCreated: true,
             name: nom,
-            users: idUt,
+            users: [
+                idUt
+            ]
         });
-    }
+    },
+    'groups.updateGroup'(idUt, idGrp){
+        check(idUt, String);
+        check(idGrp, String);
+        let monGroupe = Groups.findOne({_id: idGrp});
+        console.log(monGroupe.users);
+        monGroupe.users.push(idUt);
+        Groups.update(
+            { _id: idGrp },
+            { $set : { users: monGroupe.users } },
+        );
+      }
 })

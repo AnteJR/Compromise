@@ -19,5 +19,13 @@
         </style>  
         <input type="text" id="nomGroupe" class="groupInput" placeholder="Nom de groupe">
         <input type="button" id="btnCreer" class="groupButton" value="Créer">
-        <div id="groupes"></div>
+        <div id="groupes">
+
+            <h3>Mes groupes:</h3>
+            <ul>
+                {{#each mesGroupes}}
+                <li><a href="/groupe/{{_id}}">{{name}}</a></li>
+                {{/each}}
+            </ul>
+        </div>
 </template>
