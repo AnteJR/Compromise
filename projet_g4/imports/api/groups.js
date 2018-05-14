@@ -2,6 +2,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
+import { Tracker } from 'meteor/tracker';
 
 export const Groups = new Mongo.Collection('groups');
 
@@ -23,12 +24,23 @@ Meteor.methods({
     'groups.updateGroup'(idUt, idGrp){
         check(idUt, String);
         check(idGrp, String);
-        let monGroupe = Groups.findOne({_id: idGrp});
-        console.log(monGroupe.users);
-        monGroupe.users.push(idUt);
+        console.log(idUt)
+        // let monGroupe = Groups.findOne({_id: idGrp});
+        // console.log(monGroupe.users);
+        //monGroupe.users.push(idUt);
+        //let thisGroup= Groups.findOne({_id:idGrp})
         Groups.update(
-            { _id: idGrp },
-            { $set : { users: monGroupe.users } },
+            {_id: idGrp},
+            { $push : { users : idUt } }
         );
-      }
+      },
+    'groups.changeName'(idGrp,newName){
+        check (idGrp, String);
+        check (newName, String);
+        let monGroupe = Groups.findOne({_id: idGrp});
+        Groups.update(
+            {_id: idGrp},
+            { $set: {name: newName} },
+        )
+    }
 })

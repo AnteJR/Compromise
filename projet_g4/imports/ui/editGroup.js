@@ -77,16 +77,6 @@ Template.addGroup.events({
     //}
 });
 Template.groupe.events({
-    'click #ajouterUt': function(event){
-        event.preventDefault();
-        let nomUt = document.getElementById("addUser").value;
-        let searchRes = Meteor.users.findOne({"emails.address": nomUt});
-        let idUt = searchRes._id;
-        let groupeId = FlowRouter.getParam('_id');
-        console.log(idUt);
-        console.log(groupeId);
-        Meteor.call("groups.updateGroup", idUt, groupeId);
-    },
     'click #lienGrp': function(event){
         event.preventDefault();
         let groupeId = FlowRouter.getParam('_id');
@@ -168,9 +158,13 @@ Template.groupe.events({
 });
 
 Template.addGroup.helpers({
-    mesGroupes: function(){
+    mesGroupesAdmin: function(){
     let btngroupes = Groups.find({ admin: Meteor.userId() });
         return btngroupes;
+    },
+    mesGroupesMembre: function(){
+        let myGroups = Groups.find({users: Meteor.userId()})
+        return myGroups;
     }
 });
 
@@ -185,3 +179,57 @@ function scoresUtilisateurCourant(idUt){
     }
     return(mesScores);
 }
+
+Template.groupe.events({
+    'click #ajouterUt': function(event){
+        event.preventDefault();
+        let nomUt = document.getElementById("addUser").value;
+        let re = /\S+@\S+\.\S+/;
+        let regExTest = nomUt.match(re);
+        if (regExTest){
+            let searchRes = Meteor.users.findOne({"emails.address": nomUt});
+            let searchSemaine= Semaines.find({"id_utilisateur":searchRes});
+            console.log(searchSemaine)
+            if (!searchRes){
+                alert("Cet utilisateur n'existe pas!");
+            }
+            if (searchRes._id == Meteor.userId()){
+                alert("C'est vous!")
+                addUser.value="";
+            }
+            if (searchSemaine.isPrivate){
+                alert("Cet utilisateur ne désire pas partager ses informations!")
+                addUser.value="";
+        }
+            else if (!searchSemaine.isPrivate){
+                let idSearch = searchRes._id;
+                let groupeId = FlowRouter.getParam('_id');
+                   /* console.log(idUt);
+                    console.log(groupeId);*/
+                    let groupTest = Groups.findOne({users : idSearch, _id : groupeId});
+                        if (!groupTest){
+                        Meteor.call("groups.updateGroup", idSearch, groupeId);
+                        FlowRouter.go('groupe', { _id: groupeId });
+                        //alert(`${searchRes} a été ajouté!`)
+                        }
+                            else if (groupTest){
+                                alert("Cet utilisateur est déjà dans ce groupe!")
+                                addUser.value="";
+                            }
+                        }
+                
+                }
+            else{
+                alert("Cet adresse email n'est pas valide!")
+                addUser.value="";
+            }
+},
+    'click #groupNameButton': function (event){
+        event.preventDefault();
+        let groupeId= FlowRouter.getParam('_id');
+        let groupe=Groups.findOne({_id: groupeId})
+        let nameInput=document.getElementById("groupNameInput").value;
+        console.log(nameInput);
+        Meteor.call('groups.changeName',groupeId,nameInput)
+    },
+})
