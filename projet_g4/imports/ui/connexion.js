@@ -49,7 +49,15 @@ let estCompare = false;
 
 Template.login.onCreated(function(){
 	this.comparaisonTriggered = new ReactiveVar( false );
-})
+});
+
+Template.login.rendered = function(){
+	setTimeout(function(){
+		if(document.getElementById('tableauComparaison')){
+          document.getElementById('tableauComparaison').remove();
+        }
+	}, 500);
+}
 
 //quand un utilisateur se connecte...
 Accounts.onLogin(function(user){
@@ -188,8 +196,7 @@ Template.login.events({
 		if(template.comparaisonTriggered.get() == true){
 				template.comparaisonTriggered.set(false);
 		}
-		let tableauASupprimer = document.getElementById("tableauComparaison");
-		tableauASupprimer.remove();
+		document.getElementById("tableauComparaison").remove();
 	}
 });
 

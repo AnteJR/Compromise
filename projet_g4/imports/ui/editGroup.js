@@ -46,6 +46,12 @@ const mesHeures = [
 "22:00"
 ];
 
+Template.groupe.rendered = function(){
+  setTimeout(function(){
+    creationTableau();
+  }, 500);
+}
+
 Template.addGroup.events({
     'click #btnCreer': function(event, template){
         event.preventDefault();
@@ -64,31 +70,17 @@ Template.addGroup.events({
         }
         
 
-}, 
-
-    //'click #btnGroupe': function(event){
-      //  event.preventDefault();
-        //let leGroupe = document.getElementById("nomGroupe").value;
-        //let groupName = document.getElementById("groupNameInput").value;
-        //let groupName = Groups.findOne({"name": leGroupe});
-        //let groupId = groupName._id;
-        //console.log(groupId);
-        //FlowRouter.go('groupe', { _id: groupId });
-    //}
+},
 });
-Template.groupe.events({
-    'click #lienGrp': function(event){
-        event.preventDefault();
-        let groupeId = FlowRouter.getParam('_id');
-        let groupe = Groups.findOne({_id: groupeId});
-        let mbrGroupe = groupe.users;
-        console.log(mbrGroupe);
+
+function creationTableau(){
+  let groupeId = FlowRouter.getParam('_id');
+        let monGroupe = Groups.findOne({_id: groupeId});
+        let mbrGroupe = monGroupe.users;
         let mesScores = [];
         
         for(let i =0;i<mbrGroupe.length;i++){
-        
             mesScores[i] = scoresUtilisateurCourant(mbrGroupe[i]);
-            
         }
         
         console.table(mesScores);
@@ -105,8 +97,9 @@ Template.groupe.events({
             }
             resultat.push(placeHolder);
         }
-        console.table(resultat);
-     
+        if(document.getElementById('tableauComparaison')){
+          document.getElementById('tableauComparaison').remove();
+        }
         let monTableau = document.createElement("table");
         monTableau.setAttribute("border",1);
         monTableau.setAttribute("id","tableauComparaison")
@@ -154,8 +147,7 @@ Template.groupe.events({
                   monTr.appendChild(monTd);
             }
         }
-    }
-});
+}
 
 Template.addGroup.helpers({
     mesGroupesAdmin: function(){
@@ -181,7 +173,7 @@ function scoresUtilisateurCourant(idUt){
 }
 
 Template.groupe.events({
-    'click #ajouterUt': function(event){
+    'submit #ajoutDUtilisateur': function(event){
         event.preventDefault();
         let nomUt = document.getElementById("addUser").value;
         let re = /\S+@\S+\.\S+/;
@@ -193,14 +185,14 @@ Template.groupe.events({
             if (!searchRes){
                 alert("Cet utilisateur n'existe pas!");
             }
-            if (searchRes._id == Meteor.userId()){
+            else if (searchRes._id == Meteor.userId()){
                 alert("C'est vous!")
                 addUser.value="";
             }
-            if (searchSemaine.isPrivate){
+            else if (searchSemaine.isPrivate){
                 alert("Cet utilisateur ne désire pas partager ses informations!")
                 addUser.value="";
-        }
+            }
             else if (!searchSemaine.isPrivate){
                 let idSearch = searchRes._id;
                 let groupeId = FlowRouter.getParam('_id');
@@ -208,16 +200,16 @@ Template.groupe.events({
                     console.log(groupeId);*/
                     let groupTest = Groups.findOne({users : idSearch, _id : groupeId});
                         if (!groupTest){
-                        Meteor.call("groups.updateGroup", idSearch, groupeId);
-                        FlowRouter.go('groupe', { _id: groupeId });
-                        //alert(`${searchRes} a été ajouté!`)
+                          Meteor.call("groups.updateGroup", idSearch, groupeId);
+                          FlowRouter.go('groupe', { _id: groupeId });
+                          //alert(`${searchRes} a été ajouté!`)
+                          creationTableau();
                         }
-                            else if (groupTest){
-                                alert("Cet utilisateur est déjà dans ce groupe!")
-                                addUser.value="";
-                            }
+                        else if (groupTest){
+                          alert("Cet utilisateur est déjà dans ce groupe!")
+                          addUser.value="";
                         }
-                
+                  }
                 }
             else{
                 alert("Cet adresse email n'est pas valide!")
@@ -232,4 +224,4 @@ Template.groupe.events({
         console.log(nameInput);
         Meteor.call('groups.changeName',groupeId,nameInput)
     },
-})
+});
