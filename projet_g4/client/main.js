@@ -11,9 +11,9 @@ import '../imports/ui/editSemaine.js';
 Meteor.startup(()=>{
 	Tracker.autorun(()=> {
         Meteor.subscribe('users', function () {
-            return Meteor.users.find();
+            return Meteor.users.find({});
         })
-        Meteor.subscribe('semaines', function (_id) {
+        Meteor.subscribe('semaines', function () {
         	return Semaines.find({});
         });
         Meteor.subscribe('groups',function(){
