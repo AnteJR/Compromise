@@ -267,7 +267,7 @@ Template.groupe.events({
         let groupeId= FlowRouter.getParam('_id');
         let groupe=Groups.findOne({_id: groupeId});
         let r=confirm("Voulez-vous vraiment quitter ce groupe?")
-        if (r=true){
+        if (r==true){
             Meteor.call('groups.leaveGroup', groupeId, Meteor.userId())
             FlowRouter.go('/')
             }
@@ -281,7 +281,7 @@ Template.groupe.events({
         let groupe=Groups.findOne({_id: groupeId});
         if(groupe.admin == Meteor.userId()){
             let s=confirm("Ce groupe sera supprimé. Procéder?")
-            if (s=true){
+            if (s==true){
                 Groups.remove({_id: groupeId});
                 FlowRouter.go('/')
             }
