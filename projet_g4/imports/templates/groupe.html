@@ -12,9 +12,10 @@
         <input type="button" id="groupNameButton" value="Valider"><br>
         <input type="button" id="groupDeleteButton" value="Supprimer ce groupe">
         <p> </p>
-    {{else}}
     {{/if}}
-    {{# if estMembre}}
+    <!--{{#else}}-->
+    {{#if estMembre}}
     <input type="button" id="groupLeaveButton" value="Quitter ce groupe">
     {{/if}}
+   <!-- {{/else}}-->
 </template>

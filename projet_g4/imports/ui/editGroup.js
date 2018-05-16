@@ -55,8 +55,11 @@ Template.groupe.onCreated(function(){
   else{
     this.isAdmin = new ReactiveVar(false);
   }
-  if (Meteor.userId() == requete.users){
-      this.isUser = new ReactiveVar(true);
+  if (requete.users.includes(Meteor.userId())){
+    this.isUser = new ReactiveVar(true);
+  }
+  else {
+    this.isUser = new ReactiveVar(false);
   }
 });
 
@@ -276,6 +279,6 @@ Template.groupe.helpers({
     return Template.instance().isAdmin.get();
   },
   estMembre: function(){
-      return Template.instance().isUser.get();
+    return Template.instance().isUser.get();
   }
 });
