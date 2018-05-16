@@ -213,3 +213,7 @@ function scoresUtilisateurCourant(idUt){
     return(mesScores);
 }
 
+Accounts.onLogout(function(){
+	FlowRouter.go("/");
+});
+
