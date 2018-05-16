@@ -33,4 +33,7 @@ Meteor.startup(() => {
 			return Groups.find();
 		});
 	});
+	Groups.allow({
+		remove() {return true}
+		});
 });
