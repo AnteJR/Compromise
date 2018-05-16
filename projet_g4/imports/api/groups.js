@@ -42,5 +42,19 @@ Meteor.methods({
             {_id: idGrp},
             { $set: {name: newName} },
         )
-    }
+    },
+    'groups.leaveGroup'(idGrp,idUt){
+        check (idGrp, String);
+        check (idUt, String);
+        Groups.update(
+            {_id: idGrp},
+            {$pull: {users:idUt}}
+        )
+    },
+    /*'groups.deleteGroup'(idGrp,idUt){
+        check (idGrp, String);
+        check (idUt, String);
+        let monGroupe = Groups.findOne({_id: idGrp});
+        monGroupe.deleteOne();
+    }*/
 })

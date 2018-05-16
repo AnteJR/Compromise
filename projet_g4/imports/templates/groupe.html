@@ -10,6 +10,7 @@
         <h4>Changer le nom du groupe</h4>
         <input type="text" id="groupNameInput" placeholder="Changer le nom">
         <input type="button" id="groupNameButton" value="Valider"><br>
+<<<<<<< HEAD
         <div id="groupes">
                 <h4>Admin:</h4>
                 <ul>
@@ -27,4 +28,14 @@
     {{else}}
 
     {{/if}}  
+=======
+        <input type="button" id="groupDeleteButton" value="Supprimer ce groupe">
+        <p> </p>
+    {{/if}}
+    <!--{{#else}}-->
+    {{#if estMembre}}
+    <input type="button" id="groupLeaveButton" value="Quitter ce groupe">
+    {{/if}}
+   <!-- {{/else}}-->
+>>>>>>> 97978a4e6311bc05964fcc7356e8bfd3b32f4a59
 </template>
