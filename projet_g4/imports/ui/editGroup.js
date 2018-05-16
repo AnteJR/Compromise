@@ -218,9 +218,9 @@ Template.groupe.events({
 },
     'click #groupNameButton': function (event){
         event.preventDefault();
-        let groupeId = FlowRouter.getParam('_id');
-        let groupe = Groups.findOne({_id: groupeId})
-        let nameInput = document.getElementById("groupNameInput").value;
+        let groupeId= FlowRouter.getParam('_id');
+        let groupe=Groups.findOne({_id: groupeId})
+        let nameInput=document.getElementById("groupNameInput").value;
         console.log(nameInput);
         Meteor.call('groups.changeName',groupeId,nameInput)
     },
