@@ -147,7 +147,7 @@ function creationTableau(){
                   monTd = document.createElement("td");
                   monTd.style = "background-color:hsla("+resultat[j][i]+"0, 100%, 54%, 1);width:100px;height:30px;text-align:center;line-height:30px;";
                   if(resultat[j][i] >= 0 && resultat[j][i] <= 4){
-                      monTd.innerHTML = "<b> X </b>";
+                      monTd.innerHTML = "<b> ✕ </b>";
                       monTd.style.color = "hsla("+resultat[j][i]+"0, 100%, 90%, 1)";
                   }
                   else if(resultat[j][i] > 4 && resultat[j][i] <= 7){
@@ -155,7 +155,7 @@ function creationTableau(){
                       monTd.style.color += "hsla("+resultat[j][i]+"0, 100%, 90%, 1)";
                   }
                   else if(resultat[j][i] > 7 && resultat[j][i] <= 10){
-                      monTd.innerHTML = "<b> V </b>";
+                      monTd.innerHTML = "<b> ✓ </b>";
                       monTd.style.color += "hsla("+resultat[j][i]+"0, 100%, 90%, 1)";
                   }
                   monTd.setAttribute("value",resultat[j][i]);
@@ -225,6 +225,7 @@ Template.groupe.events({
             console.log(searchSemaine)
             if (!searchRes){
                 alert("Cet utilisateur n'existe pas!");
+                addUser.value="";
             }
             else if (searchRes._id == Meteor.userId()){
                 alert("C'est vous!")
@@ -245,6 +246,7 @@ Template.groupe.events({
                           FlowRouter.go('groupe', { _id: groupeId });
                           //alert(`${searchRes} a été ajouté!`)
                           creationTableau();
+                          addUser.value="";
                         }
                         else if (groupTest){
                           alert("Cet utilisateur est déjà dans ce groupe!")
@@ -261,9 +263,13 @@ Template.groupe.events({
         event.preventDefault();
         let groupeId= FlowRouter.getParam('_id');
         let groupe=Groups.findOne({_id: groupeId});
-        let nameInput=document.getElementById("groupNameInput").value;
-        console.log(nameInput);
-        Meteor.call('groups.changeName',groupeId,nameInput)
+            //merci Loris pour le code
+            let newname = window.prompt("Entrez un nouvean nom",this.nom);
+            if(newname != null){
+                Meteor.call('groups.changeName',groupeId,newname);
+            }else{
+                return;
+            }
     },
     'click #groupLeaveButton': function (event){
         event.preventDefault();
@@ -297,8 +303,11 @@ Template.groupe.events({
         event.preventDefault();
         let groupeId= FlowRouter.getParam('_id');
         let idUt = event.currentTarget.id;
+        let s=confirm("Cet utilisateur sera supprimé du groupe. Procéder?")
+            if (s==true){
         Meteor.call('groups.leaveGroup', groupeId, idUt);
         creationTableau();
+            }
     }
 });
 

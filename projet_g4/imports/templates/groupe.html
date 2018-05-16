@@ -1,15 +1,13 @@
 <template name="groupe">
     <header>{{> header}}</header>
-	<h1>Horaire du groupe {{nomGroupe}}</h1>
-    <a href="/" class="goBack">Retour</a><br/>
     {{#if estAdmin}}
+	<h1>Horaire du groupe {{nomGroupe}}<button id="groupNameButton" style="font-size: 15px; border: white;">✎</button></h1>
+    <a href="/" class="goBack">Retour</a><br/>
+    
         <h4>Ajouter un autre utilisateur au groupe</h4>
         <form name="ajouterUtilisateur" id="ajoutDUtilisateur">
         <input type="text" id="addUser" placeholder="Ajouter un membre">
         <input type="submit" id="ajouterUt" value="Ajouter"></form><br>
-        <h4>Changer le nom du groupe</h4>
-        <input type="text" id="groupNameInput" placeholder="Changer le nom">
-        <input type="button" id="groupNameButton" value="Valider"><br>
         <div id="groupes">
                 <h4>Admin:</h4>
                 <ul>
@@ -20,13 +18,15 @@
                 <h4>Membres:</h4>
                 <ul>
                         {{#each mesMembres}}
-                    <li><p>{{monMembre}} <button class="banUser" id="{{membreId}}">supprimer</button></p> </li>
+                    <li><p id="nomUser">{{monMembre}} <button class="banUser" id="{{membreId}}" style="border: white">✕</button></p> </li>
                         {{/each}}
                 </ul>
             </div>
             <p></p><p></p>
         <input type="button" id="groupDeleteButton" value="Supprimer ce groupe">
-    {{else}} 
+    {{else}}
+    <h1>Horaire du groupe {{nomGroupe}}</h1>
+    <a href="/" class="goBack">Retour</a><br/> 
     <div id="groupes">
             <h4>Admin:</h4>
             <ul>
