@@ -3,9 +3,9 @@ import { Template } from 'meteor/templating';
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { Semaines } from '../api/semaines.js';
-import { Tracker } from 'meteor/tracker';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { Groups } from '../api/groups.js';
+
 
 //importation des fichiers
 import './login.html';
@@ -46,7 +46,6 @@ const mesHeures = [
 "22:00"
 ];
 
-
 Template.addGroup.events({
     'click #btnCreer': function(event, template){
         event.preventDefault();
@@ -65,8 +64,7 @@ Template.addGroup.events({
         }
         
 
-}
-}); 
+}, 
 
     //'click #btnGroupe': function(event){
       //  event.preventDefault();
@@ -77,9 +75,7 @@ Template.addGroup.events({
         //console.log(groupId);
         //FlowRouter.go('groupe', { _id: groupId });
     //}
-
-
-
+});
 Template.groupe.events({
     'click #lienGrp': function(event){
         event.preventDefault();
@@ -158,16 +154,41 @@ Template.groupe.events({
                   monTr.appendChild(monTd);
             }
         }
-    
+    }
+});
+
+Template.addGroup.helpers({
+    mesGroupesAdmin: function(){
+    let btngroupes = Groups.find({ admin: Meteor.userId() });
+        return btngroupes;
     },
+    mesGroupesMembre: function(){
+        let myGroups = Groups.find({users: Meteor.userId()})
+        return myGroups;
+    }
+});
+
+function scoresUtilisateurCourant(idUt){
+    //tableau vide pour accueillir les scores
+    const mesScores = [];
+    //boucle qui va chercher les scres de chaque jour et les stocke dans un array à deux dimensions
+    for(let i=0;i<7;i++){
+      	const doc = Semaines.findOne({ id_utilisateur: idUt });
+      	const array = doc[mesJours[i]];
+      	mesScores.push(array);
+    }
+    return(mesScores);
+}
+
+Template.groupe.events({
     'click #ajouterUt': function(event){
         event.preventDefault();
         let nomUt = document.getElementById("addUser").value;
         let re = /\S+@\S+\.\S+/;
         let regExTest = nomUt.match(re);
         if (regExTest){
-            let searchRes = Meteor.users.findOne({"emails.address": nomUt})._id;
-            let searchSemaine= Semaines.findOne({"id_utilisateur":searchRes});
+            let searchRes = Meteor.users.findOne({"emails.address": nomUt});
+            let searchSemaine= Semaines.find({"id_utilisateur":searchRes});
             console.log(searchSemaine)
             if (!searchRes){
                 alert("Cet utilisateur n'existe pas!");
@@ -180,16 +201,16 @@ Template.groupe.events({
                 alert("Cet utilisateur ne désire pas partager ses informations!")
                 addUser.value="";
         }
-            if (!searchSemaine.isPrivate){;
+            else if (!searchSemaine.isPrivate){
+                let idSearch = searchRes._id;
                 let groupeId = FlowRouter.getParam('_id');
                    /* console.log(idUt);
                     console.log(groupeId);*/
-                    let groupTest = Groups.findOne({users : searchRes, _id : groupeId});
+                    let groupTest = Groups.findOne({users : idSearch, _id : groupeId});
                         if (!groupTest){
-                        Meteor.call("groups.updateGroup", searchRes, groupeId);
+                        Meteor.call("groups.updateGroup", idSearch, groupeId);
                         FlowRouter.go('groupe', { _id: groupeId });
-                        addUser.value="";
-                        alert("L'utilisateur "+nomUt+" a bien été ajouté!");
+                        //alert(`${searchRes} a été ajouté!`)
                         }
                             else if (groupTest){
                                 alert("Cet utilisateur est déjà dans ce groupe!")
@@ -211,82 +232,4 @@ Template.groupe.events({
         console.log(nameInput);
         Meteor.call('groups.changeName',groupeId,nameInput)
     },
-    'click #quitGrp': function (event){
-        event.preventDefault();
-        let groupeId= FlowRouter.getParam('_id');
-        let groupe=Groups.findOne({_id: groupeId})
-        if (groupe.admin=Meteor.userId()){
-            if (confirm("Si vous quittez ce groupe, il sera supprimé. Procéder?")){
-                Meteor.call('groups.deleteGroup',groupeId,Meteor.userId())
-                FlowRouter.go('/')
-            }
-            else{
-                FlowRouter.go('groupe', { _id: groupeId });
-            }
-        }
-        else if (groupe.users=Meteor.userId()){
-            if (confirm("Voulez-vous vraiment quitter ce groupe?")){
-                Meteor.call('groups.leaveGroup',groupeId,Meteor.userId())
-                FlowRouter.go('/')
-            }
-            else{
-                FlowRouter.go('groupe', { _id: groupeId });
-            }
-        }
-    }
 })
-
-let idUt=Meteor.userId();
-function scoresUtilisateurCourant(idUt){
-    //tableau vide pour accueillir les scores
-    const mesScores = [];
-    //boucle qui va chercher les scres de chaque jour et les stocke dans un array à deux dimensions
-    
-    }
-
-Template.addGroup.helpers({
-    mesGroupesAdmin: function(){
-    let btngroupes = Groups.find({ admin: Meteor.userId() });
-        return btngroupes;
-    },
-    mesGroupesMembre: function(){
-        let myGroups = Groups.find({users: Meteor.userId()})
-        return myGroups;
-    }
-});
-
-    
-Template.groupe.helpers({
-    thisGroupAdmin: function(){
-        let groupeId= FlowRouter.getParam('_id');
-        let thisGroup = Groups.find({'_id': groupeId })
-        let displayAdmin = thisGroup.admin;
-        let adminEmail = Meteor.users.find({'_id':displayAdmin});
-        return adminEmail;
-    },
-    thisGroupMembers: function(){
-        let groupeId= FlowRouter.getParam('_id');
-        let thisGroup = Groups.find({'_id' :groupeId })
-        let displayUser = thisGroup.users;
-        let usersEmail = Meteor.users.find({"_id":displayUser});
-        return usersEmail;
-    },
-    thisGroupName: function(){
-        let groupeId= FlowRouter.getParam('_id');
-        let thisGroup = Groups.find({_id:groupeId });
-        return thisGroup;
-    }
-}
-);
-
-function scoresUtilisateurCourant(idUt){
-    //tableau vide pour accueillir les scores
-    const mesScores = [];
-    //boucle qui va chercher les scres de chaque jour et les stocke dans un array à deux dimensions
-    for(let i=0;i<7;i++){
-      	const doc = Semaines.findOne({ id_utilisateur: idUt });
-      	const array = doc[mesJours[i]];
-      	mesScores.push(array);
-    }
-    return(mesScores);
-}
