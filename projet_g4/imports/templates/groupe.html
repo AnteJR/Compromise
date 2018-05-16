@@ -10,7 +10,20 @@
         <h4>Changer le nom du groupe</h4>
         <input type="text" id="groupNameInput" placeholder="Changer le nom">
         <input type="button" id="groupNameButton" value="Valider"><br>
-        <p> </p>
+        <div id="groupes">
+                <h4>Admin:</h4>
+                <ul>
+                    
+                    <li><p>{{monAdmin}}</p></li>
+                   
+                </ul>
+                <h4>Membres:</h4>
+                <ul>
+                        {{#each mesMembres}}
+                    <li><p>{{monMembre}}</p></li>
+                        {{/each}}
+                </ul>
+            </div>
     {{else}}
 
     {{/if}}  

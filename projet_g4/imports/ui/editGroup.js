@@ -169,6 +169,29 @@ Template.addGroup.helpers({
     }
 });
 
+Template.groupe.helpers({
+    monAdmin: function(){
+        let groupeId = FlowRouter.getParam('_id');
+        let requete = Groups.findOne({_id:groupeId});
+        let idAdmin = requete.admin;
+        let leAdmin = Meteor.users.findOne({_id: idAdmin});
+        let myAdmin = leAdmin.emails[0].address;
+        return myAdmin;
+    },
+    mesMembres: function(){
+        let groupeId = FlowRouter.getParam('_id');
+        let requete = Groups.findOne({_id: groupeId});
+        console.log(requete.users);
+        let myMembre = [];
+        for(let i = 1; i<requete.users.length;i++){
+            let membre = requete.users[i];
+            let leMembre = Meteor.users.findOne({_id: membre});
+            myMembre[i] = {monMembre: leMembre.emails[0].address};
+        }
+        return myMembre;
+    }
+});
+
 function scoresUtilisateurCourant(idUt){
     //tableau vide pour accueillir les scores
     const mesScores = [];
