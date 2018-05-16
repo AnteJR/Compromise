@@ -233,6 +233,19 @@ Template.groupe.events({
         console.log(nameInput);
         Meteor.call('groups.changeName',groupeId,nameInput)
     },
+    'click #groupLeaveButton': function (event){
+        event.preventDefault();
+        let groupeId= FlowRouter.getParam('_id');
+        let groupe=Groups.findOne({_id: groupeId});
+        let r=confirm("Voulez-vous vraiment quitter ce groupe?")
+        if (r=true){
+            Meteor.call('groups.leaveGroup', groupeId, Meteor.userId())
+            FlowRouter.go('/')
+        }
+        else{
+            FlowRouter.go('groupe', { _id: groupeId });
+        }
+    }
 });
 
 Template.groupe.helpers({
