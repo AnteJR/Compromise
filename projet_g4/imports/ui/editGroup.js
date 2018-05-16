@@ -192,7 +192,10 @@ Template.groupe.helpers({
         for(let i = 1; i<requete.users.length;i++){
             let membre = requete.users[i];
             let leMembre = Meteor.users.findOne({_id: membre});
-            myMembre[i] = {monMembre: leMembre.emails[0].address};
+            myMembre[i] = {
+                monMembre: leMembre.emails[0].address,
+                membreId: requete.users[i]
+            };
         }
         return myMembre;
     }
@@ -289,6 +292,13 @@ Template.groupe.events({
                 FlowRouter.go('groupe', { _id: groupeId });
             }
         }
+    },
+    'click .banUser': function (event){
+        event.preventDefault();
+        let groupeId= FlowRouter.getParam('_id');
+        let idUt = event.currentTarget.id;
+        Meteor.call('groups.leaveGroup', groupeId, idUt);
+        creationTableau();
     }
 });
 

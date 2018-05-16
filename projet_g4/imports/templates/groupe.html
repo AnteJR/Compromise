@@ -20,13 +20,28 @@
                 <h4>Membres:</h4>
                 <ul>
                         {{#each mesMembres}}
-                    <li><p>{{monMembre}}</p></li>
+                    <li><p>{{monMembre}} <button class="banUser" id="{{membreId}}">supprimer</button></p> </li>
                         {{/each}}
                 </ul>
             </div>
-            <input type="button" id="groupDeleteButton" value="Supprimer ce groupe">
-        <p> </p>
+            <p></p><p></p>
+        <input type="button" id="groupDeleteButton" value="Supprimer ce groupe">
     {{else}} 
+    <div id="groupes">
+            <h4>Admin:</h4>
+            <ul>
+                
+                <li><p>{{monAdmin}}</p></li>
+               
+            </ul>
+            <h4>Membres:</h4>
+            <ul>
+                    {{#each mesMembres}}
+                <li><p>{{monMembre}}</p> </li>
+                    {{/each}}
+            </ul>
+        </div>
+        <p></p><p></p>
     <input type="button" id="groupLeaveButton" value="Quitter ce groupe">
     {{/if}}
 </template>
