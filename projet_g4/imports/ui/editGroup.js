@@ -46,6 +46,17 @@ const mesHeures = [
 "22:00"
 ];
 
+Template.groupe.onCreated(function(){
+  let groupeId= FlowRouter.getParam('_id');
+  let requete = Groups.findOne({_id:groupeId});
+  if(Meteor.userId() == requete.admin){
+    this.isAdmin = new ReactiveVar(true);
+  }
+  else{
+    this.isAdmin = new ReactiveVar(false);
+  }
+});
+
 Template.groupe.rendered = function(){
   setTimeout(function(){
     creationTableau();
@@ -60,7 +71,7 @@ Template.addGroup.events({
         let leGroupe = document.getElementById("nomGroupe").value;
         console.log(leGroupe)
         let nameTest = Groups.findOne({"name": leGroupe});
-		if(leGroupe){
+		    if(leGroupe){
             
             Meteor.call('groups.create', Meteor.userId(), leGroupe);
            
@@ -68,9 +79,7 @@ Template.addGroup.events({
         else{
             alert("Veuillez entrer un nom de groupe!")
         }
-        
-
-},
+    },
 });
 
 function creationTableau(){
@@ -219,9 +228,20 @@ Template.groupe.events({
     'click #groupNameButton': function (event){
         event.preventDefault();
         let groupeId= FlowRouter.getParam('_id');
-        let groupe=Groups.findOne({_id: groupeId})
+        let groupe=Groups.findOne({_id: groupeId});
         let nameInput=document.getElementById("groupNameInput").value;
         console.log(nameInput);
         Meteor.call('groups.changeName',groupeId,nameInput)
     },
+});
+
+Template.groupe.helpers({
+  nomGroupe: function(){
+    let groupeId= FlowRouter.getParam('_id');
+    let requete = Groups.findOne({_id:groupeId});
+    return(requete.name);
+  },
+  estAdmin: function(){
+    return Template.instance().isAdmin.get();
+  }
 });

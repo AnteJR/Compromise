@@ -56,7 +56,7 @@ Template.login.rendered = function(){
 		if(document.getElementById('tableauComparaison')){
           document.getElementById('tableauComparaison').remove();
         }
-	}, 500);
+	}, 10);
 }
 
 //quand un utilisateur se connecte...
