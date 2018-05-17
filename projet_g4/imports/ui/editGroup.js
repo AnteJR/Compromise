@@ -64,6 +64,7 @@ Template.groupe.onCreated(function(){
 });
 
 Template.groupe.rendered = function(){
+    
   setTimeout(function(){
     creationTableau();
   }, 500);
@@ -198,6 +199,25 @@ Template.groupe.helpers({
             };
         }
         return myMembre;
+    },
+    mailingList: function(){
+        let groupeId = FlowRouter.getParam('_id');
+        let requete = Groups.findOne({_id: groupeId});
+        console.log(requete.users);
+        let myMembre = [];
+        let listeMembre=[];
+        for(let i = 1; i<requete.users.length;i++){
+            let membre = requete.users[i];
+            let leMembre = Meteor.users.findOne({_id: membre});
+            myMembre[(i-1)] = {
+                monMembre: leMembre.emails[0].address,
+                membreId: requete.users[i]
+            };
+            listeMembre.push(myMembre[(i-1)].monMembre);
+        }
+        let mailList=listeMembre.toString();
+        return mailList;
+    
     }
 });
 
