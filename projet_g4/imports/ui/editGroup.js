@@ -3,6 +3,7 @@ import { Template } from 'meteor/templating';
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { Semaines } from '../api/semaines.js';
+import { Notifs } from '../api/notifications.js'
 import { ReactiveVar } from 'meteor/reactive-var';
 import { Groups } from '../api/groups.js';
 
@@ -188,7 +189,7 @@ Template.groupe.helpers({
     mesMembres: function(){
         let groupeId = FlowRouter.getParam('_id');
         let requete = Groups.findOne({_id: groupeId});
-        console.log(requete.users);
+        //console.log(requete.users);
         let myMembre = [];
         for(let i = 1; i<requete.users.length;i++){
             let membre = requete.users[i];
@@ -203,7 +204,7 @@ Template.groupe.helpers({
     mailingList: function(){
         let groupeId = FlowRouter.getParam('_id');
         let requete = Groups.findOne({_id: groupeId});
-        console.log(requete.users);
+        //console.log(requete.users);
         let myMembre = [];
         let listeMembre=[];
         for(let i = 1; i<requete.users.length;i++){
@@ -236,44 +237,63 @@ function scoresUtilisateurCourant(idUt){
 Template.groupe.events({
     'submit #ajoutDUtilisateur': function(event){
         event.preventDefault();
+        let groupeId= FlowRouter.getParam('_id');
+        let groupName = Groups.findOne({_id:groupeId}).name;
         let nomUt = document.getElementById("addUser").value;
+        let currentAdminEmail = Meteor.users.findOne({_id:Meteor.userId()}).emails.address;
+        //vérifier que l'adresse mail correspond au format habituel
         let re = /\S+@\S+\.\S+/;
         let regExTest = nomUt.match(re);
+        // si c'est le cas...
         if (regExTest){
+            //vérifier qu'une semaine avec l'ID de l'utilisateur en question existe.
             let searchRes = Meteor.users.findOne({"emails.address": nomUt});
             let searchSemaine= Semaines.find({"id_utilisateur":searchRes});
+            //si ce n'est pas le cas, alerter l'utilisateur.
             console.log(searchSemaine)
             if (!searchRes){
                 alert("Cet utilisateur n'existe pas!");
                 addUser.value="";
             }
+            //si l'utilisateur essaie de s'ajouter lui-même au groupe...
             else if (searchRes._id == Meteor.userId()){
                 alert("C'est vous!")
                 addUser.value="";
             }
+            //si la semaine en question est privée...
             else if (searchSemaine.isPrivate){
                 alert("Cet utilisateur ne désire pas partager ses informations!")
                 addUser.value="";
             }
+            //si aucune des conditions précédentes sont remplies, procéder avec l'ajout au groupe.
             else if (!searchSemaine.isPrivate){
                 let idSearch = searchRes._id;
                 let groupeId = FlowRouter.getParam('_id');
-                   /* console.log(idUt);
-                    console.log(groupeId);*/
+                //utile pour la suite (notifs) de déjà définir certains propriétés de l'admin
+                let admin= Groups.findOne({_id: groupeId},{admin:Meteor.userId()}).admin;
+                let adminEmail = Meteor.users.findOne({'_id':admin}).emails[0].address;
+                console.log(adminEmail)
+                //tester si l'utilisateur est déjà dans le groupe.
                     let groupTest = Groups.findOne({users : idSearch, _id : groupeId});
+                    //si ce n'est pas le cas, procéder
                         if (!groupTest){
                           Meteor.call("groups.updateGroup", idSearch, groupeId);
+                          console.log(idSearch,groupName,adminEmail);
+                        // et notifier la personne en question.
+                          Meteor.call("notifs.pushGroupAdd",idSearch, groupName,adminEmail);
                           FlowRouter.go('groupe', { _id: groupeId });
-                          //alert(`${searchRes} a été ajouté!`)
+                          alert(`${addUser.value} a été ajouté!`)
                           creationTableau();
                           addUser.value="";
                         }
+                        //si l'utilisateur est déjà dans le groupe...
                         else if (groupTest){
                           alert("Cet utilisateur est déjà dans ce groupe!")
                           addUser.value="";
                         }
                   }
                 }
+            //enfin, si l'adresse mail n'est pas valide...
             else{
                 alert("Cet adresse email n'est pas valide!")
                 addUser.value="";

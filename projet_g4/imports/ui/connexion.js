@@ -4,6 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { Semaines } from '../api/semaines.js';
 import { ReactiveVar } from 'meteor/reactive-var';
+import { Notifs } from '../api/notifications.js'
 
 //importation des fichiers
 import './login.html';
@@ -52,6 +53,13 @@ Template.login.onCreated(function(){
 });
 
 Template.login.rendered = function(){
+	let myNotifs = Notifs.findOne({id_utilisateur:Meteor.userId()})
+	if (myNotifs.messages.length>0){
+		for (i=0 ; i<myNotifs.notifications.length;i++){
+		addNotification("", myNotifs.messages[i], [options={}])
+		}
+	}
+	
 	setTimeout(function(){
 		if(document.getElementById('tableauComparaison')){
           document.getElementById('tableauComparaison').remove();
@@ -61,6 +69,11 @@ Template.login.rendered = function(){
 
 //quand un utilisateur se connecte...
 Accounts.onLogin(function(user){
+		//... s'il n'y a pas de document avec l'ID de l'utilisateur dans la collection Notifs...
+	if (Notifs.find({id_utilisateur: Meteor.userId()}).count() ==0){
+		//créer un document par défaut dans cette collection, avec l'id de l'utilisateur comme valeur "id_utilisateur"
+		Meteor.call('notifs.createDefault',Meteor.userId());
+		}
 	setTimeout(function(){
 		//...si il n'a pas de document avec son id dans la collection Semaines..
 		if(Semaines.find({id_utilisateur: Meteor.userId()}).count() == 0){

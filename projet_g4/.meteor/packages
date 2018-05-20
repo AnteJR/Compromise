@@ -24,3 +24,4 @@ check@1.3.0
 twbs:bootstrap
 kadira:flow-router
 kadira:blaze-layout
+gfk:notifications
