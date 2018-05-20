@@ -56,7 +56,7 @@ Template.login.rendered = function(){
 	let myNotifs = Notifs.findOne({id_utilisateur:Meteor.userId()})
 	if (myNotifs.messages.length>0){
 		for (i=0 ; i<myNotifs.notifications.length;i++){
-		addNotification("", myNotifs.messages[i], [options={}])
+		Notifications.info("Nouveau groupe!", myNotifs.messages[i])
 		}
 	}
 	
@@ -69,12 +69,12 @@ Template.login.rendered = function(){
 
 //quand un utilisateur se connecte...
 Accounts.onLogin(function(user){
+	setTimeout(function(){
 		//... s'il n'y a pas de document avec l'ID de l'utilisateur dans la collection Notifs...
-	if (Notifs.find({id_utilisateur: Meteor.userId()}).count() ==0){
+	if (Notifs.find({id_utilisateur: Meteor.userId()}).count() == 0){
 		//créer un document par défaut dans cette collection, avec l'id de l'utilisateur comme valeur "id_utilisateur"
 		Meteor.call('notifs.createDefault',Meteor.userId());
 		}
-	setTimeout(function(){
 		//...si il n'a pas de document avec son id dans la collection Semaines..
 		if(Semaines.find({id_utilisateur: Meteor.userId()}).count() == 0){
 			//...on lui assigne un document semaine par défaut (valeurs de 0 pour chaque cellules)
@@ -212,7 +212,18 @@ Template.login.events({
 		document.getElementById("tableauComparaison").remove();
 	}
 });
-
+let displayNotif=false;
+Template.header.events({
+	'click #notifButton': function (event){
+		displayNotif=true;
+		let thisNotif=Notifs.findOne({id_utilisateur: Meteor.userId()}).messages
+		for (i=0;i<thisNotif.length;i++){
+			sAlert.info(thisNotif[i], configOverwrite);
+			Meteor.call('notifs.removeNotif',Meteor.userId(),thisNotif[i])
+		}
+	}
+}
+)
 //Fonction qui retourne au tableau contenant les disponibilités d'un utilisateur donné
 function scoresUtilisateurCourant(idUt){
     //tableau vide pour accueillir les scores

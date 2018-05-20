@@ -281,6 +281,12 @@ Template.groupe.events({
                           console.log(idSearch,groupName,adminEmail);
                         // et notifier la personne en question.
                           Meteor.call("notifs.pushGroupAdd",idSearch, groupName,adminEmail);
+                        //ensuite, notifier tous les membres du groupe.
+                        let thisGroupMembres=Groups.findOne({_id: groupeId}).users
+                        for (i=0;i>thisGroupMembres.length;i++){
+                            Meteor.call('notifs.pushNewGroupMember',thisGroupMembres[i],groupName,addUser.value)
+                            console.log(thisGroupMembres[i],groupName,addUser.value)
+                        }
                           FlowRouter.go('groupe', { _id: groupeId });
                           alert(`${addUser.value} a été ajouté!`)
                           creationTableau();

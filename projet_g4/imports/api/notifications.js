@@ -17,8 +17,9 @@ Meteor.methods({
         })
     },
     'notifs.pushGroupAdd'(idUt,nomGr,admin){
-        console.log(idUt,nomGr,admin);
-        //check (idUt,nomGr,admin,String);
+        check (idUt,String);
+        check (nomGr, String);
+        check (admin, String);
         Notifs.update(
             {id_utilisateur:idUt},
             {$push:{messages:`L'utilisateur ${admin} vous a ajouté au groupe ${nomGr}!`}}
@@ -26,10 +27,20 @@ Meteor.methods({
 
     },
     'notifs.pushNewGroupMember'(idUt,nomGr,newUt){
-        check (idUt,nomGr,newUt,String);
+        check (idUt,String);
+        check (nomGr, String);
+        check (newUt, String);
         Notifs.update(
             {id_utilisateur:idUt},
             {$push:{messages:`L'utilisateur ${newUt} a été ajouté au groupe ${nomGr}!`}}
+        )
+    },
+    'notifs.removeNotif'(idUt,value){
+        check (idUt, String);
+        check (value, String);
+        Notifs.update(
+            {id_utilisateur:idUt},
+            {$pull:{messages:value}}
         )
     }
 })
