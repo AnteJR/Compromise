@@ -212,10 +212,8 @@ Template.login.events({
 		document.getElementById("tableauComparaison").remove();
 	}
 });
-let displayNotif=false;
 Template.header.events({
 	'click #notifButton': function (event){
-		displayNotif=true;
 		let thisNotif=Notifs.findOne({id_utilisateur: Meteor.userId()}).messages
 		for (i=0;i<thisNotif.length;i++){
 			sAlert.info(thisNotif[i], configOverwrite);
