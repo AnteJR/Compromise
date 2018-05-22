@@ -4,7 +4,8 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { Semaines } from '../api/semaines.js';
 import { ReactiveVar } from 'meteor/reactive-var';
-import { Notifs } from '../api/notifications.js'
+import { Notifs } from '../api/notifications.js';
+import { Tracker } from 'meteor/tracker';
 
 //importation des fichiers
 import './login.html';
@@ -50,16 +51,18 @@ let estCompare = false;
 
 Template.login.onCreated(function(){
 	this.comparaisonTriggered = new ReactiveVar( false );
+	this.showNotifs = new ReactiveVar( true );
 });
 
 Template.login.rendered = function(){
-	let myNotifs = Notifs.findOne({id_utilisateur:Meteor.userId()})
-	if (myNotifs.messages.length>0){
-		for (i=0 ; i<myNotifs.notifications.length;i++){
-		Notifications.info("Nouveau groupe!", myNotifs.messages[i])
-		}
-	}
-	
+
+	Tracker.autorun(()=>{
+	let thisNotif=Notifs.findOne({id_utilisateur: Meteor.userId()}).messages
+			for (i=0;i<thisNotif.length;i++){
+				sAlert.info(thisNotif[i], configOverwrite);
+				Meteor.call('notifs.removeNotif',Meteor.userId(),thisNotif[i])	
+			}
+		})
 	setTimeout(function(){
 		if(document.getElementById('tableauComparaison')){
           document.getElementById('tableauComparaison').remove();
@@ -90,7 +93,7 @@ Accounts.onLogin(function(user){
 Template.login.helpers({
 	comparaisonTriggered: function(){
 		return Template.instance().comparaisonTriggered.get();
-	},
+	}	
 })
 
 Template.login.events({
@@ -212,18 +215,8 @@ Template.login.events({
 		document.getElementById("tableauComparaison").remove();
 	}
 });
-let displayNotif=false;
-Template.header.events({
-	'click #notifButton': function (event){
-		displayNotif=true;
-		let thisNotif=Notifs.findOne({id_utilisateur: Meteor.userId()}).messages
-		for (i=0;i<thisNotif.length;i++){
-			sAlert.info(thisNotif[i], configOverwrite);
-			Meteor.call('notifs.removeNotif',Meteor.userId(),thisNotif[i])
-		}
-	}
-}
-)
+
+
 //Fonction qui retourne au tableau contenant les disponibilités d'un utilisateur donné
 function scoresUtilisateurCourant(idUt){
     //tableau vide pour accueillir les scores
@@ -240,4 +233,3 @@ function scoresUtilisateurCourant(idUt){
 Accounts.onLogout(function(){
 	FlowRouter.go("/");
 });
-
