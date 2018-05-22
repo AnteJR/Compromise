@@ -53,12 +53,20 @@ Template.login.onCreated(function(){
 });
 
 Template.login.rendered = function(){
-	let myNotifs = Notifs.findOne({id_utilisateur:Meteor.userId()})
-	if (myNotifs.messages.length>0){
-		for (i=0 ; i<myNotifs.notifications.length;i++){
-		Notifications.info("Nouveau groupe!", myNotifs.messages[i])
-		}
-	}
+
+	Tracker.autorun(()=>{
+	let thisNotif=Notifs.findOne({id_utilisateur: Meteor.userId()}).messages
+			for (i=0;i<thisNotif.length;i++){
+				sAlert.info(thisNotif[i], configOverwrite);
+				Meteor.call('notifs.removeNotif',Meteor.userId(),thisNotif[i])	
+			}
+		})
+	setTimeout(function(){
+		if(document.getElementById('tableauComparaison')){
+          document.getElementById('tableauComparaison').remove();
+        }
+	}, 10);
+}
 	
 	setTimeout(function(){
 		if(document.getElementById('tableauComparaison')){
