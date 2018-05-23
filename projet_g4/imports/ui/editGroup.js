@@ -62,23 +62,7 @@ Template.groupe.rendered = function(){
 
 //events du template proposant à l'utilisateur de créer un groupe
 Template.addGroup.events({
-<<<<<<< HEAD
   'click #btnCreer': function(event, template){
-      event.preventDefault();
-      let leGroupe = document.getElementById("nomGroupe").value;
-      let nameTest = Groups.findOne({"name": leGroupe});
-      if(leGroupe){
-          Meteor.call('groups.create', Meteor.userId(), leGroupe);
-      }
-      else{
-          alert("Veuillez entrer un nom de groupe!")
-      } 
-  },
-});
-
-//helpers permettant de savoir quels sont les groupes pour lesquels on est membre
-=======
-    'click #btnCreer': function(event, template){
         event.preventDefault();
 
         //let leGroupe = event.target.nomGroupe.value;
