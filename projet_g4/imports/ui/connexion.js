@@ -4,6 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { Semaines } from '../api/semaines.js';
 import { ReactiveVar } from 'meteor/reactive-var';
+import { Notifs } from '../api/notifications.js'
 
 //importation des fichiers
 import './login.html';
@@ -59,9 +60,32 @@ Template.login.rendered = function(){
 	}, 10);
 }
 
+Template.header.rendered = function(){
+
+	Tracker.autorun(()=>{
+	let thisNotif=Notifs.findOne({id_utilisateur: Meteor.userId()}).messages
+			for (i=0;i<thisNotif.length;i++){
+				sAlert.info(thisNotif[i], configOverwrite);
+				Meteor.call('notifs.removeNotif',Meteor.userId(),thisNotif[i])	
+			}
+		});
+}
+Template.header.helpers({
+  mesNotifs: function(){
+    let idUt = Notifs.findOne({ id_utilisateur: Meteor.userId()});
+    let nbrNotifs = idUt.messages.length;
+      return nbrNotifs;
+    }
+});
+
 //quand un utilisateur se connecte...
 Accounts.onLogin(function(user){
 	setTimeout(function(){
+		//... s'il n'y a pas de document avec l'ID de l'utilisateur dans la collection Notifs...
+	if (Notifs.find({id_utilisateur: Meteor.userId()}).count() == 0){
+		//créer un document par défaut dans cette collection, avec l'id de l'utilisateur comme valeur "id_utilisateur"
+		Meteor.call('notifs.createDefault',Meteor.userId());
+		}
 		//...si il n'a pas de document avec son id dans la collection Semaines..
 		if(Semaines.find({id_utilisateur: Meteor.userId()}).count() == 0){
 			//...on lui assigne un document semaine par défaut (valeurs de 0 pour chaque cellules)
@@ -168,18 +192,18 @@ Template.login.events({
             			monTr.appendChild(unTd)
           			}
           			monTd = document.createElement("td");
-				  	monTd.style = "background-color:hsla("+mesScores3[j][i]+"0, 100%, 54%, 1);width:100px;height:30px;text-align:center;line-height:30px;";
+				  	monTd.style = "background-color:hsla("+mesScores3[j][i]+"9, 88%, 55%, 1);width:100px;height:30px;text-align:center;line-height:30px;";
           			if(mesScores3[j][i] >= 0 && mesScores3[j][i] <= 4){
           				monTd.innerHTML = "<b> ✕ </b>";
-          				monTd.style.color = "hsla("+mesScores3[j][i]+"0, 100%, 90%, 1)";
+          				monTd.style.color = "hsla("+mesScores3[j][i]+"0, 100%, 100%, 1)";
           			}
           			else if(mesScores3[j][i] > 4 && mesScores3[j][i] <= 7){
           				monTd.innerHTML = "<b> ~ </b>";
-          				monTd.style.color += "hsla("+mesScores3[j][i]+"0, 100%, 90%, 1)";
+          				monTd.style.color += "hsla("+mesScores3[j][i]+"0, 100%, 100%, 1)";
           			}
           			else if(mesScores3[j][i] > 7 && mesScores3[j][i] <= 10){
           				monTd.innerHTML = "<b> ✓ </b>";
-          				monTd.style.color += "hsla("+mesScores3[j][i]+"0, 100%, 90%, 1)";
+          				monTd.style.color += "hsla("+mesScores3[j][i]+"0, 100%, 100%, 1)";
           			}
           			monTd.setAttribute("value",mesScores3[j][i]);
 				  	monTr.appendChild(monTd);
@@ -199,7 +223,18 @@ Template.login.events({
 		document.getElementById("tableauComparaison").remove();
 	}
 });
-
+let displayNotif=false;
+Template.header.events({
+	'click #notifButton': function (event){
+		displayNotif=true;
+		let thisNotif=Notifs.findOne({id_utilisateur: Meteor.userId()}).messages
+		for (i=0;i<thisNotif.length;i++){
+			sAlert.info(thisNotif[i], configOverwrite);
+			Meteor.call('notifs.removeNotif',Meteor.userId(),thisNotif[i])
+		}
+	}
+}
+)
 //Fonction qui retourne au tableau contenant les disponibilités d'un utilisateur donné
 function scoresUtilisateurCourant(idUt){
     //tableau vide pour accueillir les scores

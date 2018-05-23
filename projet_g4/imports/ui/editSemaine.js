@@ -9,6 +9,7 @@ import '../templates/semaine.html';
 import '../templates/newTr.html';
 import '../templates/newTd.html';
 
+//constantes pour les heures et les jours
 const mesHeures = [
   		"08:00",
   		"09:00",
@@ -87,6 +88,7 @@ Template.semaineComparee.helpers({
 		},
 	],
 });
+//helper pour le tableau de semaine, avec une fonction qui observe les changement dans le document de l'utilisateur
 Template.newTd.helpers({
 	periode:function(){
 		let mesScores = [];
@@ -265,46 +267,50 @@ Template.newTd.helpers({
 	}
 });
 
+//Code pour les boutons permettant de changer la couleur et l'état des cellules
 var valeur;
 
 Template.tableauSemaines.events({
 	'click #red': function(event){
 		event.preventDefault();
-		$(event.target).css({"background-color":"hsl(0, 100%, 54%, 1)"});
+		$(event.target).css({"background-color":"hsl(9, 88%, 55%, 1)"});
 		$("#yellow").css({"background-color":"rgb(0,132,255)"});
 		$("#green").css({"background-color":"rgb(0,132,255)"});
 		valeur = 0;
 	},
 	'click #yellow': function(event){
 		event.preventDefault();
-		$(event.target).css({"background-color":"hsl(40, 100%, 54%, 1)"});
+		$(event.target).css({"background-color":"hsl(49, 88%, 55%, 1)"});
 		$("#red").css({"background-color":"rgb(0,132,255)"});
 		$("#green").css({"background-color":"rgb(0,132,255)"});
 		valeur = 4;
 	},
 	'click #green': function(event){
 		event.preventDefault();
-		$(event.target).css({"background-color":"hsl(100, 100%, 54%, 1)"});
+		$(event.target).css({"background-color":"hsl(109, 88%, 55%, 1)"});
 		$("#yellow").css({"background-color":"rgb(0,132,255)"});
 		$("#red").css({"background-color":"rgb(0,132,255)"});
 		valeur = 10;
 	}
 });
 
+
 Template.newTd.events({
+	//quand on clique sur les cellules ayant la class "semaine", on change leur couleur et leur valeur
 	'click .semaine': function(event){
 		event.preventDefault();
 		if(valeur==0){
-			$(event.target).css({"background-color":"hsl(0, 100%, 54%, 1)"});
+			$(event.target).css({"background-color":"hsl(9, 88%, 55%, 1)"});
 			$(event.target).val(valeur);
 		} else if(valeur==4){
-			$(event.target).css({"background-color":"hsl(40, 100%, 54%, 1)"});
+			$(event.target).css({"background-color":"hsl(49, 88%, 55%, 1)"});
 			$(event.target).val(valeur);
 		} else if(valeur==10){
-			$(event.target).css({"background-color":"hsl(100, 100%, 54%, 1)"});
+			$(event.target).css({"background-color":"hsl(109, 88%, 55%, 1)"});
 			$(event.target).val(valeur);
 		}
 	},
+	//quand on clique sur les cellules ayant la class "heureSemaine", on change la couleur et la valeur d'une ligne
 	'click .heureSemaine': function(event){
 		event.preventDefault();
 		if(valeur==0){
@@ -318,6 +324,7 @@ Template.newTd.events({
 });
 
 Template.newTr.events({
+	//quand on clique sur les cellules ayant la class "joursSemaines", on change la couleur et la valeur d'une colonne
 	'click .joursSemaine': function(event){
 		event.preventDefault();
 		if(valeur==0){
@@ -329,7 +336,9 @@ Template.newTr.events({
 		}
 	},
 });
+
 Template.header.events({
+	//possibilité de dire si oui ou non un utilisateur a son horaire en privé
 	'click #prive': function(event){
 		event.preventDefault();
 		const doc = Semaines.findOne({ id_utilisateur: Meteor.userId() });

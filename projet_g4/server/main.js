@@ -6,6 +6,7 @@ import { Semaines } from '../imports/api/semaines.js';
 import { Groups } from '../imports/api/groups.js'
 import { ReactiveVar } from 'meteor/reactive-var';
 import { Tracker } from 'meteor/tracker';
+import { Notifs } from '../imports/api/notifications.js';
 
 Meteor.startup(() => {
   Tracker.autorun(()=>{
@@ -32,6 +33,10 @@ Meteor.startup(() => {
 		Meteor.publish('groups',function(){
 			return Groups.find();
 		});
+		Meteor.publish('notifs',function(){
+			return Notifs.find();
+		}
+	)
 	});
 	Groups.allow({
 		remove() {return true}

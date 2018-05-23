@@ -1,1 +1,4 @@
 /* CSS declarations go here */
+ul.notifications {
+    position: fixed;
+    }
