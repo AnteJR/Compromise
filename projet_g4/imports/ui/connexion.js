@@ -61,15 +61,37 @@ Template.login.rendered = function(){
 }
 
 Template.header.rendered = function(){
-
 	Tracker.autorun(()=>{
-	let thisNotif=Notifs.findOne({id_utilisateur: Meteor.userId()}).messages
-			for (i=0;i<thisNotif.length;i++){
-				sAlert.info(thisNotif[i], configOverwrite);
-				Meteor.call('notifs.removeNotif',Meteor.userId(),thisNotif[i])	
+		let thisDocument=Notifs.findOne({id_utilisateur: Meteor.userId()});
+		let thisInfo=thisDocument.info;
+			for (i=0 ; i<thisInfo.length ; i++){
+				sAlert.info(thisInfo[i] , configOverwrite);
+				Meteor.call('notifs.removeInfo',Meteor.userId(),thisInfo[i])
 			}
-		});
+		let thisSuccess=thisDocument.success;
+			for (i=0 ; i<thisSuccess.length ; i++){
+				sAlert.success(thisSuccess[i] , configOverwrite);
+				Meteor.call('notifs.removeSuccess',Meteor.userId(),thisSuccess[i])
+			}
+		let thisError=thisDocument.error;
+			for (i=0 ; i<thisError.length ; i++){
+				sAlert.error(thisError[i] , configOverwrite);
+				Meteor.call('notifs.removeError',Meteor.userId(),thisError[i])
+			}
+		let thisWarning=thisDocument.warning;
+		for (i=0 ; i<thisWarning.length ; i++){
+			sAlert.warning(thisWarning[i] , configOverwrite);
+			Meteor.call('notifs.removeWarning',Meteor.userId(),thisWarning[i])
+		}
+})
 }
+Template.header.helpers({
+  mesNotifs: function(){
+    let idUt = Notifs.findOne({ id_utilisateur: Meteor.userId()});
+    let nbrNotifs = idUt.messages.length;
+      return nbrNotifs;
+    }
+});
 
 //quand un utilisateur se connecte...
 Accounts.onLogin(function(user){
@@ -185,7 +207,7 @@ Template.login.events({
             			monTr.appendChild(unTd)
           			}
           			monTd = document.createElement("td");
-				  	monTd.style = "background-color:hsla("+mesScores3[j][i]+"0, 85%, 55%, 1);width:100px;height:30px;text-align:center;line-height:30px;";
+				  	monTd.style = "background-color:hsla("+mesScores3[j][i]+"9, 88%, 55%, 1);width:100px;height:30px;text-align:center;line-height:30px;";
           			if(mesScores3[j][i] >= 0 && mesScores3[j][i] <= 4){
           				monTd.innerHTML = "<b> ✕ </b>";
           				monTd.style.color = "hsla("+mesScores3[j][i]+"0, 100%, 100%, 1)";
@@ -216,18 +238,6 @@ Template.login.events({
 		document.getElementById("tableauComparaison").remove();
 	}
 });
-let displayNotif=false;
-Template.header.events({
-	'click #notifButton': function (event){
-		displayNotif=true;
-		let thisNotif=Notifs.findOne({id_utilisateur: Meteor.userId()}).messages
-		for (i=0;i<thisNotif.length;i++){
-			sAlert.info(thisNotif[i], configOverwrite);
-			Meteor.call('notifs.removeNotif',Meteor.userId(),thisNotif[i])
-		}
-	}
-}
-)
 //Fonction qui retourne au tableau contenant les disponibilités d'un utilisateur donné
 function scoresUtilisateurCourant(idUt){
     //tableau vide pour accueillir les scores

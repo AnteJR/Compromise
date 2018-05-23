@@ -1,4 +1,17 @@
 /* CSS declarations go here */
-ul.notifications {
-    position: fixed;
-    }
+.s-alert-success {
+    background: orange;
+    color: #fff  /* your text color here */
+}
+.s-alert-warning{
+    background: crimson;
+    color: #fff
+}
+.s-alert-info{
+    background: mediumseagreen;
+    color: #fff;
+}
+.s-alert-error{
+    background: gold;
+    color: #fff;
+}
