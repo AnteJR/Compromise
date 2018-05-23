@@ -372,7 +372,7 @@ function scoresUtilisateurCourant(idUt){
   return(mesScores);
 }
 
-//fonction creationTableau() permettant de crée un tableau avec les informations des utilisateurs du groupe
+//fonction creationTableau() permettant de créer un tableau avec les informations des utilisateurs du groupe
 function creationTableau(){
   //récupération des informations des utilisateurs
   let groupeId = FlowRouter.getParam('_id');
@@ -403,19 +403,20 @@ function creationTableau(){
   let monTableau = document.createElement("table");
   monTableau.setAttribute("border",1);
   monTableau.setAttribute("id","tableauComparaison")
+  monTableau.style ="margin-left:31%;"
   document.body.appendChild(monTableau);
   for(let i=0;i<mesHeures.length;i++){
     if(i==0){
       let unTr = document.createElement("tr");
       monTableau.appendChild(unTr);
       let unTd = document.createElement("td");
-      unTd.style = "width:100px;height:30px;text-align:center;line-height:30px;"
+      unTd.style = "width:100px;height:30px;text-align:center;line-height:30px;border: white solid 5px;"
       unTd.innerHTML = " "
       unTr.appendChild(unTd);
       for(let k=0;k<resultat.length;k++){
         let mesTh = document.createElement("th");
         mesTh.innerHTML = mesJours[k];
-        mesTh.style = "width:100px;height:30px;text-align:center;line-height:30px;"
+        mesTh.style = "width:100px;height:30px;text-align:center;line-height:30px; border: white solid 5px;"
         unTr.appendChild(mesTh);
       }
     }
@@ -424,13 +425,13 @@ function creationTableau(){
     for(let j=0;j<resultat.length;j++){
       if(j==0){
         let unTd = document.createElement("td");
-        unTd.style = "width:100px;"
+        unTd.style = "width:100px; border: white solid 5px; height:30px;text-align:center;line-height:30px;"
         unTd.innerHTML = mesHeures[i];
         monTr.appendChild(unTd)
       }
       resultat[j][i] = Math.round(resultat[j][i]);
       monTd = document.createElement("td");
-      monTd.style = "background-color:hsla("+resultat[j][i]+"0, 100%, 54%, 1);width:100px;height:30px;text-align:center;line-height:30px;";
+      monTd.style = "background-color:hsla("+resultat[j][i]+"0, 100%, 54%, 1);width:100px;height:30px;text-align:center;line-height:30px;border: white solid 5px;";
       if(resultat[j][i] >= 0 && resultat[j][i] <= 4){
         monTd.innerHTML = "<b> ✕ </b>";
         monTd.style.color = "hsla("+resultat[j][i]+"0, 100%, 100%, 1)";
