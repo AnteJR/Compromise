@@ -192,7 +192,6 @@ Template.groupe.events({
           addUser.value="";
         }
 <<<<<<< HEAD
-<<<<<<< HEAD
         let mailList=listeMembre.toString();
         return mailList;
     
@@ -274,9 +273,6 @@ Template.groupe.events({
                           addUser.value="";
                         }
                   }
-=======
-      }
->>>>>>> 8494344346d9027e63b55afd1811c355fa13cb75
 =======
       }
 >>>>>>> 8494344346d9027e63b55afd1811c355fa13cb75
