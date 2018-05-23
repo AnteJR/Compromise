@@ -273,21 +273,21 @@ var valeur;
 Template.tableauSemaines.events({
 	'click #red': function(event){
 		event.preventDefault();
-		$(event.target).css({"background-color":"hsl(0, 100%, 54%, 1)"});
+		$(event.target).css({"background-color":"hsl(9, 88%, 55%, 1)"});
 		$("#yellow").css({"background-color":"rgb(0,132,255)"});
 		$("#green").css({"background-color":"rgb(0,132,255)"});
 		valeur = 0;
 	},
 	'click #yellow': function(event){
 		event.preventDefault();
-		$(event.target).css({"background-color":"hsl(40, 100%, 54%, 1)"});
+		$(event.target).css({"background-color":"hsl(49, 88%, 55%, 1)"});
 		$("#red").css({"background-color":"rgb(0,132,255)"});
 		$("#green").css({"background-color":"rgb(0,132,255)"});
 		valeur = 4;
 	},
 	'click #green': function(event){
 		event.preventDefault();
-		$(event.target).css({"background-color":"hsl(100, 100%, 54%, 1)"});
+		$(event.target).css({"background-color":"hsl(109, 88%, 55%, 1)"});
 		$("#yellow").css({"background-color":"rgb(0,132,255)"});
 		$("#red").css({"background-color":"rgb(0,132,255)"});
 		valeur = 10;
@@ -300,13 +300,13 @@ Template.newTd.events({
 	'click .semaine': function(event){
 		event.preventDefault();
 		if(valeur==0){
-			$(event.target).css({"background-color":"hsl(0, 100%, 54%, 1)"});
+			$(event.target).css({"background-color":"hsl(9, 88%, 55%, 1)"});
 			$(event.target).val(valeur);
 		} else if(valeur==4){
-			$(event.target).css({"background-color":"hsl(40, 100%, 54%, 1)"});
+			$(event.target).css({"background-color":"hsl(49, 88%, 55%, 1)"});
 			$(event.target).val(valeur);
 		} else if(valeur==10){
-			$(event.target).css({"background-color":"hsl(100, 100%, 54%, 1)"});
+			$(event.target).css({"background-color":"hsl(109, 88%, 55%, 1)"});
 			$(event.target).val(valeur);
 		}
 	},

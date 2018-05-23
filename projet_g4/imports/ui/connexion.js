@@ -192,18 +192,18 @@ Template.login.events({
             			monTr.appendChild(unTd)
           			}
           			monTd = document.createElement("td");
-				  	monTd.style = "background-color:hsla("+mesScores3[j][i]+"0, 100%, 54%, 1);width:100px;height:30px;text-align:center;line-height:30px;";
+				  	monTd.style = "background-color:hsla("+mesScores3[j][i]+"9, 88%, 55%, 1);width:100px;height:30px;text-align:center;line-height:30px;";
           			if(mesScores3[j][i] >= 0 && mesScores3[j][i] <= 4){
           				monTd.innerHTML = "<b> ✕ </b>";
-          				monTd.style.color = "hsla("+mesScores3[j][i]+"0, 100%, 90%, 1)";
+          				monTd.style.color = "hsla("+mesScores3[j][i]+"0, 100%, 100%, 1)";
           			}
           			else if(mesScores3[j][i] > 4 && mesScores3[j][i] <= 7){
           				monTd.innerHTML = "<b> ~ </b>";
-          				monTd.style.color += "hsla("+mesScores3[j][i]+"0, 100%, 90%, 1)";
+          				monTd.style.color += "hsla("+mesScores3[j][i]+"0, 100%, 100%, 1)";
           			}
           			else if(mesScores3[j][i] > 7 && mesScores3[j][i] <= 10){
           				monTd.innerHTML = "<b> ✓ </b>";
-          				monTd.style.color += "hsla("+mesScores3[j][i]+"0, 100%, 90%, 1)";
+          				monTd.style.color += "hsla("+mesScores3[j][i]+"0, 100%, 100%, 1)";
           			}
           			monTd.setAttribute("value",mesScores3[j][i]);
 				  	monTr.appendChild(monTd);
