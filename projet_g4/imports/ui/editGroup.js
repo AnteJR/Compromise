@@ -69,6 +69,8 @@ Template.addGroup.events({
 		    if(leGroupe){
             
             Meteor.call('groups.create', Meteor.userId(), leGroupe);
+            let nameGroup = Groups.findOne({"name": leGroupe});
+            FlowRouter.go('groupe', { _id: nameGroup._id });
            
         }
         else{
@@ -134,18 +136,18 @@ function creationTableau(){
                   }
                   resultat[j][i] = Math.round(resultat[j][i]);
                   monTd = document.createElement("td");
-                  monTd.style = "background-color:hsla("+resultat[j][i]+"0, 100%, 54%, 1);width:100px;height:30px;text-align:center;line-height:30px;";
+                  monTd.style = "background-color:hsla("+resultat[j][i]+"0, 87%, 55%, 1);width:100px;height:30px;text-align:center;line-height:30px;";
                   if(resultat[j][i] >= 0 && resultat[j][i] <= 4){
                       monTd.innerHTML = "<b> ✕ </b>";
-                      monTd.style.color = "hsla("+resultat[j][i]+"0, 100%, 90%, 1)";
+                      monTd.style.color = "hsla("+resultat[j][i]+"0, 100%, 100%, 1)";
                   }
                   else if(resultat[j][i] > 4 && resultat[j][i] <= 7){
                       monTd.innerHTML = "<b> ~ </b>";
-                      monTd.style.color += "hsla("+resultat[j][i]+"0, 100%, 90%, 1)";
+                      monTd.style.color += "hsla("+resultat[j][i]+"0, 100%, 100%, 1)";
                   }
                   else if(resultat[j][i] > 7 && resultat[j][i] <= 10){
                       monTd.innerHTML = "<b> ✓ </b>";
-                      monTd.style.color += "hsla("+resultat[j][i]+"0, 100%, 90%, 1)";
+                      monTd.style.color += "hsla("+resultat[j][i]+"0, 100%, 100%, 1)";
                   }
                   monTd.setAttribute("value",resultat[j][i]);
                   monTr.appendChild(monTd);
