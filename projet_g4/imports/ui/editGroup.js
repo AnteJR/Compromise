@@ -136,7 +136,7 @@ function creationTableau(){
                   }
                   resultat[j][i] = Math.round(resultat[j][i]);
                   monTd = document.createElement("td");
-                  monTd.style = "background-color:hsla("+resultat[j][i]+"0, 88%, 58%, 1);width:100px;height:30px;text-align:center;line-height:30px;";
+                  monTd.style = "background-color:hsla("+resultat[j][i]+"9, 88%, 55%, 1);width:100px;height:30px;text-align:center;line-height:30px;";
                   if(resultat[j][i] >= 0 && resultat[j][i] <= 4){
                       monTd.innerHTML = "<b> ✕ </b>";
                       monTd.style.color = "hsla("+resultat[j][i]+"0, 100%, 100%, 1)";
