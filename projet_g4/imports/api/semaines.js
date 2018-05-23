@@ -27,7 +27,6 @@ Meteor.methods({
   },
   //méthode 2 : mettre à jour le document quand on clique sur un des td du tableau
   'semaines.updateTable'(idUt, day, hour, score){
-    //check des différentes valeurs envoyées
   	check(idUt, String);
     check(day, String);
   	check(hour, Number);
@@ -42,10 +41,12 @@ Meteor.methods({
         { $set : { [day]: array } },
     );
   },
+  //méthode 3 : mettre à jour une colonne entière
   'semaines.dayFill'(idUt, day, score){
     check(idUt, String);
     check(day, String);
     check(score, Number);
+    //création dynamique d'une query et update
     const doc = Semaines.findOne({ id_utilisateur: idUt });
     let array = doc[day];
     array = [score, score, score, score, score, score, score, score, score, score, score, score, score, score, score];
@@ -54,11 +55,13 @@ Meteor.methods({
         { $set : { [day]: array } },
     );
   },
+  //méthode 4 : mettre à jour une ligne
   'semaines.hourFill'(idUt, hour, score){
     check(idUt, String);
     check(hour, Number);
     check(score, Number);
     const doc = Semaines.findOne({ id_utilisateur: idUt });
+    //créations de multiples updates mettant à jour les bonnes cellules
     let day = "lundi";
     let array = doc[day];
     array[hour] = score;
@@ -109,6 +112,7 @@ Meteor.methods({
         { $set : { [day]: array } },
     );
   },
+  //méthode 5 : mettre à jour l'information concernant la confidentialité du compte
   'semaines.updateTrue'(idUt){
   	check(idUt, String);
     const doc = Semaines.findOne({ id_utilisateur: idUt });
@@ -117,6 +121,7 @@ Meteor.methods({
         { $set : { isPrivate : true } },
     );
   },
+  //méthode 6 : mettre à jour l'information concernant la confidentialité du compte
   'semaines.updateFalse'(idUt){
   	check(idUt, String);
     const doc = Semaines.findOne({ id_utilisateur: idUt });

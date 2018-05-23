@@ -70,6 +70,13 @@ Template.header.rendered = function(){
 			}
 		});
 }
+Template.header.helpers({
+  mesNotifs: function(){
+    let idUt = Notifs.findOne({ id_utilisateur: Meteor.userId()});
+    let nbrNotifs = idUt.messages.length;
+      return nbrNotifs;
+    }
+});
 
 //quand un utilisateur se connecte...
 Accounts.onLogin(function(user){
