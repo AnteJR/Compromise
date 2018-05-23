@@ -24,11 +24,6 @@ Meteor.methods({
     'groups.updateGroup'(idUt, idGrp){
         check(idUt, String);
         check(idGrp, String);
-        console.log(idUt)
-        // let monGroupe = Groups.findOne({_id: idGrp});
-        // console.log(monGroupe.users);
-        //monGroupe.users.push(idUt);
-        //let thisGroup= Groups.findOne({_id:idGrp})
         Groups.update(
             {_id: idGrp},
             { $push : { users : idUt } }
