@@ -164,6 +164,14 @@ Template.addGroup.helpers({
     }
 });
 
+Template.header.helpers({
+    mesNotifs: function(){
+    let idUt = Notifs.findOne({ id_utilisateur: Meteor.userId()});
+    let nbrNotifs = idUt.messages.length;
+        return nbrNotifs;
+    }
+});
+
 Template.groupe.helpers({
     monAdmin: function(){
         let groupeId = FlowRouter.getParam('_id');
@@ -269,8 +277,8 @@ Template.groupe.events({
                         // et notifier la personne en question.
                           Meteor.call("notifs.pushGroupAdd",idSearch, groupName,adminEmail);
                         //ensuite, notifier tous les membres du groupe.
-                        let thisGroupMembres=Groups.findOne({_id: groupeId}).users
-                        for (i=0;i>thisGroupMembres.length;i++){
+                        let thisGroupMembres = Groups.findOne({_id: groupeId}).users
+                        for (i=0; i>thisGroupMembres.length; i++){
                             Meteor.call('notifs.pushNewGroupMember',thisGroupMembres[i],groupName,addUser.value)
                             console.log(thisGroupMembres[i],groupName,addUser.value)
                         }
@@ -294,23 +302,25 @@ Template.groupe.events({
 },
     'click #groupNameButton': function (event){
         event.preventDefault();
-        let groupeId= FlowRouter.getParam('_id');
-        let groupe=Groups.findOne({_id: groupeId});
-            //merci Loris pour le code
-            let newname = window.prompt("Entrez un nouvean nom",this.nom);
+        let groupeId = FlowRouter.getParam('_id');
+        let groupe = Groups.findOne({_id: groupeId});
+            let newname = window.prompt("Entrez un nouvean nom");
             if(newname != null){
-                Meteor.call('groups.changeName',groupeId,newname);
-            }else{
+                Meteor.call('groups.changeName', groupeId, newname);
+            } else {
                 return;
             }
     },
     'click #groupLeaveButton': function (event){
         event.preventDefault();
-        let groupeId= FlowRouter.getParam('_id');
-        let groupe=Groups.findOne({_id: groupeId});
-        let r=confirm("Voulez-vous vraiment quitter ce groupe?")
+        let groupeId = FlowRouter.getParam('_id');
+        let groupe = Groups.findOne({_id: groupeId});
+        let idUt = Meteor.users.findOne({_id:Meteor.userId()}).emails[0].address;
+        let r=confirm("Voulez-vous vraiment quitter ce groupe?");
         if (r==true){
-            Meteor.call('groups.leaveGroup', groupeId, Meteor.userId())
+            console.log(groupe.admin,groupe.name,idUt);
+            Meteor.call("notifs.groupMemberLeave",groupe.admin, groupe.name, idUt);
+            Meteor.call('groups.leaveGroup', groupeId, Meteor.userId());
             FlowRouter.go('/')
             }
         else{
@@ -322,10 +332,10 @@ Template.groupe.events({
         let groupeId= FlowRouter.getParam('_id');
         let groupe=Groups.findOne({_id: groupeId});
         if(groupe.admin == Meteor.userId()){
-            let s=confirm("Ce groupe sera supprimé. Procéder?")
+            let s=confirm("Ce groupe sera supprimé. Procéder?");
             if (s==true){
                 Groups.remove({_id: groupeId});
-                FlowRouter.go('/')
+                FlowRouter.go('/');
             }
             else{
                 FlowRouter.go('groupe', { _id: groupeId });
@@ -336,7 +346,7 @@ Template.groupe.events({
         event.preventDefault();
         let groupeId= FlowRouter.getParam('_id');
         let idUt = event.currentTarget.id;
-        let s=confirm("Cet utilisateur sera supprimé du groupe. Procéder?")
+        let s=confirm("Cet utilisateur sera supprimé du groupe. Procéder?");
             if (s==true){
         Meteor.call('groups.leaveGroup', groupeId, idUt);
         creationTableau();
@@ -346,7 +356,7 @@ Template.groupe.events({
 
 Template.groupe.helpers({
   nomGroupe: function(){
-    let groupeId= FlowRouter.getParam('_id');
+    let groupeId = FlowRouter.getParam('_id');
     let requete = Groups.findOne({_id:groupeId});
     return(requete.name);
   },

@@ -13,7 +13,9 @@ Meteor.methods({
         Notifs.insert({
             id_utilisateur: idUt,
             isCreated: true,
-            messages: [],
+            messages: [
+                
+            ],
         })
     },
     'notifs.pushGroupAdd'(idUt,nomGr,admin){
@@ -33,6 +35,15 @@ Meteor.methods({
         Notifs.update(
             {id_utilisateur:idUt},
             {$push:{messages:`L'utilisateur ${newUt} a été ajouté au groupe ${nomGr}!`}}
+        )
+    },
+    'notifs.groupMemberLeave'(idUt,nomGr,newUt){
+        check (idUt,String);
+        check (nomGr, String);
+        check (newUt, String);
+        Notifs.update(
+            {id_utilisateur:idUt},
+            {$push:{messages:`L'utilisateur ${newUt} a quitté ${nomGr}!`}}
         )
     },
     'notifs.removeNotif'(idUt,value){
