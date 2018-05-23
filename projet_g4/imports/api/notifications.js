@@ -21,7 +21,7 @@ Meteor.methods({
         })
     },
     'notifs.pushGroupAdd'(idUt,nomGr,admin){
-        check (idUt,String);
+        check (idUt,  String);
         check (nomGr, String);
         check (admin, String);
         Notifs.update(
@@ -31,16 +31,17 @@ Meteor.methods({
 
     },
     'notifs.pushNewGroupMember'(idUt,nomGr,newUt){
-        check (idUt,String);
+        check (idUt,  String);
         check (nomGr, String);
         check (newUt, String);
+        console.log("pushNGMok")
         Notifs.update(
             {id_utilisateur:idUt},
             {$push:{success:`L'utilisateur ${newUt} a été ajouté au groupe ${nomGr}!`}}
         )
     },
     'notifs.groupMemberLeave'(idUt,nomGr,newUt){
-        check (idUt,String);
+        check (idUt,  String);
         check (nomGr, String);
         check (newUt, String);
         Notifs.update(
@@ -49,7 +50,7 @@ Meteor.methods({
         )
     },
     'notifs.kickedGroup'(idUt,nomGr){
-        check (idUt,String);
+        check (idUt,  String);
         check (nomGr, String);
         Notifs.update(
             {id_utilisateur:idUt},
@@ -58,7 +59,7 @@ Meteor.methods({
     },
     'notifs.removeInfo'(idUt,val){
         check (idUt, String);
-        check (val, String);
+        check (val,  String);
         Notifs.update(
             {id_utilisateur:idUt},
             {$pull:{info:val}}
@@ -66,7 +67,7 @@ Meteor.methods({
     },
     'notifs.removeSuccess'(idUt,val){
         check (idUt, String);
-        check (val, String);
+        check (val,  String);
         Notifs.update(
             {id_utilisateur:idUt},
             {$pull:{success:val}}
@@ -74,7 +75,7 @@ Meteor.methods({
         },
     'notifs.removeError'(idUt,val){
         check (idUt, String);
-        check (val, String);
+        check (val,  String);
         Notifs.update(
             {id_utilisateur:idUt},
             {$pull:{error:val}}
@@ -82,7 +83,7 @@ Meteor.methods({
     },
     'notifs.removeWarning'(idUt,val){
         check (idUt, String);
-        check (val, String);
+        check (val,  String);
         Notifs.update(
             {id_utilisateur:idUt},
             {$pull:{warning:val}}
