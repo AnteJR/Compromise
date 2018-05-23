@@ -63,6 +63,7 @@ Template.login.rendered = function(){
 Template.header.rendered = function(){
 	Tracker.autorun(()=>{
 		let thisDocument=Notifs.findOne({id_utilisateur: Meteor.userId()});
+		console.log(thisDocument)
 		let thisInfo=thisDocument.info;
 			for (i=0 ; i<thisInfo.length ; i++){
 				sAlert.info(thisInfo[i] , configOverwrite);
