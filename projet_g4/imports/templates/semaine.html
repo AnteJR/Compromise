@@ -1,14 +1,19 @@
 <template name="tableauSemaines">
-<div class="btn-group" role="group"  aria-label="Basic example">
+	
+<div class="btn-group" role="group"  aria-label="Times New Roman"  style="margin-left:30.5%;">
 		<button id="red" class ="button; btn btn-secondary" style="background-color:rgb(0,132,255); color:white;padding:15px 25px; text-align:center; border: none; cursor:pointer;" >Pas Disponible</button>
 		<button id="yellow" class ="button; btn btn-secondary" style="background-color:rgb(0,132,255); color:white;padding:15px 25px; text-align:center; border: none; cursor:pointer;">Maybe</button>
 		<button id="green" class ="button; btn btn-secondary" style="background-color:rgb(0,132,255); color:white;padding:15px 25px; text-align:center; border: none; cursor:pointer;">Disponible</button><br><br>
 		</div>
-	<table border=1;>
-		<tr><td>&nbsp;</td>{{#each jour}}
+		<div style=" margin-left:25%; margin-top: 10px;">
+
+	<table border=1>
+		<tr><td style="height:30px; border: white solid 5px;">&nbsp;</td>{{#each jour}}
 			{{> newTr}}
 		{{/each}}
 	</tr>
 	{{> newTd}}
 	</table>
+	
+</div>
 </template>
