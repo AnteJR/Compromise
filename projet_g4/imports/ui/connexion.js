@@ -55,7 +55,7 @@ Template.login.onCreated(function(){
 Template.login.rendered = function(){
 
 	Tracker.autorun(()=>{
-	let thisNotif=Notifs.findOne({id_utilisateur: Meteor.userId()}).messages
+	let thisNotif=Notifs.findOne({id_utilisateur: Meteor.userId()}).messages;
 			for (i=0;i<thisNotif.length;i++){
 				sAlert.info(thisNotif[i], configOverwrite);
 				Meteor.call('notifs.removeNotif',Meteor.userId(),thisNotif[i])	
@@ -68,12 +68,9 @@ Template.login.rendered = function(){
 	}, 10);
 }
 	
-	setTimeout(function(){
-		if(document.getElementById('tableauComparaison')){
-          document.getElementById('tableauComparaison').remove();
-        }
-	}, 10);
-}
+	
+
+
 
 //quand un utilisateur se connecte...
 Accounts.onLogin(function(user){
