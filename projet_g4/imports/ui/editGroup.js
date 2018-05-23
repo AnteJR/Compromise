@@ -176,10 +176,11 @@ Template.groupe.events({
           Meteor.call("groups.updateGroup", idSearch, groupeId);
           // notifier la personne en question.
           Meteor.call("notifs.pushGroupAdd",idSearch, groupName,adminEmail);
-          //notifier tous les membres du groupe.
+          //notifier tous les membres du groupe, à l'exception de l'admin (qui occupe la position 0
+          // et le membre en question, qui occupe la dernière position de l'array "users".
           let thisGroupMembres = Groups.findOne({_id: groupeId}).users
-          for (i=0; i>thisGroupMembres.length; i++){
-            Meteor.call('notifs.pushNewGroupMember',thisGroupMembres[i],groupName,addUser.value)
+            for (i=1; i<thisGroupMembres.length-1; i++){
+              Meteor.call('notifs.pushNewGroupMember',thisGroupMembres[i],groupName,addUser.value)
           }
           FlowRouter.go('groupe', { _id: groupeId });
           alert(`${addUser.value} a été ajouté!`)
@@ -191,12 +192,9 @@ Template.groupe.events({
           alert("Cet utilisateur est déjà dans ce groupe!")
           addUser.value="";
         }
-<<<<<<< HEAD
-<<<<<<< HEAD
-        let mailList=listeMembre.toString();
-        return mailList;
-    
+      }
     }
+  }
 });
 
 function scoresUtilisateurCourant(idUt){
@@ -209,7 +207,7 @@ function scoresUtilisateurCourant(idUt){
       	mesScores.push(array);
     }
     return(mesScores);
-}
+} 
 
 Template.groupe.events({
     'submit #ajoutDUtilisateur': function(event){
@@ -255,13 +253,15 @@ Template.groupe.events({
                     //si ce n'est pas le cas, procéder
                         if (!groupTest){
                           Meteor.call("groups.updateGroup", idSearch, groupeId);
-                          console.log(idSearch,groupName,adminEmail);
                         // et notifier la personne en question.
-                          Meteor.call("notifs.pushGroupAdd",idSearch, groupName,adminEmail);
-                        //ensuite, notifier tous les membres du groupe.
+                          Meteor.call("notifs.pushGroupAdd",idSearch,groupName,adminEmail);
+                          console.log(idSearch,groupName,adminEmail)
+                        //ensuite, notifier tous les membres du groupe, à l'exception de l'admin
+                        //(se trouvant à la position 0 de l'array "users", et le nouvel utilisateur, qui
+                        //se trouve à la dernière.
                         let thisGroupMembres = Groups.findOne({_id: groupeId}).users
                         for (i=1; i<thisGroupMembres.length-1; i++){
-                            Meteor.call('notifs.pushNewGroupMember',thisGroupMembres[i],groupName,addUser.value)
+                            Meteor.call('notifs.pushNewGroupMember',thisGroupMembres[i],groupName,nomUt)
                         }
                           FlowRouter.go('groupe', { _id: groupeId });
                           alert(`${addUser.value} a été ajouté!`)
@@ -273,19 +273,13 @@ Template.groupe.events({
                           alert("Cet utilisateur est déjà dans ce groupe!")
                           addUser.value="";
                         }
-                  }
-=======
-      }
->>>>>>> 8494344346d9027e63b55afd1811c355fa13cb75
-=======
-      }
->>>>>>> 8494344346d9027e63b55afd1811c355fa13cb75
                 }
             //enfin, si l'adresse mail n'est pas valide...
             else{
                 alert("Cet adresse email n'est pas valide!")
                 addUser.value="";
             }
+          }
 },
     'click #groupNameButton': function (event){
         event.preventDefault();
