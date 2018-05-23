@@ -1,13 +1,14 @@
 <template name="groupe">
     <header>{{> header}}</header>
     {{#if estAdmin}}
-	<h1>Horaire du groupe {{nomGroupe}}<button id="groupNameButton" style="font-size: 15px; border: white;">✎</button></h1>
-    <a href="/" class="goBack">Retour</a><br/>
+    <a style="background-color: rgb(0,132,255); color: white; padding: 10px 20px; margin-left: 15px;" href="/" class="goBack">Retour</a><br/>
     
+    <div style="margin-left: 15px;">
+	<h1>Horaire du groupe {{nomGroupe}}<button id="groupNameButton" style="font-size: 15px; border: white; margin-left: 15px;">✎</button></h1>
         <h4>Ajouter un autre utilisateur au groupe</h4>
         <form name="ajouterUtilisateur" id="ajoutDUtilisateur">
-        <input type="text" id="addUser" placeholder="Ajouter un membre">
-        <input type="submit" id="ajouterUt" value="Ajouter"></form><br>
+        <input type="text" id="addUser" placeholder="Ajouter un membre" style="background-color: lightgoldenrodyellow;text-align: center; border: none; height:40px; cursor: auto; margin-left: 15 px; ">
+        <input type="submit" id="ajouterUt" value="Ajouter" style="background-color:rgb(0,132,255); color: white; border: none; text-align: center; padding: 10px 20px; cursor: pointer; margin-left: 15 px; "></form><br></div>
         <div id="groupes">
                 <h4>Admin:</h4>
                 <ul>
