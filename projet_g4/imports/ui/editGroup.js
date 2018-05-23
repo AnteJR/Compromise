@@ -48,20 +48,7 @@ const mesHeures = [
 ];
 
 Template.groupe.onCreated(function(){
-  let groupeId= FlowRouter.getParam('_id');
-  let requete = Groups.findOne({_id:groupeId});
-  if(Meteor.userId() == requete.admin){
-    this.isAdmin = new ReactiveVar(true);
-  }
-  else{
-    this.isAdmin = new ReactiveVar(false);
-  }
-  if (requete.users.includes(Meteor.userId())){
-    this.isUser = new ReactiveVar(true);
-  }
-  else {
-    this.isUser = new ReactiveVar(false);
-  }
+  this.isAdmin = new ReactiveVar(false);
 });
 
 Template.groupe.rendered = function(){
@@ -364,9 +351,14 @@ Template.groupe.helpers({
     return(requete.name);
   },
   estAdmin: function(){
+    let groupeId= FlowRouter.getParam('_id');
+    let requete = Groups.findOne({_id:groupeId});
+    if(Meteor.userId() == requete.admin){
+      Template.instance().isAdmin = new ReactiveVar(true);
+    }
+    else{
+      Template.instance().isAdmin = new ReactiveVar(false);
+    }
     return Template.instance().isAdmin.get();
   },
-  estMembre: function(){
-    return Template.instance().isUser.get();
-  }
 });

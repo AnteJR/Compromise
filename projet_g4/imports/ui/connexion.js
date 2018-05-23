@@ -67,13 +67,6 @@ Template.login.rendered = function(){
         }
 	}, 10);
 }
-	
-	setTimeout(function(){
-		if(document.getElementById('tableauComparaison')){
-          document.getElementById('tableauComparaison').remove();
-        }
-	}, 10);
-}
 
 //quand un utilisateur se connecte...
 Accounts.onLogin(function(user){
