@@ -136,7 +136,7 @@ function creationTableau(){
                   }
                   resultat[j][i] = Math.round(resultat[j][i]);
                   monTd = document.createElement("td");
-                  monTd.style = "background-color:hsla("+resultat[j][i]+"0, 87%, 55%, 1);width:100px;height:30px;text-align:center;line-height:30px;";
+                  monTd.style = "background-color:hsla("+resultat[j][i]+"0, 88%, 58%, 1);width:100px;height:30px;text-align:center;line-height:30px;";
                   if(resultat[j][i] >= 0 && resultat[j][i] <= 4){
                       monTd.innerHTML = "<b> ✕ </b>";
                       monTd.style.color = "hsla("+resultat[j][i]+"0, 100%, 100%, 1)";
@@ -163,14 +163,6 @@ Template.addGroup.helpers({
     mesGroupesMembre: function(){
         let myGroups = Groups.find({users: Meteor.userId()})
         return myGroups;
-    }
-});
-
-Template.header.helpers({
-    mesNotifs: function(){
-    let idUt = Notifs.findOne({ id_utilisateur: Meteor.userId()});
-    let nbrNotifs = idUt.messages.length;
-        return nbrNotifs;
     }
 });
 

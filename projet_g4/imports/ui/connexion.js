@@ -185,7 +185,7 @@ Template.login.events({
             			monTr.appendChild(unTd)
           			}
           			monTd = document.createElement("td");
-				  	monTd.style = "background-color:hsla("+mesScores3[j][i]+"0, 85%, 55%, 1);width:100px;height:30px;text-align:center;line-height:30px;";
+				  	monTd.style = "background-color:hsla("+mesScores3[j][i]+"0, 88%, 58%, 1);width:100px;height:30px;text-align:center;line-height:30px;";
           			if(mesScores3[j][i] >= 0 && mesScores3[j][i] <= 4){
           				monTd.innerHTML = "<b> ✕ </b>";
           				monTd.style.color = "hsla("+mesScores3[j][i]+"0, 100%, 100%, 1)";
