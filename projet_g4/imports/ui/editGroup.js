@@ -62,11 +62,12 @@ Template.groupe.rendered = function(){
 
 //events du template proposant à l'utilisateur de créer un groupe
 Template.addGroup.events({
+<<<<<<< HEAD
   'click #btnCreer': function(event, template){
       event.preventDefault();
       let leGroupe = document.getElementById("nomGroupe").value;
       let nameTest = Groups.findOne({"name": leGroupe});
-		  if(leGroupe){
+      if(leGroupe){
           Meteor.call('groups.create', Meteor.userId(), leGroupe);
       }
       else{
@@ -76,6 +77,104 @@ Template.addGroup.events({
 });
 
 //helpers permettant de savoir quels sont les groupes pour lesquels on est membre
+=======
+    'click #btnCreer': function(event, template){
+        event.preventDefault();
+
+        //let leGroupe = event.target.nomGroupe.value;
+        let leGroupe = document.getElementById("nomGroupe").value;
+        console.log(leGroupe)
+        let nameTest = Groups.findOne({"name": leGroupe});
+        if(leGroupe){
+            
+            Meteor.call('groups.create', Meteor.userId(), leGroupe);
+            let nameGroup = Groups.findOne({"name": leGroupe});
+            FlowRouter.go('groupe', { _id: nameGroup._id });
+           
+        }
+        else{
+            alert("Veuillez entrer un nom de groupe!")
+        }
+    },
+});
+
+function creationTableau(){
+  let groupeId = FlowRouter.getParam('_id');
+        let monGroupe = Groups.findOne({_id: groupeId});
+        let mbrGroupe = monGroupe.users;
+        let mesScores = [];
+        
+        for(let i =0;i<mbrGroupe.length;i++){
+            mesScores[i] = scoresUtilisateurCourant(mbrGroupe[i]);
+        }
+        
+        console.table(mesScores);
+        const resultat = [];
+        for(let i=0;i<mesJours.length;i++){
+               let placeHolder = [];
+               for(let j=0;j<mesHeures.length;j++){
+                   let calcul = 0;
+                   for(let k=0;k<mbrGroupe.length; k++){
+                   calcul = calcul + mesScores[k][i][j];
+                   }
+                   calcul = calcul/mbrGroupe.length;
+                   placeHolder.push(calcul);
+            }
+            resultat.push(placeHolder);
+        }
+        if(document.getElementById('tableauComparaison')){
+          document.getElementById('tableauComparaison').remove();
+        }
+        let monTableau = document.createElement("table");
+        monTableau.setAttribute("border",1);
+        monTableau.setAttribute("id","tableauComparaison")
+        document.body.appendChild(monTableau);
+        for(let i=0;i<mesHeures.length;i++){
+            if(i==0){
+                let unTr = document.createElement("tr");
+                monTableau.appendChild(unTr);
+                let unTd = document.createElement("td");
+                unTd.style = "width:100px;height:30px;text-align:center;line-height:30px;"
+                  unTd.innerHTML = " "
+                unTr.appendChild(unTd);
+                for(let k=0;k<resultat.length;k++){
+                    let mesTh = document.createElement("th");
+                    mesTh.innerHTML = mesJours[k];
+                    mesTh.style = "width:100px;height:30px;text-align:center;line-height:30px;"
+                    unTr.appendChild(mesTh);
+                }
+            }
+            let monTr = document.createElement("tr");
+            monTableau.appendChild(monTr);
+            for(let j=0;j<resultat.length;j++){
+                  if(j==0){
+                    let unTd = document.createElement("td");
+                          unTd.style = "width:100px;"
+                    unTd.innerHTML = mesHeures[i];
+                    monTr.appendChild(unTd)
+                  }
+                  resultat[j][i] = Math.round(resultat[j][i]);
+                  monTd = document.createElement("td");
+                  monTd.style = "background-color:hsla("+resultat[j][i]+"9, 88%, 55%, 1);width:100px;height:30px;text-align:center;line-height:30px;";
+                  if(resultat[j][i] >= 0 && resultat[j][i] <= 4){
+                      monTd.innerHTML = "<b> ✕ </b>";
+                      monTd.style.color = "hsla("+resultat[j][i]+"0, 100%, 100%, 1)";
+                  }
+                  else if(resultat[j][i] > 4 && resultat[j][i] <= 7){
+                      monTd.innerHTML = "<b> ~ </b>";
+                      monTd.style.color += "hsla("+resultat[j][i]+"0, 100%, 100%, 1)";
+                  }
+                  else if(resultat[j][i] > 7 && resultat[j][i] <= 10){
+                      monTd.innerHTML = "<b> ✓ </b>";
+                      monTd.style.color += "hsla("+resultat[j][i]+"0, 100%, 100%, 1)";
+                  }
+                  monTd.setAttribute("value",resultat[j][i]);
+                  monTr.appendChild(monTd);
+            }
+        }
+}
+
+>>>>>>> 3bb230be2da8f3a0bb352e8d1e88481eaaffa9d4
 Template.addGroup.helpers({
   mesGroupesMembre: function(){
     let myGroups = Groups.find({users: Meteor.userId()})
@@ -84,6 +183,7 @@ Template.addGroup.helpers({
 });
 
 Template.groupe.helpers({
+<<<<<<< HEAD
   //Savoir qui est admin et récupérer son email
   monAdmin: function(){
     let groupeId = FlowRouter.getParam('_id');
@@ -157,6 +257,17 @@ Template.groupe.events({
       //si aucune des conditions précédentes sont remplies, procéder avec l'ajout au groupe.
       else if (!searchSemaine.isPrivate){
         let idSearch = searchRes._id;
+=======
+    monAdmin: function(){
+        let groupeId = FlowRouter.getParam('_id');
+        let requete = Groups.findOne({_id:groupeId});
+        let idAdmin = requete.admin;
+        let leAdmin = Meteor.users.findOne({_id: idAdmin});
+        let myAdmin = leAdmin.emails[0].address;
+        return myAdmin;
+    },
+    mesMembres: function(){
+>>>>>>> 3bb230be2da8f3a0bb352e8d1e88481eaaffa9d4
         let groupeId = FlowRouter.getParam('_id');
         //réupérer l'email de l'admin
         let admin= Groups.findOne({_id: groupeId},{admin:Meteor.userId()}).admin;
