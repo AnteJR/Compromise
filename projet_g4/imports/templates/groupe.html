@@ -19,13 +19,13 @@
                 <h4>Membres:</h4>
                 <ul>
                         {{#each mesMembres}}
-                    <li><p id="nomUser">{{monMembre}} <button class="banUser" id="{{membreId}}" style="border: white">✕</button></p> </li>
+                    <li><p id="nomUser">{{monMembre}} <button class="banUser" id="{{membreId}}" style="border: white; color: red;">✕</button></p> </li>
                         {{/each}}
                 </ul>
             </div>
             <p></p>
-        <input type="button" id="groupDeleteButton" value="Supprimer ce groupe">
-        <button id="sendEmail"><a href="mailto:{{mailingList}}?subject=Nouveau%20message%20à%20propos%20du%20groupe%20{{nomGroupe}}">Envoyer un message au groupe</a></button>
+        <input type="button" id="groupDeleteButton" value="Supprimer ce groupe" style="background-color: rgb(0,132,155); border: none; padding: 10px 20px; cursor: pointer; text-align: center;">
+        <button id="sendEmail" style="background-color: rgb(0,132,155); border: none; padding: 10px 20px; cursor: pointer; text-align: center;"><a href="mailto:{{mailingList}}?subject=Nouveau%20message%20à%20propos%20du%20groupe%20{{nomGroupe}}">Envoyer un message au groupe</a></button>
         
     {{else}}
     <h1>Horaire du groupe {{nomGroupe}}</h1>
