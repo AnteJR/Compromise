@@ -185,13 +185,13 @@ Template.login.events({
 					let unTr = document.createElement("tr");
 					monTableau.appendChild(unTr);
 					let unTd = document.createElement("td");
-					unTd.style = "width:100px;height:30px;text-align:center;line-height:30px;"
+					unTd.style = "width:100px;height:30px;text-align:center;line-height:30px; border: white solid 5px;"
           			unTd.innerHTML = " "
 					unTr.appendChild(unTd);
 					for(let k=0;k<mesScores3.length;k++){
 						let mesTh = document.createElement("th");
 						mesTh.innerHTML = mesJours[k];
-						mesTh.style = "width:100px;height:30px;text-align:center;line-height:30px;"
+						mesTh.style = "width:100px;height:30px;text-align:center;line-height:30px; border: white solid 5px;"
 						unTr.appendChild(mesTh);
 					}
 				}
@@ -200,12 +200,12 @@ Template.login.events({
         		for(let j=0;j<mesScores3.length;j++){
           			if(j==0){
             			let unTd = document.createElement("td");
-  		  	  			unTd.style = "width:100px;"
+  		  	  			unTd.style = "width:100px; border: white solid 5px; text-align: center;"
             			unTd.innerHTML = mesHeures[i];
             			monTr.appendChild(unTd)
           			}
           			monTd = document.createElement("td");
-				  	monTd.style = "background-color:hsla("+mesScores3[j][i]+"9, 88%, 55%, 1);width:100px;height:30px;text-align:center;line-height:30px;";
+				  	monTd.style = "background-color:hsla("+mesScores3[j][i]+"9, 88%, 55%, 1);width:100px;height:30px;text-align:center;line-height:30px;border: white solid 5px;";
           			if(mesScores3[j][i] >= 0 && mesScores3[j][i] <= 4){
           				monTd.innerHTML = "<b> ✕ </b>";
           				monTd.style.color = "hsla("+mesScores3[j][i]+"0, 100%, 100%, 1)";

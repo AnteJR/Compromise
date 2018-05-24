@@ -379,7 +379,7 @@ Template.groupe.helpers({
 function scoresUtilisateurCourant(idUt){
   //tableau vide pour accueillir les scores
   const mesScores = [];
-  //boucle qui va chercher les scres de chaque jour et les stocke dans un array à deux dimensions
+  //boucle qui va chercher les scores de chaque jour et les stocke dans un array à deux dimensions
   for(let i=0;i<7;i++){
     const doc = Semaines.findOne({ id_utilisateur: idUt });
     const array = doc[mesJours[i]];
