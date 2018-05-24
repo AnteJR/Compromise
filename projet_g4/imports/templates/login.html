@@ -5,9 +5,21 @@
   		{{#if comparaisonTriggered}}
   			{{> semaineComparee}}
   		{{else}}
-  			  {{> maRecherche}}
-			  {{> tableauSemaines}}
-			  {{> addGroup}}
+  			<table style="width:75%;margin-left:12.5%;">
+  				<tr>
+  					<td style="width:75%;height:100%;" rowspan=2>
+  						{{> tableauSemaines}}
+  					</td>
+  					<td style="width:25%;height:20%%;" valign="top">
+  						{{> maRecherche}}
+					</td>
+  				</tr>
+  				<tr>
+  					<td style="width:25%;height:80%;" valign="bottom">
+  						{{> addGroup}}
+  					</td>
+  				</tr>
+  			</table>
   		{{/if}}
 	{{else}}
 		<h1 style="margin-left:auto;margin-right:auto;text-align:center;width:200px;margin-top:15%;">Compromise</h1>
