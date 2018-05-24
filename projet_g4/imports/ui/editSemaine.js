@@ -239,21 +239,36 @@ Template.newTr.events({
 	},
 });
 
+Template.header.onCreated(function(){
+	this.semainePrivee = new ReactiveVar(false);
+});
+
 Template.header.events({
 	//possibilité de dire si oui ou non un utilisateur a son horaire en privé
 	'click #prive': function(event){
 		event.preventDefault();
 		const doc = Semaines.findOne({ id_utilisateur: Meteor.userId() });
-		if(event.target.value == "oui"){
-			event.target.value = "non";
-			console.log(doc._id);
+		if(doc.isPrivate == true){
 			Meteor.call("semaines.updateFalse", Meteor.userId());
-		} else if(event.target.value == "non"){
-			event.target.value = "oui";
+		}
+		else if(doc.isPrivate == false){
 			Meteor.call("semaines.updateTrue", Meteor.userId());
 		}
 	}
 });
+
+Template.header.helpers({
+	comptePrive: function(){
+		let monUt = Semaines.findOne({ id_utilisateur: Meteor.userId() });
+		if(monUt.isPrivate == true){
+			Template.instance().semainePrivee.set(true);
+		}
+		else if(monUt.isPrivate == false){
+			Template.instance().semainePrivee.set(false);
+		}
+		return Template.instance().semainePrivee.get();
+	}
+})
 
 
 

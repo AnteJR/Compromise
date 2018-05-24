@@ -2,7 +2,7 @@
     <div style="height:50px;border-bottom:solid rgb(0,132,255) 2px;">
         <span style="float:left;font-size:32px;font-weight: bold;color:rgb(0,132,255);line-height: 50px;position:relative;left:12.5%;">Compromise</span>
         <div style="float: right;line-height: 50px;"> {{> loginButtons align="right"}}</div>
-          <input class="button pull-right;" type="button" id="prive" value="non" style="float:right;margin:5px;background-color: rgb(0,132,255); color: white; padding:5px 20px;text-align: center;cursor: pointer;border: none;margin-top: 10px;">
+          <button id="prive" style="float:right;margin:5px;background-color: rgb(0,132,255); color: white; padding:5px 20px;text-align: center;cursor: pointer;border: none;margin-top: 10px;">{{#if comptePrive}}oui{{else}}non{{/if}}</button>
           <span style="float:right;line-height:50px;"> Privé: </span>
     </div>
     {{> sAlert}}
