@@ -19,46 +19,69 @@ import '../templates/semaineComparee.html';
 import '../templates/recherche.html';
 import '../templates/addGroup.html';
 import '../templates/groupe.html';
+import '../templates/semaineGroupe.html';
+import '../templates/newTrGrp.html';
+import '../templates/newTdGrp.html';
 
-//constantes pour les boucles pour afficher le tableau
-const mesJours = [
-    "lundi",
-    "mardi",
-   "mercredi",
-    "jeudi",
-    "vendredi",
-    "samedi",
-    "dimanche"
-];
+//constantes pour les heures et les jours
 const mesHeures = [
-"08:00",
-"09:00",
-"10:00",
-"11:00",
-"12:00",
-"13:00",
-"14:00",
-"15:00",
-"16:00",
-"17:00",
-"18:00",
-"19:00",
-"20:00",
-"21:00",
-"22:00"
+      "08:00",
+      "09:00",
+      "10:00",
+      "11:00",
+      "12:00",
+      "13:00",
+      "14:00",
+      "15:00",
+      "16:00",
+      "17:00",
+      "18:00",
+      "19:00",
+      "20:00",
+      "21:00",
+      "22:00"
 ];
+const mesJours = [
+        "lundi",
+        "mardi",
+      "mercredi",
+        "jeudi",
+        "vendredi",
+        "samedi",
+        "dimanche"
+];
+
+//Helpers pour les tableaux
+Template.semaineDeGroupe.helpers({
+  jour: [
+    {
+      nomJour: mesJours[0]
+    },
+    {
+      nomJour: mesJours[1]
+    },
+    {
+      nomJour: mesJours[2]
+    },
+    {
+      nomJour: mesJours[3]
+    },
+    {
+      nomJour: mesJours[4]
+    },
+    {
+      nomJour: mesJours[5]
+    },
+    {
+      nomJour: mesJours[6]
+    },
+  ],
+});
 
 //quand le template est créé, on crée un ReactiveVar
 Template.groupe.onCreated(function(){
   this.isAdmin = new ReactiveVar(false);
 });
-
-//quand le template est rendu, on crée un tableau en utilisant la fonction creationTableau()
-Template.groupe.rendered = function(){
-  setTimeout(function(){
-    creationTableau();
-  }, 500);
-}
 
 //events du template proposant à l'utilisateur de créer un groupe
 Template.addGroup.events({
@@ -183,8 +206,7 @@ Template.groupe.events({
               Meteor.call('notifs.pushNewGroupMember',thisGroupMembres[i],groupName,addUser.value)
           }
           FlowRouter.go('groupe', { _id: groupeId });
-          alert(`${addUser.value} a été ajouté!`)
-          creationTableau();
+          alert(`${addUser.value} a été ajouté!`);
           addUser.value="";
         }
         //si l'utilisateur est déjà dans le groupe...
@@ -265,7 +287,6 @@ Template.groupe.events({
                         }
                           FlowRouter.go('groupe', { _id: groupeId });
                           alert(`${addUser.value} a été ajouté!`)
-                          creationTableau();
                           addUser.value="";
                         }
                         //si l'utilisateur est déjà dans le groupe...
@@ -280,7 +301,8 @@ Template.groupe.events({
                 addUser.value="";
             }
           }
-},
+    },
+    //quand on clique sur le petit crayon, on a un prompt pour changer le nom du groupe
     'click #groupNameButton': function (event){
         event.preventDefault();
         let groupeId = FlowRouter.getParam('_id');
@@ -292,6 +314,7 @@ Template.groupe.events({
                 return;
             }
     },
+    //quand on clique sur le bouton pour quitter le groupe... On quitte le groupe
     'click #groupLeaveButton': function (event){
         event.preventDefault();
         let groupeId = FlowRouter.getParam('_id');
@@ -308,6 +331,7 @@ Template.groupe.events({
             FlowRouter.go('groupe', { _id: groupeId });
             }
     },
+    //quand on clique sur le bouton pour effacer le groupe... on supprime son document de la collection Groups
     'click #groupDeleteButton': function (event){
         event.preventDefault();
         let groupeId= FlowRouter.getParam('_id');
@@ -327,6 +351,7 @@ Template.groupe.events({
             }
         }
     },
+    //quand l'administrateur retire un utilisateur... ça le supprime
     'click .banUser': function (event){
         event.preventDefault();
         let groupeId= FlowRouter.getParam('_id');
@@ -334,19 +359,21 @@ Template.groupe.events({
         let nomGr=Groups.findOne({_id:groupeId}).name;
         let s=confirm("Cet utilisateur sera supprimé du groupe. Procéder?");
             if (s==true){
-        Meteor.call('groups.leaveGroup', groupeId, idUt);
-        Meteor.call('notifs.kickedGroup',idUt,nomGr)
-        creationTableau();
+              Meteor.call('groups.leaveGroup', groupeId, idUt);
+              Meteor.call('notifs.kickedGroup',idUt,nomGr);
             }
     }
 });
 
+//helpers pour :
 Template.groupe.helpers({
+  //1) afficher le nom du groupe
   nomGroupe: function(){
     let groupeId = FlowRouter.getParam('_id');
     let requete = Groups.findOne({_id:groupeId});
     return(requete.name);
   },
+  //2) savoir si l'utilisateur qui observe le groupe en est l'administrateur ou non
   estAdmin: function(){
     let groupeId= FlowRouter.getParam('_id');
     let requete = Groups.findOne({_id:groupeId});
@@ -360,6 +387,7 @@ Template.groupe.helpers({
   },
 });
 
+//fonction pour obtenir les tableaux des utilisateurs
 function scoresUtilisateurCourant(idUt){
   //tableau vide pour accueillir les scores
   const mesScores = [];
@@ -372,80 +400,198 @@ function scoresUtilisateurCourant(idUt){
   return(mesScores);
 }
 
-//fonction creationTableau() permettant de créer un tableau avec les informations des utilisateurs du groupe
-function creationTableau(){
-  //récupération des informations des utilisateurs
-  let groupeId = FlowRouter.getParam('_id');
-  let monGroupe = Groups.findOne({_id: groupeId});
-  let mbrGroupe = monGroupe.users;
-  let mesScores = [];
-  for(let i =0;i<mbrGroupe.length;i++){
-      mesScores[i] = scoresUtilisateurCourant(mbrGroupe[i]);
-  }
-  const resultat = [];
-  for(let i=0;i<mesJours.length;i++){
-      let placeHolder = [];
-      for(let j=0;j<mesHeures.length;j++){
-          let calcul = 0;
-          for(let k=0;k<mbrGroupe.length; k++){
-              calcul = calcul + mesScores[k][i][j];
-          }
-          calcul = calcul/mbrGroupe.length;
-          placeHolder.push(calcul);
-      }
-      resultat.push(placeHolder);
-  }
-  if(document.getElementById('tableauComparaison')){
-      document.getElementById('tableauComparaison').remove();
-  }
-
-  //création du tableau
-  let monTableau = document.createElement("table");
-  monTableau.setAttribute("border",1);
-  monTableau.setAttribute("id","tableauComparaison")
-  monTableau.style ="margin-left:31%;"
-  document.body.appendChild(monTableau);
-  for(let i=0;i<mesHeures.length;i++){
-    if(i==0){
-      let unTr = document.createElement("tr");
-      monTableau.appendChild(unTr);
-      let unTd = document.createElement("td");
-      unTd.style = "width:100px;height:30px;text-align:center;line-height:30px;border: white solid 5px;"
-      unTd.innerHTML = " "
-      unTr.appendChild(unTd);
-      for(let k=0;k<resultat.length;k++){
-        let mesTh = document.createElement("th");
-        mesTh.innerHTML = mesJours[k];
-        mesTh.style = "width:100px;height:30px;text-align:center;line-height:30px; border: white solid 5px;"
-        unTr.appendChild(mesTh);
-      }
+//helper pour le tableau de semaine, avec une fonction qui observe les changement dans le document des utilisateurs
+Template.newTdGrp.helpers({
+  periode:function(){
+    //récupération des informations des utilisateurs
+    let groupeId = FlowRouter.getParam('_id');
+    let monGroupe = Groups.findOne({_id: groupeId});
+    let mbrGroupe = monGroupe.users;
+    let mesScores = [];
+    for(let i =0;i<mbrGroupe.length;i++){
+        mesScores[i] = scoresUtilisateurCourant(mbrGroupe[i]);
     }
-    let monTr = document.createElement("tr");
-    monTableau.appendChild(monTr);
-    for(let j=0;j<resultat.length;j++){
-      if(j==0){
-        let unTd = document.createElement("td");
-        unTd.style = "width:100px; border: white solid 5px; height:30px;text-align:center;line-height:30px;"
-        unTd.innerHTML = mesHeures[i];
-        monTr.appendChild(unTd)
-      }
-      resultat[j][i] = Math.round(resultat[j][i]);
-      monTd = document.createElement("td");
-      monTd.style = "background-color:hsla("+resultat[j][i]+"0, 100%, 54%, 1);width:100px;height:30px;text-align:center;line-height:30px;border: white solid 5px;";
-      if(resultat[j][i] >= 0 && resultat[j][i] <= 4){
-        monTd.innerHTML = "<b> ✕ </b>";
-        monTd.style.color = "hsla("+resultat[j][i]+"0, 100%, 100%, 1)";
-      }
-      else if(resultat[j][i] > 4 && resultat[j][i] <= 7){
-        monTd.innerHTML = "<b> ~ </b>";
-        monTd.style.color += "hsla("+resultat[j][i]+"0, 100%, 100%, 1)";
-      }
-      else if(resultat[j][i] > 7 && resultat[j][i] <= 10){
-        monTd.innerHTML = "<b> ✓ </b>";
-        monTd.style.color += "hsla("+resultat[j][i]+"0, 100%, 100%, 1)";
-      }
-      monTd.setAttribute("value",resultat[j][i]);
-      monTr.appendChild(monTd);
+    const resultat = [];
+    for(let i=0;i<mesJours.length;i++){
+        let placeHolder = [];
+        for(let j=0;j<mesHeures.length;j++){
+            let calcul = 0;
+            for(let k=0;k<mbrGroupe.length; k++){
+                calcul = calcul + mesScores[k][i][j];
+            }
+            calcul = Math.round(calcul/mbrGroupe.length);
+            placeHolder.push(calcul);
+        }
+        resultat.push(placeHolder);
     }
+    mesScores = resultat;
+    //return du résultat
+    return [
+    {
+      heure: mesHeures[0], 
+      id_heure: 0, 
+      valeurLundi: mesScores[0][0],
+      valeurMardi: mesScores[1][0],
+      valeurMercredi: mesScores[2][0],
+      valeurJeudi: mesScores[3][0],
+      valeurVendredi: mesScores[4][0],
+      valeurSamedi: mesScores[5][0],
+      valeurDimanche: mesScores[6][0]
+    },
+    {
+      heure: mesHeures[1], 
+      id_heure: 1,
+      valeurLundi: mesScores[0][1],
+      valeurMardi: mesScores[1][1],
+      valeurMercredi: mesScores[2][1],
+      valeurJeudi: mesScores[3][1],
+      valeurVendredi: mesScores[4][1],
+      valeurSamedi: mesScores[5][1],
+      valeurDimanche: mesScores[6][1]
+    },
+    {
+      heure: mesHeures[2], 
+      id_heure: 2,
+      valeurLundi: mesScores[0][2],
+      valeurMardi: mesScores[1][2],
+      valeurMercredi: mesScores[2][2],
+      valeurJeudi: mesScores[3][2],
+      valeurVendredi: mesScores[4][2],
+      valeurSamedi: mesScores[5][2],
+      valeurDimanche: mesScores[6][2]
+    },
+    {
+      heure: mesHeures[3], 
+      id_heure: 3,
+      valeurLundi: mesScores[0][3],
+      valeurMardi: mesScores[1][3],
+      valeurMercredi: mesScores[2][3],
+      valeurJeudi: mesScores[3][3],
+      valeurVendredi: mesScores[4][3],
+      valeurSamedi: mesScores[5][3],
+      valeurDimanche: mesScores[6][3]
+    },
+    {
+      heure: mesHeures[4], 
+      id_heure: 4,
+      valeurLundi: mesScores[0][4],
+      valeurMardi: mesScores[1][4],
+      valeurMercredi: mesScores[2][4],
+      valeurJeudi: mesScores[3][4],
+      valeurVendredi: mesScores[4][4],
+      valeurSamedi: mesScores[5][4],
+      valeurDimanche: mesScores[6][4]
+    },
+    {
+      heure: mesHeures[5], 
+      id_heure: 5,
+      valeurLundi: mesScores[0][5],
+      valeurMardi: mesScores[1][5],
+      valeurMercredi: mesScores[2][5],
+      valeurJeudi: mesScores[3][5],
+      valeurVendredi: mesScores[4][5],
+      valeurSamedi: mesScores[5][5],
+      valeurDimanche: mesScores[6][5]
+    },
+    {
+      heure: mesHeures[6], 
+      id_heure: 6,
+      valeurLundi: mesScores[0][6],
+      valeurMardi: mesScores[1][6],
+      valeurMercredi: mesScores[2][6],
+      valeurJeudi: mesScores[3][6],
+      valeurVendredi: mesScores[4][6],
+      valeurSamedi: mesScores[5][6],
+      valeurDimanche: mesScores[6][6]
+    },
+    {
+      heure: mesHeures[7], 
+      id_heure: 7,
+      valeurLundi: mesScores[0][7],
+      valeurMardi: mesScores[1][7],
+      valeurMercredi: mesScores[2][7],
+      valeurJeudi: mesScores[3][7],
+      valeurVendredi: mesScores[4][7],
+      valeurSamedi: mesScores[5][7],
+      valeurDimanche: mesScores[6][7]
+    },
+    {
+      heure: mesHeures[8], 
+      id_heure: 8,
+      valeurLundi: mesScores[0][8],
+      valeurMardi: mesScores[1][8],
+      valeurMercredi: mesScores[2][8],
+      valeurJeudi: mesScores[3][8],
+      valeurVendredi: mesScores[4][8],
+      valeurSamedi: mesScores[5][8],
+      valeurDimanche: mesScores[6][8]
+    },
+    {
+      heure: mesHeures[9], 
+      id_heure: 9,
+      valeurLundi: mesScores[0][9],
+      valeurMardi: mesScores[1][9],
+      valeurMercredi: mesScores[2][9],
+      valeurJeudi: mesScores[3][9],
+      valeurVendredi: mesScores[4][9],
+      valeurSamedi: mesScores[5][9],
+      valeurDimanche: mesScores[6][9]
+    },
+    {
+      heure: mesHeures[10], 
+      id_heure: 10,
+      valeurLundi: mesScores[0][10],
+      valeurMardi: mesScores[1][10],
+      valeurMercredi: mesScores[2][10],
+      valeurJeudi: mesScores[3][10],
+      valeurVendredi: mesScores[4][10],
+      valeurSamedi: mesScores[5][10],
+      valeurDimanche: mesScores[6][10]
+    },
+    {
+      heure: mesHeures[11], 
+      id_heure: 11,
+      valeurLundi: mesScores[0][11],
+      valeurMardi: mesScores[1][11],
+      valeurMercredi: mesScores[2][11],
+      valeurJeudi: mesScores[3][11],
+      valeurVendredi: mesScores[4][11],
+      valeurSamedi: mesScores[5][11],
+      valeurDimanche: mesScores[6][11]
+    },
+    {
+      heure: mesHeures[12], 
+      id_heure: 12,
+      valeurLundi: mesScores[0][12],
+      valeurMardi: mesScores[1][12],
+      valeurMercredi: mesScores[2][12],
+      valeurJeudi: mesScores[3][12],
+      valeurVendredi: mesScores[4][12],
+      valeurSamedi: mesScores[5][12],
+      valeurDimanche: mesScores[6][12]
+    },
+    {
+      heure: mesHeures[13], 
+      id_heure: 13,
+      valeurLundi: mesScores[0][13],
+      valeurMardi: mesScores[1][13],
+      valeurMercredi: mesScores[2][13],
+      valeurJeudi: mesScores[3][13],
+      valeurVendredi: mesScores[4][13],
+      valeurSamedi: mesScores[5][13],
+      valeurDimanche: mesScores[6][13]
+    },
+    {
+      heure: mesHeures[14], 
+      id_heure: 14,
+      valeurLundi: mesScores[0][14],
+      valeurMardi: mesScores[1][14],
+      valeurMercredi: mesScores[2][14],
+      valeurJeudi: mesScores[3][14],
+      valeurVendredi: mesScores[4][14],
+      valeurSamedi: mesScores[5][14],
+      valeurDimanche: mesScores[6][14]
+    },
+  ]
   }
-}
+});

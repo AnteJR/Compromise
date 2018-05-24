@@ -13,7 +13,6 @@ import '../templates/semaine.html';
 import '../templates/newTr.html';
 import '../templates/newTd.html';
 import '../templates/header.html';
-import '../templates/semaineComparee.html';
 import '../templates/recherche.html';
 import '../templates/addGroup.html';
 import '../templates/groupe.html';
