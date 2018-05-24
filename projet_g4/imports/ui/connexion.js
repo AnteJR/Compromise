@@ -44,8 +44,6 @@ const mesHeures = [
   		"21:00",
   		"22:00"
 ];
-let valeursComparees;
-let estCompare = false;
 
 Template.login.onCreated(function(){
 	this.comparaisonTriggered = new ReactiveVar( false );

@@ -1,54 +1,84 @@
 <template name="groupe">
     <header>{{> header}}</header>
-    {{#if estAdmin}}
-    <a style="background-color: rgb(0,132,255); color: white; padding: 10px 20px; margin-left: 15px;" href="/" class="goBack">Retour</a><br/>
-    
-    <div style="margin-left: 15px;">
-	<h1>Horaire du groupe {{nomGroupe}}<button id="groupNameButton" style="font-size: 15px; border: white; margin-left: 15px;">✎</button></h1>
-        <h4>Ajouter un autre utilisateur au groupe</h4>
-        <form name="ajouterUtilisateur" id="ajoutDUtilisateur">
-        <input type="text" id="addUser" placeholder="Ajouter un membre" style="background-color: lightgoldenrodyellow;text-align: center; border: none; height:40px; cursor: auto; margin-left: 15 px; ">
-        <input type="submit" id="ajouterUt" value="Ajouter" style="background-color:rgb(0,132,255); color: white; border: none; text-align: center; padding: 10px 20px; cursor: pointer; margin-left: 15 px; "></form><br></div>
-        <div id="groupes">
-                <h4>Admin:</h4>
-                <ul>
-                    
-                    <li><p>{{monAdmin}}</p></li>
-                   
-                </ul>
-                <h4>Membres:</h4>
-                <ul>
-                        {{#each mesMembres}}
-                    <li><p id="nomUser">{{monMembre}} <button class="banUser" id="{{membreId}}" style="border: white;">✕</button></p> </li>
-                        {{/each}}
-                </ul>
-            </div>
-            <p></p>
-        <input type="button" id="groupDeleteButton" value="Supprimer ce groupe" style="background-color: rgb(0,132,255); color: white; border: none; padding: 10px 20px; cursor: pointer; text-align: center;">
-        <button id="sendEmail" style="background-color: rgb(0,132,255); color: solid white; border: none; padding: 10px 20px; cursor: pointer; text-align: center;"><a href="mailto:{{mailingList}}?subject=Nouveau%20message%20à%20propos%20du%20groupe%20{{nomGroupe}}">Envoyer un message au groupe</a></button>
-        
-    {{else}}
-    <h1>Horaire du groupe {{nomGroupe}}</h1>
-    <a href="/" class="goBack">Retour</a><br/> 
-    <div id="groupes">
-        <div style="margin-left: 15px;">
-            <h4>Admin:</h4>
-            <ul>
-                
-                <li><p>{{monAdmin}}</p></li>
-               
-            </ul>
-            <h4>Membres:</h4>
-            <ul>
-                    {{#each mesMembres}}
-                <li><p>{{monMembre}}</p> </li>
-                    {{/each}}
-            </ul>
-        </div>
-    </div>
-        <p></p><p></p>
-    <input type="button" id="groupLeaveButton" value="Quitter ce groupe" style="background-color: rgb(0,132,255); padding: 10px 20px; color: white; cursor: pointer; border: none;">
-  
-    {{/if}}
-    {{> semaineDeGroupe}}
+    <table style="width:75%;margin-left:12.5%;">
+        <tr>
+            <td colspan=2>
+                {{#if estAdmin}}
+                    <h1>{{nomGroupe}}<button id="groupNameButton" style="font-size: 15px; border: white; margin-left: 15px;transform: scale(-1, 1);">✎...</button></h1>
+                {{else}}
+                    <h1>{{nomGroupe}}</h1>
+                {{/if}}
+            </td>
+        </tr>
+        <tr>
+            <td style="width:25%">
+                {{#if estAdmin}}
+                    <div style="margin-bottom:100%;">
+                        <div>
+                            <h4>Ajouter un autre utilisateur</h4>
+                            <form name="ajouterUtilisateur" id="ajoutDUtilisateur">
+                                <input type="text" id="addUser" placeholder="Ajouter un membre" style="background-color: rgb(216, 216, 216);text-align: center; border: none; height:40px; cursor: auto; width:65%; color:white;" autocomplete="off">
+                                <input type="submit" id="ajouterUt" value="Ajouter" style="background-color:rgb(0,132,255); color: white; border: none; text-align: center; padding: 10px 0px; cursor: pointer; margin-left: 15 px; width:28%; ">
+                            </form>
+                            <br>
+                        </div>
+                        <div id="groupes">
+                            <h4>Admin:</h4>
+                            <ul>
+                                <li>
+                                    <p>{{monAdmin}}</p>
+                                </li>       
+                            </ul>
+                            <h4>Membres:</h4>
+                            <ul>
+                                {{#each mesMembres}}
+                                    <li>
+                                        <p id="nomUser">
+                                            {{monMembre}} 
+                                            <button class="banUser" id="{{membreId}}" style="border: white;">✕</button>
+                                        </p> 
+                                    </li>
+                                {{/each}}
+                            </ul>
+                        </div>
+                        <br>
+                        <button id="sendEmail" style="background-color: rgb(0,132,255); color: solid white; border: none; padding: 10px 20px; cursor: pointer; text-align: center;">
+                            <a href="mailto:{{mailingList}}?subject=Nouveau%20message%20à%20propos%20du%20groupe%20{{nomGroupe}}" style="color:white; text-decoration: none;">Envoyer un message au groupe</a>
+                        </button>
+                        <input type="button" id="groupDeleteButton" value="Supprimer ce groupe" style="background-color: rgb(0,132,255); color: white; border: none; padding: 10px 20px; cursor: pointer; text-align: center;margin-top:2%;">
+                        <a href="/" class="goBack">
+                            <input type="button" value="Retour" style="background-color: rgb(216, 216, 216); padding: 10px 20px; color: white; cursor: pointer; border: none;">
+                        </a>
+                    </div>
+                {{else}}
+                    <div style="margin-bottom:100%">
+                        <div>
+                            <h4>Admin:</h4>
+                            <ul>
+                                <li>
+                                    <p>{{monAdmin}}</p>
+                                </li>
+                            </ul>
+                            <h4>Membres:</h4>
+                            <ul>
+                            {{#each mesMembres}}
+                                <li>
+                                    <p>{{monMembre}}</p>
+                                </li>
+                            {{/each}}
+                            </ul>
+                        </div>
+                        <br>
+                        <input type="button" id="groupLeaveButton" value="Quitter ce groupe" style="background-color: rgb(0,132,255); padding: 10px 20px; color: white; cursor: pointer; border: none;">
+                        <a href="/" class="goBack">
+                            <input type="button" value="Retour" style="background-color: rgb(216, 216, 216); padding: 10px 20px; color: white; cursor: pointer; border: none;">
+                        </a>
+                    </div>
+                {{/if}}
+            </td>
+            <td style="width:75%;">
+                {{> semaineDeGroupe}}
+            </td>
+        </tr>
+    </table>
 </template>
