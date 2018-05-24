@@ -99,8 +99,8 @@ Template.addGroup.events({
             FlowRouter.go('groupe', { _id: nameGroup._id });
            
         }
-        else{
-            alert("Veuillez entrer un nom de groupe!")
+        else {
+            alert("Veuillez entrer un nom de groupe!");
         }
     },
 });
@@ -181,7 +181,7 @@ Template.groupe.events({
       }
       //si l'utilisateur essaie de s'ajouter lui-même au groupe...
       else if (searchRes._id == Meteor.userId()){
-        alert("C'est vous!")
+        alert("C'est vous!");
         addUser.value="";
       }
       //si aucune des conditions précédentes sont remplies, procéder avec l'ajout au groupe.
@@ -211,7 +211,7 @@ Template.groupe.events({
         }
         //si l'utilisateur est déjà dans le groupe...
         else if (groupTest){
-          alert("Cet utilisateur est déjà dans ce groupe!")
+          alert("Cet utilisateur est déjà dans ce groupe!");
           addUser.value="";
         }
       }
@@ -322,31 +322,26 @@ Template.groupe.events({
     //quand on clique sur le bouton pour effacer le groupe... on supprime son document de la collection Groups
     'click #groupDeleteButton': function (event){
         event.preventDefault();
-        let groupeId= FlowRouter.getParam('_id');
-        let groupe=Groups.findOne({_id: groupeId});
-        if(groupe.admin == Meteor.userId()){
-            let s=confirm("Ce groupe sera supprimé. Procéder?");
-            if (s==true){
-                Groups.remove({_id: groupeId});
-                FlowRouter.go('/');
-                let users=groupe.users;
-                for (i=0;i<users.length;i++){
-                    Meteor.call('notifs.kickedGroup',users[i],groupe.name)
-                }
-            }
-            else{
-                FlowRouter.go('groupe', { _id: groupeId });
-            }
+        let groupeId = FlowRouter.getParam('_id');
+        let groupe = Groups.findOne({_id: groupeId});
+        let s = confirm("Ce groupe sera supprimé. Procéder?");
+        if (s == true){
+            Groups.remove({_id: groupeId});
+            FlowRouter.go('/');
+            let users = groupe.users;
+            for (i=0;i<users.length;i++){
+                Meteor.call('notifs.kickedGroup',users[i],groupe.name);
+            }    
         }
     },
     //quand l'administrateur retire un utilisateur... ça le supprime
     'click .banUser': function (event){
         event.preventDefault();
-        let groupeId= FlowRouter.getParam('_id');
+        let groupeId = FlowRouter.getParam('_id');
         let idUt = event.currentTarget.id;
-        let nomGr=Groups.findOne({_id:groupeId}).name;
-        let s=confirm("Cet utilisateur sera supprimé du groupe. Procéder?");
-            if (s==true){
+        let nomGr = Groups.findOne({_id:groupeId}).name;
+        let s = confirm("Cet utilisateur sera supprimé du groupe. Procéder?");
+            if (s == true){
               Meteor.call('groups.leaveGroup', groupeId, idUt);
               Meteor.call('notifs.kickedGroup',idUt,nomGr);
             }
@@ -363,12 +358,12 @@ Template.groupe.helpers({
   },
   //2) savoir si l'utilisateur qui observe le groupe en est l'administrateur ou non
   estAdmin: function(){
-    let groupeId= FlowRouter.getParam('_id');
+    let groupeId = FlowRouter.getParam('_id');
     let requete = Groups.findOne({_id:groupeId});
     if(Meteor.userId() == requete.admin){
       Template.instance().isAdmin = new ReactiveVar(true);
     }
-    else{
+    else {
       Template.instance().isAdmin = new ReactiveVar(false);
     }
     return Template.instance().isAdmin.get();

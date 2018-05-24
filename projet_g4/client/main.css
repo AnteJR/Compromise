@@ -1,6 +1,6 @@
 /* CSS declarations go here */
 .s-alert-success {
-    background: orange;
+    background: gold;
     color: #fff  /* your text color here */
 }
 .s-alert-warning{
@@ -12,6 +12,6 @@
     color: #fff;
 }
 .s-alert-error{
-    background: gold;
+    background: orange;
     color: #fff;
 }

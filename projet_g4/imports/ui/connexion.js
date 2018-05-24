@@ -83,13 +83,6 @@ Template.header.rendered = function(){
 		}
 })
 }
-Template.header.helpers({
-  mesNotifs: function(){
-    let idUt = Notifs.findOne({ id_utilisateur: Meteor.userId()});
-    let nbrNotifs = idUt.messages.length;
-      return nbrNotifs;
-    }
-});
 
 //quand un utilisateur se connecte...
 Accounts.onLogin(function(user){
@@ -157,7 +150,7 @@ Template.login.events({
 			let idUt2 = searchRes._id;
 			let utilisateurTeste = Semaines.findOne({id_utilisateur: idUt2});
 			if(utilisateurTeste.isPrivate){
-				alert("Cet utilisateur ne désire pas partager ses informations")
+				alert("Cet utilisateur ne désire pas partager ses informations");
 			}
 			else{
     		//tableau vie pour accueillir les scores
@@ -178,7 +171,8 @@ Template.login.events({
 			}
 			let monTableau = document.createElement("table");
 			monTableau.setAttribute("border",1);
-			monTableau.setAttribute("id","tableauComparaison")
+			monTableau.setAttribute("id","tableauComparaison");
+			monTableau.style = "margin-left: 10%;"
 			document.body.appendChild(monTableau);
 			for(let i=0;i<mesHeures.length;i++){
 				if(i==0){
