@@ -33,6 +33,10 @@ Template.regUser.events({
 				alert("Vous avez créé votre compte !");
 			}
 		});
+	},
+	'click .cancelLogin': function(event){
+		event.preventDefault();
+		FlowRouter.go('home');
 	}
 });
 
@@ -49,6 +53,10 @@ Template.logUser.events({
 				FlowRouter.go('home');
 			}
 		});
+	},
+	'click .cancelLogin': function(event){
+		event.preventDefault();
+		FlowRouter.go('home');
 	}
 });
 
