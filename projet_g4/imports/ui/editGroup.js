@@ -92,18 +92,7 @@ Template.addGroup.events({
         let nameTest = Groups.findOne({"name": leGroupe});
         let testValue;
         if(Groups.findOne({"name": leGroupe})){
-          testValue = nameTest.name;
-        }
-        let i = 1;
-        while(leGroupe == testValue){
-          console.log(leGroupe)
-          leGroupe = originalValue+i
-          i++;
-          if(Groups.findOne({"name": leGroupe})){
-            nameTest = Groups.findOne({"name": leGroupe});
-            testValue = nameTest.name
-          }
-          console.log(testValue)
+          leGroupe = leGroupe+" "+1;
         }
 
         if(leGroupe){
