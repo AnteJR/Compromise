@@ -90,7 +90,10 @@ Template.addGroup.events({
         let leGroupe = document.getElementById("nomGroupe").value;
         let originalValue = leGroupe;
         let nameTest = Groups.findOne({"name": leGroupe});
-        let testValue = nameTest.name;
+        let testValue;
+        if(Groups.findOne({"name": leGroupe})){
+          testValue = nameTest.name;
+        }
         let i = 1;
         while(leGroupe == testValue){
           console.log(leGroupe)
@@ -108,6 +111,7 @@ Template.addGroup.events({
             Meteor.call('groups.create', Meteor.userId(), leGroupe);
             let nameGroup = Groups.findOne({"name": leGroupe});
             FlowRouter.go('groupe', { _id: nameGroup._id });
+            Meteor.call('groups.changeName', nameGroup._id, originalValue);
            
         }
         else {
