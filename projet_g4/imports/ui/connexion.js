@@ -4,7 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { Semaines } from '../api/semaines.js';
 import { ReactiveVar } from 'meteor/reactive-var';
-import { Notifs } from '../api/notifications.js'
+import { Notifs } from '../api/notifications.js';
 
 //importation des fichiers
 import './login.html';
@@ -57,33 +57,6 @@ Template.login.rendered = function(){
 	}, 10);
 }
 
-Template.header.rendered = function(){
-	Tracker.autorun(()=>{
-		let thisDocument=Notifs.findOne({id_utilisateur: Meteor.userId()});
-		console.log(thisDocument)
-		let thisInfo=thisDocument.info;
-			for (i=0 ; i<thisInfo.length ; i++){
-				sAlert.info(thisInfo[i] , configOverwrite);
-				Meteor.call('notifs.removeInfo',Meteor.userId(),thisInfo[i])
-			}
-		let thisSuccess=thisDocument.success;
-			for (i=0 ; i<thisSuccess.length ; i++){
-				sAlert.success(thisSuccess[i] , configOverwrite);
-				Meteor.call('notifs.removeSuccess',Meteor.userId(),thisSuccess[i])
-			}
-		let thisError=thisDocument.error;
-			for (i=0 ; i<thisError.length ; i++){
-				sAlert.error(thisError[i] , configOverwrite);
-				Meteor.call('notifs.removeError',Meteor.userId(),thisError[i])
-			}
-		let thisWarning=thisDocument.warning;
-		for (i=0 ; i<thisWarning.length ; i++){
-			sAlert.warning(thisWarning[i] , configOverwrite);
-			Meteor.call('notifs.removeWarning',Meteor.userId(),thisWarning[i])
-		}
-})
-}
-
 //quand un utilisateur se connecte...
 Accounts.onLogin(function(user){
 	setTimeout(function(){
@@ -102,6 +75,11 @@ Accounts.onLogin(function(user){
 			let mesScores = scoresUtilisateurCourant(Meteor.userId());
 		}
 	}, 500);
+});
+
+//Quand on se déconnecte, qu'importe où on est sur le site, on retourne à la page d'accueil
+Accounts.onLogout(function(){
+	FlowRouter.go("/");
 });
 
 Template.login.helpers({
@@ -172,7 +150,7 @@ Template.login.events({
 			let monTableau = document.createElement("table");
 			monTableau.setAttribute("border",1);
 			monTableau.setAttribute("id","tableauComparaison");
-			monTableau.style = "margin-left: 10%;"
+			monTableau.style = "margin-left:auto;margin-right:auto;"
 			document.body.appendChild(monTableau);
 			for(let i=0;i<mesHeures.length;i++){
 				if(i==0){
@@ -200,15 +178,15 @@ Template.login.events({
           			}
           			monTd = document.createElement("td");
 				  	monTd.style = "background-color:hsla("+mesScores3[j][i]+"9, 88%, 55%, 1);width:100px;height:30px;text-align:center;line-height:30px;border: white solid 5px;";
-          			if(mesScores3[j][i] >= 0 && mesScores3[j][i] <= 4){
+          			if(mesScores3[j][i] >= 0 && mesScores3[j][i] < 4){
           				monTd.innerHTML = "<b> ✕ </b>";
           				monTd.style.color = "hsla("+mesScores3[j][i]+"0, 100%, 100%, 1)";
           			}
-          			else if(mesScores3[j][i] > 4 && mesScores3[j][i] <= 7){
+          			else if(mesScores3[j][i] >= 4 && mesScores3[j][i] < 7){
           				monTd.innerHTML = "<b> ~ </b>";
           				monTd.style.color += "hsla("+mesScores3[j][i]+"0, 100%, 100%, 1)";
           			}
-          			else if(mesScores3[j][i] > 7 && mesScores3[j][i] <= 10){
+          			else if(mesScores3[j][i] >= 7 && mesScores3[j][i] <= 10){
           				monTd.innerHTML = "<b> ✓ </b>";
           				monTd.style.color += "hsla("+mesScores3[j][i]+"0, 100%, 100%, 1)";
           			}
@@ -222,6 +200,7 @@ Template.login.events({
 			alert("Email invalide !");
 		}
 	},
+	//si on appuie sur le bouton retour, on change de template et on revient à celui de base
 	'click .goBack': function(event, template){
 		event.preventDefault();
 		if(template.comparaisonTriggered.get() == true){
@@ -242,8 +221,3 @@ function scoresUtilisateurCourant(idUt){
     }
     return(mesScores);
 }
-
-Accounts.onLogout(function(){
-	FlowRouter.go("/");
-});
-

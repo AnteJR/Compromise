@@ -8,6 +8,7 @@ import { Notifs } from '../imports/api/notifications.js'
 import '../imports/ui/editGroup.js';
 import '../imports/ui/connexion.js';
 import '../imports/ui/editSemaine.js';
+import '../imports/ui/editHeader.js';
 
 Meteor.startup(()=>{
     configOverwrite={

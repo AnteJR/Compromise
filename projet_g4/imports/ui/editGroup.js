@@ -87,11 +87,22 @@ Template.groupe.onCreated(function(){
 Template.addGroup.events({
 'click #btnCreer': function(event, template){
         event.preventDefault();
-
-        //let leGroupe = event.target.nomGroupe.value;
         let leGroupe = document.getElementById("nomGroupe").value;
-        console.log(leGroupe)
+        let originalValue = leGroupe;
         let nameTest = Groups.findOne({"name": leGroupe});
+        let testValue = nameTest.name;
+        let i = 1;
+        while(leGroupe == testValue){
+          console.log(leGroupe)
+          leGroupe = originalValue+i
+          i++;
+          if(Groups.findOne({"name": leGroupe})){
+            nameTest = Groups.findOne({"name": leGroupe});
+            testValue = nameTest.name
+          }
+          console.log(testValue)
+        }
+
         if(leGroupe){
             
             Meteor.call('groups.create', Meteor.userId(), leGroupe);
