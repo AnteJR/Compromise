@@ -12,3 +12,16 @@ FlowRouter.route('/groupe/:_id', {
     }
 });
 
+FlowRouter.route('/register', {
+	name: 'register',
+	action(){
+		BlazeLayout.render('regUser');
+	}
+});
+
+FlowRouter.route('/login', {
+	name: 'login',
+	action(){
+		BlazeLayout.render('logUser');
+	}
+});

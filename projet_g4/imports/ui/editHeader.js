@@ -64,5 +64,10 @@ Template.header.helpers({
 			Template.instance().semainePrivee.set(false);
 		}
 		return Template.instance().semainePrivee.get();
+	},
+	nomUt: function(){
+		let utilisateur = Meteor.users.findOne({ "_id": Meteor.userId() });
+		let nomUtilisateur = utilisateur.username;
+		return nomUtilisateur;
 	}
 });

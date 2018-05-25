@@ -9,6 +9,7 @@ import '../imports/ui/editGroup.js';
 import '../imports/ui/connexion.js';
 import '../imports/ui/editSemaine.js';
 import '../imports/ui/editHeader.js';
+import '../imports/ui/accounts.js';
 
 Meteor.startup(()=>{
     configOverwrite={

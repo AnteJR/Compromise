@@ -1,0 +1,18 @@
+<template name="regUser">
+	{{> Template.dynamic template=main}}
+	<div class="accCreate" style="width:300px;height:300px;margin:auto;">
+		<h3 style="width:100%;text-align:center;">Créer un compte</h3>
+		<form name="userRegister" class="newUser">
+			<p style="width:300px">
+				<input type="text" name="userName" id="nameReg" placeholder="Entrez un nom d'utilisateur" autocomplete="off" style="width:100%;text-align: center;background-color: rgb(216,216,216); color: black; border: none;height: 40px; margin-bottom: 2px; cursor: auto;">
+			</p>
+			<p style="width:300px">
+				<input type="text" name="userEmail" id="emailReg" placeholder="Entrez une adresse email" autocomplete="off" style="width:100%;text-align: center;background-color: rgb(216,216,216); color: black; border: none;height: 40px; margin-bottom: 2px; cursor: auto;">
+			</p>
+			<p style="width:300px">
+				<input type="password" name="userPassword" id="passReg" placeholder="Entrez un mot de passe" autocomplete="off" style="width:100%;text-align: center;background-color: rgb(216,216,216); color: black; border: none;height: 40px; margin-bottom: 2px; cursor: auto;">
+			</p>
+			<input type="submit" name="submitForm" class="validationReg" value="Confirmer" style="width:100%; background-color: rgb(0,132,255); color: white; padding:10px 20px;text-align: center; border: none;cursor: pointer;">
+		</form>
+	</div>
+</template>

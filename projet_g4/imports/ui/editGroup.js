@@ -95,7 +95,7 @@ Template.addGroup.events({
             });
             setTimeout(function(){
               FlowRouter.go('groupe', { _id: leGroupeId });
-            }, 50);
+            }, 250);
         }
         else {
             alert("Veuillez entrer un nom de groupe!");
