@@ -112,16 +112,16 @@ Template.addGroup.helpers({
 });
 
 Template.groupe.helpers({
-  //Savoir qui est admin et récupérer son email
+  //Savoir qui est admin et récupérer son nom d'utilisateur
   monAdmin: function(){
     let groupeId = FlowRouter.getParam('_id');
     let requete = Groups.findOne({_id:groupeId});
     let idAdmin = requete.admin;
     let leAdmin = Meteor.users.findOne({_id: idAdmin});
-    let myAdmin = leAdmin.emails[0].address;
+    let myAdmin = leAdmin.username;
     return myAdmin;
   },
-  //Savoir qui est membre et récupérer leurs emails
+  //Savoir qui est membre et récupérer leurs noms d'utilisateurs
   mesMembres: function(){
     let groupeId = FlowRouter.getParam('_id');
     let requete = Groups.findOne({_id: groupeId});
@@ -130,7 +130,7 @@ Template.groupe.helpers({
       let membre = requete.users[i];
       let leMembre = Meteor.users.findOne({_id: membre});
       myMembre[(i-1)] = {
-        monMembre: leMembre.emails[0].address,
+        monMembre: leMembre.username,
         membreId: requete.users[i]
       };
     }
@@ -166,12 +166,17 @@ Template.groupe.events({
     let currentAdminEmail = Meteor.users.findOne({_id:Meteor.userId()}).emails.address;
     //vérifier que l'adresse mail correspond au format habituel
     let re = /\S+@\S+\.\S+/;
-    let regExTest = nomUt.match(re);
     // si c'est le cas...
-    if (regExTest){
+    if (nomUt){
       //vérifier qu'une semaine avec l'ID de l'utilisateur en question existe.
-      let searchRes = Meteor.users.findOne({"emails.address": nomUt});
-      let searchSemaine= Semaines.find({"id_utilisateur":searchRes});
+      let searchRes;
+      if(nomUt.match(re)){
+        searchRes = Meteor.users.findOne({"emails.address": nomUt});
+      }
+      else if(!nomUt.match(re)){
+        searchRes = Meteor.users.findOne({username: nomUt});
+      }
+      let searchSemaine = Semaines.find({"id_utilisateur":searchRes});
       //si ce n'est pas le cas, alerter l'utilisateur.
       if (!searchRes){
         alert("Cet utilisateur n'existe pas!");
@@ -186,10 +191,9 @@ Template.groupe.events({
       else if (!searchSemaine.isPrivate){
         let idSearch = searchRes._id;
         let groupeId = FlowRouter.getParam('_id');
-        //réupérer l'email de l'admin
+        //réupérer l'username de l'admin
         let admin= Groups.findOne({_id: groupeId},{admin:Meteor.userId()}).admin;
-        let adminEmail = Meteor.users.findOne({'_id':admin}).emails[0].address;
-        console.log(adminEmail)
+        let adminEmail = Meteor.users.findOne({'_id':admin}).username;
         //tester si l'utilisateur est déjà dans le groupe.
         let groupTest = Groups.findOne({users : idSearch, _id : groupeId});
         //si ce n'est pas le cas, procéder
@@ -213,81 +217,13 @@ Template.groupe.events({
           addUser.value="";
         }
       }
+      //enfin, si l'adresse mail n'est pas valide...
+      else{
+        alert("L'utilisateur n'a pas été trouvé!")
+        addUser.value="";
+      }
     }
-  }
-});
-
-Template.groupe.events({
-    'submit #ajoutDUtilisateur': function(event){
-        event.preventDefault();
-        let groupeId= FlowRouter.getParam('_id');
-        let groupName = Groups.findOne({_id:groupeId}).name;
-        let nomUt = document.getElementById("addUser").value;
-        let currentAdminEmail = Meteor.users.findOne({_id:Meteor.userId()}).emails.address;
-        //vérifier que l'adresse mail correspond au format habituel
-        let re = /\S+@\S+\.\S+/;
-        let regExTest = nomUt.match(re);
-        // si c'est le cas...
-        if (regExTest){
-            //vérifier qu'une semaine avec l'ID de l'utilisateur en question existe.
-            let searchRes = Meteor.users.findOne({"emails.address": nomUt});
-            let searchSemaine= Semaines.find({"id_utilisateur":searchRes});
-            //si ce n'est pas le cas, alerter l'utilisateur.
-            console.log(searchSemaine)
-            if (!searchRes){
-                alert("Cet utilisateur n'existe pas!");
-                addUser.value="";
-            }
-            //si l'utilisateur essaie de s'ajouter lui-même au groupe...
-            else if (searchRes._id == Meteor.userId()){
-                alert("C'est vous!")
-                addUser.value="";
-            }
-            //si la semaine en question est privée...
-            else if (searchSemaine.isPrivate){
-                alert("Cet utilisateur ne désire pas partager ses informations!")
-                addUser.value="";
-            }
-            //si aucune des conditions précédentes sont remplies, procéder avec l'ajout au groupe.
-            else if (!searchSemaine.isPrivate){
-                let idSearch = searchRes._id;
-                let groupeId = FlowRouter.getParam('_id');
-                //utile pour la suite (notifs) de déjà définir certains propriétés de l'admin
-                let admin= Groups.findOne({_id: groupeId},{admin:Meteor.userId()}).admin;
-                let adminEmail = Meteor.users.findOne({'_id':admin}).emails[0].address;
-                console.log(adminEmail)
-                //tester si l'utilisateur est déjà dans le groupe.
-                    let groupTest = Groups.findOne({users : idSearch, _id : groupeId});
-                    //si ce n'est pas le cas, procéder
-                        if (!groupTest){
-                          Meteor.call("groups.updateGroup", idSearch, groupeId);
-                        // et notifier la personne en question.
-                          Meteor.call("notifs.pushGroupAdd",idSearch,groupName,adminEmail);
-                          console.log(idSearch,groupName,adminEmail)
-                        //ensuite, notifier tous les membres du groupe, à l'exception de l'admin
-                        //(se trouvant à la position 0 de l'array "users", et le nouvel utilisateur, qui
-                        //se trouve à la dernière.
-                        let thisGroupMembres = Groups.findOne({_id: groupeId}).users
-                        for (i=1; i<thisGroupMembres.length-1; i++){
-                            Meteor.call('notifs.pushNewGroupMember',thisGroupMembres[i],groupName,nomUt)
-                        }
-                          FlowRouter.go('groupe', { _id: groupeId });
-                          alert(`${addUser.value} a été ajouté!`)
-                          addUser.value="";
-                        }
-                        //si l'utilisateur est déjà dans le groupe...
-                        else if (groupTest){
-                          alert("Cet utilisateur est déjà dans ce groupe!")
-                          addUser.value="";
-                        }
-                }
-            //enfin, si l'adresse mail n'est pas valide...
-            else{
-                alert("Cet adresse email n'est pas valide!")
-                addUser.value="";
-            }
-          }
-    },
+  },
     //quand on clique sur le petit crayon, on a un prompt pour changer le nom du groupe
     'click #groupNameButton': function (event){
         event.preventDefault();
@@ -308,7 +244,6 @@ Template.groupe.events({
         let idUt = Meteor.users.findOne({_id:Meteor.userId()}).emails[0].address;
         let r=confirm("Voulez-vous vraiment quitter ce groupe?");
         if (r==true){
-            console.log(groupe.admin,groupe.name,idUt);
             Meteor.call("notifs.groupMemberLeave",groupe.admin, groupe.name, idUt);
             Meteor.call('groups.leaveGroup', groupeId, Meteor.userId());
             FlowRouter.go('/')

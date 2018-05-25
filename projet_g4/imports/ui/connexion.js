@@ -112,16 +112,25 @@ Template.login.events({
 	},
 	'submit form': function(event, template){
 		event.preventDefault();
+
 		let re = /\S+@\S+\.\S+/;
-		//let searchVal = mySearch.value;
 		let searchVal = event.target.mySearch.value;
-		let searchRes = Meteor.users.findOne({"emails.address": searchVal});
+		let searchRes;
+		if(searchVal.match(re)){
+			searchRes = Meteor.users.findOne({"emails.address": searchVal});
+		}
+		else if(!searchVal.match(re)){
+			searchRes = Meteor.users.findOne({username: searchVal});
+		}
 		if(searchRes != null){
 			let idUt2 = searchRes._id;
 			let utilisateurTeste = Semaines.findOne({id_utilisateur: idUt2});
 			if(utilisateurTeste.isPrivate){
 				alert("Cet utilisateur ne désire pas partager ses informations");
 			}
+			else if(Meteor.userId() == idUt2){
+				alert("C'est vous !");
+			}	
 			else{
     		//tableau vie pour accueillir les scores
     		const mesScores1 = scoresUtilisateurCourant(Meteor.userId());
@@ -189,7 +198,7 @@ Template.login.events({
 		}
 		}
 		else{
-			alert("Email invalide !");
+			alert("Utilisateur non trouvable !");
 		}
 	},
 	//si on appuie sur le bouton retour, on change de template et on revient à celui de base
