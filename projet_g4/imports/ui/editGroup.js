@@ -88,20 +88,14 @@ Template.addGroup.events({
 'click #btnCreer': function(event, template){
         event.preventDefault();
         let leGroupe = document.getElementById("nomGroupe").value;
-        let originalValue = leGroupe;
-        let nameTest = Groups.findOne({"name": leGroupe});
-        let testValue;
-        if(Groups.findOne({"name": leGroupe})){
-          leGroupe = leGroupe+" "+1;
-        }
-
         if(leGroupe){
-            
-            Meteor.call('groups.create', Meteor.userId(), leGroupe);
-            let nameGroup = Groups.findOne({"name": leGroupe});
-            FlowRouter.go('groupe', { _id: nameGroup._id });
-            Meteor.call('groups.changeName', nameGroup._id, originalValue);
-           
+           let leGroupeId;
+            Meteor.call('groups.create', Meteor.userId(), leGroupe, function(err, result){
+              leGroupeId = result
+            });
+            setTimeout(function(){
+              FlowRouter.go('groupe', { _id: leGroupeId });
+            }, 50);
         }
         else {
             alert("Veuillez entrer un nom de groupe!");

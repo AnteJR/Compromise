@@ -49,14 +49,6 @@ Template.login.onCreated(function(){
 	this.comparaisonTriggered = new ReactiveVar( false );
 });
 
-Template.login.rendered = function(){
-	setTimeout(function(){
-		if(document.getElementById('tableauComparaison')){
-          document.getElementById('tableauComparaison').remove();
-        }
-	}, 10);
-}
-
 //quand un utilisateur se connecte...
 Accounts.onLogin(function(user){
 	setTimeout(function(){

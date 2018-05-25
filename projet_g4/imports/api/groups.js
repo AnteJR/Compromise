@@ -12,7 +12,7 @@ Meteor.methods({
     'groups.create'(idUt, nom){
         check(idUt, String);
         check (nom, String);
-        Groups.insert({
+        let e = Groups.insert({
             admin: idUt,
             isCreated: true,
             name: nom,
@@ -20,6 +20,7 @@ Meteor.methods({
                 idUt
             ]
         });
+        return e;
     },
     'groups.updateGroup'(idUt, idGrp){
         check(idUt, String);
