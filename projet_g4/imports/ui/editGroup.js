@@ -3,7 +3,7 @@ import { Template } from 'meteor/templating';
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { Semaines } from '../api/semaines.js';
-import { Notifs } from '../api/notifications.js'
+import { Notifs } from '../api/notifications.js';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { Groups } from '../api/groups.js';
 
@@ -140,7 +140,6 @@ Template.groupe.helpers({
   mailingList: function(){
     let groupeId = FlowRouter.getParam('_id');
     let requete = Groups.findOne({_id: groupeId});
-    //console.log(requete.users);
     let myMembre = [];
     let listeMembre=[];
     for(let i = 1; i<requete.users.length;i++){

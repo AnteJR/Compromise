@@ -98,7 +98,6 @@ Template.login.events({
 		event.preventDefault();
 		const heure = parseInt(event.currentTarget.id);
 		const elemVal = parseInt(event.currentTarget.value);
-		console.log(elemVal);
 		if(!isNaN(elemVal)){Meteor.call("semaines.hourFill", Meteor.userId(), heure, elemVal)};
 	},
 	'submit form': function(event, template){

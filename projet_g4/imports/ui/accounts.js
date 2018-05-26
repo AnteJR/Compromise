@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { Semaines } from '../api/semaines.js';
 import { Groups } from '../api/groups.js';
+import { Notifs } from '../api/notifications.js';
 import { Accounts } from 'meteor/accounts-base'
 
 import '../templates/register.html';
@@ -11,6 +12,7 @@ import '../templates/logout.html';
 import '../templates/changePassword.html';
 import '../templates/deleteAccount.html';
 
+//Créer un utilisateur
 Template.regUser.events({
 	'click .validationReg': function(event){
 		event.preventDefault();
@@ -45,6 +47,7 @@ Template.regUser.events({
 	}
 });
 
+//Se connecter
 Template.logUser.events({
 	'click .validationLog': function(event){
 		event.preventDefault();
@@ -65,6 +68,7 @@ Template.logUser.events({
 	}
 });
 
+//Logout
 Template.logOutLink.events({
 	'click .logout': function(event){
 		event.preventDefault();
@@ -72,6 +76,7 @@ Template.logOutLink.events({
 	}
 });
 
+//Changement de mot de passe
 Template.changePW.events({
 	'click .validationPW': function(event){
 		event.preventDefault();
@@ -93,6 +98,7 @@ Template.changePW.events({
 	}
 });
 
+//Suppression de l'utilisateur
 Template.delUserBtn.events({
 	'click .deleteUser': function(event){
 		event.preventDefault();
@@ -111,13 +117,9 @@ Template.delUserBtn.events({
 			}
 			for(let i = 0; i<Groups.find({}).count(); i++){
 				let monGroupe = Groups.findOne({ users: Meteor.userId() });
-				let monGroupeId = monGroupe._id;
-				let monGroupeUsers = monGroupe.users;
-				console.log(monGroupeId)
-				for(let j=0; j<monGroupeUsers.length; j++){
-					if(monGroupeUsers[j] == Meteor.userId()){
-						Meteor.call('leaveGroup', monGroupeId, Meteor.userId());
-					}
+				if(monGroupe){
+					let monGroupeId = monGroupe._id;
+					Meteor.call('groups.leaveGroup', monGroupeId, Meteor.userId());
 				}
 			}
 			Meteor.users.remove({ _id: Meteor.userId() });
