@@ -14,3 +14,16 @@ Cette section décrit les différentes étapes d'utilisation.
 * Il y a également un header, en haut, où l'utilisateur peut se déconnecter, changer son mot de passe, supprimer son compte, ou le passer en privé
 * S'il crée ou se connecte à un groupe, il est redirigé vers une interface en deux temps : **s'il est admin**, il peut ajouter des utilisateur, contacter le groupe par email et supprimer le groupe, et **s'il est un membre normal**, il peut quitter le groupe. Dans les deux cas, le groupe affiche l'horaire comparant celui de tous les membres.
 ## Base de données
+L'application contient 4 collections MongoDB. La première est gérée par un des plugins (Accounts-base) et gère les comptes utilisateurs. Les 3 autres, Semaines, Groups et Notifs. Elles gèrent respectivement les semaines des utilisateurs et les états de chaque cellule des tableaux, les groupes et leurs membres, et les notifications.
+## License
+Ce programme est un logiciel gratuit.
+Event.Org a été développé avec le framework de développement web en Javascript Meteor dans sa version 1.6.1.
+Les principaux modules Meteor utilisés dans ce projet sont :
+* reactiveVar (variables réactives)
+* FlowRouter (les liens)
+* Blaze Layout (render des templates)
+* Accounts-base & Accounts-password (gestion des comptes utilisateurs)
+* Notifs (notifications)
+* Bootstrap (style)
+Certaines libraries et modules utilisés pour le développement sont parfois soumis à un copyright par leurs auteurs respectifs.
+Copyright © 2018 - l'équipe de développement de Compromise : *Saara Jones - Antoine Klotz - Joël Rimaz - Sorch Walsh*
