@@ -2,10 +2,12 @@ import { Template } from 'meteor/templating';
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { Semaines } from '../api/semaines.js';
+import { Accounts } from 'meteor/accounts-base'
 
 import '../templates/register.html';
 import '../templates/loginUser.html';
 import '../templates/logout.html';
+import '../templates/changePassword.html';
 
 Template.regUser.events({
 	'click .validationReg': function(event){
@@ -66,3 +68,24 @@ Template.logOutLink.events({
 		Meteor.logout();
 	}
 });
+
+Template.changePW.events({
+	'click .validationPW': function(event){
+		event.preventDefault();
+		let vieuxPW = document.getElementById('oldPW').value;
+		let nouveauPW = document.getElementById('newPW').value;
+		let monUser = Meteor.users.findOne({ _id: Meteor.userId() });
+		Accounts.changePassword(vieuxPW, nouveauPW, function(err){
+			if(err){
+				alert(err.reason);
+			}
+			else{
+				FlowRouter.go('home');
+			}
+		});
+	},
+	'click .cancelLogin': function(event){
+		event.preventDefault();
+		FlowRouter.go('home');
+	}
+})

@@ -27,7 +27,7 @@ Meteor.startup(() => {
 				return Meteor.users.find({},{
 					fields:{'emails':1,
 					'_id':1,
-					'username':1
+					'username':1,
 				}
 				});
 			});

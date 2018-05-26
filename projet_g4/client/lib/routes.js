@@ -25,3 +25,10 @@ FlowRouter.route('/login', {
 		BlazeLayout.render('logUser');
 	}
 });
+
+FlowRouter.route('/password', {
+	name: 'changePassword',
+	action(){
+		BlazeLayout.render('changePW');
+	}
+});

@@ -5,7 +5,11 @@
         	{{#if comptePrive}}oui{{else}}non{{/if}}
     	</button>
         <span style="float:right;line-height:50px;"> Privé: </span>
-        <div style="float: right;line-height: 50px;margin-right:15px;"> <b> {{nomUt}} </b> {{> logOutLink}}</div>
+        <div style="float: right;line-height: 50px;margin-right:15px;"> 
+        	<b> {{nomUt}} </b> 
+        	{{> logOutLink}}
+        	<a href="/password" class="changerMotDePasse" style="background-color: rgb(216, 216, 216); padding: 10px 20px; color: black; cursor: pointer; border: none;margin-top: 5px; text-decoration: none;">Changer le mot de passe</a>
+        </div>
     </div>
     {{> sAlert}}
 </template>

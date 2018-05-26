@@ -47,10 +47,4 @@ Meteor.methods({
             {$pull: {users:idUt}}
         )
     },
-    /*'groups.deleteGroup'(idGrp,idUt){
-        check (idGrp, String);
-        check (idUt, String);
-        let monGroupe = Groups.findOne({_id: idGrp});
-        monGroupe.deleteOne();
-    }*/
 })
