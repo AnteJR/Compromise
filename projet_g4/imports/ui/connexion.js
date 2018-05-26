@@ -57,15 +57,6 @@ Accounts.onLogin(function(user){
 		//créer un document par défaut dans cette collection, avec l'id de l'utilisateur comme valeur "id_utilisateur"
 		Meteor.call('notifs.createDefault',Meteor.userId());
 		}
-		//...si il n'a pas de document avec son id dans la collection Semaines..
-		if(Semaines.find({id_utilisateur: Meteor.userId()}).count() == 0){
-			//...on lui assigne un document semaine par défaut (valeurs de 0 pour chaque cellules)
-			Meteor.call("semaines.createDefault", Meteor.userId());
-			let mesScores = scoresUtilisateurCourant(Meteor.userId());
-		}
-		else{
-			let mesScores = scoresUtilisateurCourant(Meteor.userId());
-		}
 	}, 500);
 });
 

@@ -41,5 +41,11 @@ Meteor.startup(() => {
 	});
 	Groups.allow({
 		remove() {return true}
-		});
+	});
+	Meteor.users.allow({
+		remove() {return true}
+	});
+	Semaines.allow({
+		remove() {return true}
+	});
 });
