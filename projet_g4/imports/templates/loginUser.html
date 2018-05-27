@@ -1,16 +1,16 @@
 <template name="logUser">
 	{{> Template.dynamic template=main}}
-	<div class="accountsLogin" style="width:300px;height:300px;margin:auto;">
+	<div class="accountsLogin" style="width:300px;height:300px;margin:auto;margin-top:20px;">
 		<h3 style="width:100%;text-align:center;">Se connecter</h3>
 		<form style="width:100%" name="userLogin" class="loginUser">
 			<p style="width:300px">
-				<input style="width:100%;text-align: center;background-color: rgb(216,216,216); color: black; border: none;height: 40px; margin-bottom: 2px; cursor: auto;" type="text" name="userName" id="nameLog" placeholder="Nom d'utilisater ou email" autocomplete="off">
+				<input style="width:100%;margin-bottom: 2px;" type="text" name="userName" id="nameLog" class="form-control" placeholder="Nom d'utilisater ou email" autocomplete="off">
 			</p>
 			<p style="width:300px">
-				<input style="width:100%;text-align: center;background-color: rgb(216,216,216); color: black; border: none;height: 40px; margin-bottom: 2px; cursor: auto;" type="password" name="userPassword" id="passLog" placeholder="Mot de passe" autocomplete="off">
+				<input style="width:100%;margin-bottom: 2px;" type="password" name="userPassword" id="passLog" class="form-control" placeholder="Mot de passe" autocomplete="off">
 			</p>
-			<input type="submit" name="submitForm" class="validationLog" value="Confirmer" style="width:100%; background-color: rgb(0,132,255); color: white; padding:10px 20px;text-align: center; border: none;cursor: pointer;">
+			<input type="submit" name="submitForm" id="validationLog" class="btn btn-primary btn-lg" value="Confirmer" style="width:100%;">
 		</form>
-		<input type="button" class="cancelLogin" value="Retour" style="background-color: rgb(216, 216, 216); padding: 10px 0px; color: black; cursor: pointer; border: none;margin-top: 5px;width:100%">
+		<input type="button" id="cancelLogin" class="btn btn-outline-primary btn-lg" value="Retour" style="margin-top: 5px;width:100%;">
 	</div>
 </template>
