@@ -1,7 +1,9 @@
 # Compromise - README
 ### *Compromise ver. 1.0*
 *Saara Jones, Antoine Klotz, Joël Rimaz & Sorcha Walsh*
-Projet dans le cadre du cours : Programmation pour Internet II - Meteor.js donné par Isaac Pante et Loris Rimaz 
+
+Projet réalisé dans le cadre du cours *Programmation pour Internet II - Meteor.js* donné par Isaac Pante et Loris Rimaz 
+
 Faculté des Lettres - Université de Lausanne - Février à Mai 2017 Github
 ## Description
 Le projet Compromise a pour but de proposer une plateforme sur laquelle il est possible de partager un horaire-type de semaine et de le comparer avec d'autres utilisateurs. Créer un compte assigne un tableau de semaine à l'utilisateur, et on peut alors le modifier avec nos disponibilités. On peut alors comparer son tableau avec un utilisateur en particulier, ainsi que créer des groupes pour se retrouver entre utilisateurs - comme par exemple entre collègues, ou amis.
