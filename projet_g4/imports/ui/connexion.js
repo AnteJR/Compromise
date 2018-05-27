@@ -45,17 +45,6 @@ const mesHeures = [
   	"22:00"
 ];
 
-//quand un utilisateur se connecte
-Accounts.onLogin(function(user){
-	setTimeout(function(){
-		//si l'utilisateur n'a pas de document dans la collections Notifs...
-		if (Notifs.find({id_utilisateur: Meteor.userId()}).count() == 0){
-			//créer un document par défaut dans cette collection, avec l'id de l'utilisateur comme valeur "id_utilisateur"
-			Meteor.call('notifs.createDefault',Meteor.userId());
-		}
-	}, 500);
-});
-
 //quand on se déconnecte, qu'importe où on est sur le site, on retourne à la page d'accueil
 Accounts.onLogout(function(){
 	FlowRouter.go("/");

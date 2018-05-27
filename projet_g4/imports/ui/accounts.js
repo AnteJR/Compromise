@@ -38,10 +38,13 @@ Template.regUser.events({
 					alert("Veuillez entrer un nom d'utilisateur !")
 				}
 			}
+
+			//s'il n'y a pas de problème, diriger l'utilisateur vers son profil, lui dire que ça a fonctionné et appeler des méthodes pour lui attribuer une semaine et des notifications
 			else{
 				FlowRouter.go('home');
 				alert("Vous avez créé votre compte !");
 				Meteor.call("semaines.createDefault", Meteor.userId());
+				Meteor.call('notifs.createDefault',Meteor.userId());
 			}
 		});
 	},
@@ -131,6 +134,10 @@ Template.delUserBtn.events({
 			let maSemaine = Semaines.findOne({ id_utilisateur : Meteor.userId() });
 			let maSemaineId = maSemaine._id;
 			Semaines.remove({ _id: maSemaineId });
+
+			let mesNotifs = Notifs.findOne({ id_utilisateur : Meteor.userId() });
+			let mesNotifsId = mesNotifs._id;
+			Notifs.remove({ _id: mesNotifsId });
 
 			//supprimer les groupes dont il est admin
 			for(let i = 0; i<Groups.find({}).count(); i++){

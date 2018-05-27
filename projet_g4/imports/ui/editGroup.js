@@ -158,7 +158,7 @@ Template.groupe.helpers({
             let leMembre = Meteor.users.findOne({_id: membre});
             myMembre[(i-1)] = {
                 monMembre: leMembre.emails[0].address,
-                membreId: requete.users[i];
+                membreId: requete.users[i]
             }
             listeMembre.push(myMembre[(i-1)].monMembre);
         }

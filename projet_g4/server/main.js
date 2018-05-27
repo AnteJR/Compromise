@@ -49,4 +49,7 @@ Meteor.startup(() => {
 	Semaines.allow({
 		remove() {return true}
 	});
+	Notifs.allow({
+		remove() {return true}
+	});
 });
