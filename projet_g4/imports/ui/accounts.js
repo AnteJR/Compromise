@@ -12,13 +12,21 @@ import '../templates/logout.html';
 import '../templates/changePassword.html';
 import '../templates/deleteAccount.html';
 
-//Créer un utilisateur
 Template.regUser.events({
+<<<<<<< HEAD
 	'click #validationReg': function(event){
+=======
+	//Créer un utilisateur
+	'click .validationReg': function(event){
+>>>>>>> 37a95ef4e1b53fde5f7e3b1ca9b0ef97180dbdb0
 		event.preventDefault();
+
+		//récupérer les valeurs des inputs
 		let nomDUt = document.getElementById('nameReg').value;
 		let emailUt = document.getElementById('emailReg').value;
 		let passwordUt = document.getElementById('passReg').value;
+
+		//créer l'utilisateur et callback s'il y a un problème.
 		Accounts.createUser({
 			username: nomDUt,
 			email: emailUt,
@@ -34,25 +42,38 @@ Template.regUser.events({
 					alert("Veuillez entrer un nom d'utilisateur !")
 				}
 			}
+
+			//s'il n'y a pas de problème, diriger l'utilisateur vers son profil, lui dire que ça a fonctionné et appeler des méthodes pour lui attribuer une semaine et des notifications
 			else{
 				FlowRouter.go('home');
 				alert("Vous avez créé votre compte !");
 				Meteor.call("semaines.createDefault", Meteor.userId());
+				Meteor.call('notifs.createDefault',Meteor.userId());
 			}
 		});
 	},
+<<<<<<< HEAD
 	'click #cancelLogin': function(event){
+=======
+
+	//permettre à l'utilisateur de revenir en arrière
+	'click .cancelLogin': function(event){
+>>>>>>> 37a95ef4e1b53fde5f7e3b1ca9b0ef97180dbdb0
 		event.preventDefault();
 		FlowRouter.go('home');
 	}
 });
 
-//Se connecter
 Template.logUser.events({
+	//Se connecter
 	'click .validationLog': function(event){
 		event.preventDefault();
+
+		//récupérer les valeurs des inputs
 		let nomDUt = document.getElementById('nameLog').value;
 		let passwordUt = document.getElementById('passLog').value;
+
+		//login avec callback
 		Meteor.loginWithPassword(nomDUt, passwordUt, function(error){
 			if(error){
 				alert(error.reason);
@@ -62,27 +83,44 @@ Template.logUser.events({
 			}
 		});
 	},
+<<<<<<< HEAD
 	'click #cancelLogin': function(event){
+=======
+
+	//permettre à l'utilisateur de revenir en arrière
+	'click .cancelLogin': function(event){
+>>>>>>> 37a95ef4e1b53fde5f7e3b1ca9b0ef97180dbdb0
 		event.preventDefault();
 		FlowRouter.go('home');
 	}
 });
 
-//Logout
 Template.logOutLink.events({
+<<<<<<< HEAD
 	'click #logout': function(event){
+=======
+	//Logout
+	'click .logout': function(event){
+>>>>>>> 37a95ef4e1b53fde5f7e3b1ca9b0ef97180dbdb0
 		event.preventDefault();
 		Meteor.logout();
 	}
 });
 
-//Changement de mot de passe
 Template.changePW.events({
+<<<<<<< HEAD
 	'click #validationPW': function(event){
+=======
+	//Changement de mot de passe
+	'click .validationPW': function(event){
+>>>>>>> 37a95ef4e1b53fde5f7e3b1ca9b0ef97180dbdb0
 		event.preventDefault();
+
+		//récupérer les valeurs des inputs
 		let vieuxPW = document.getElementById('oldPW').value;
 		let nouveauPW = document.getElementById('newPW').value;
-		let monUser = Meteor.users.findOne({ _id: Meteor.userId() });
+
+		//changer le mot de passe avec les informations données
 		Accounts.changePassword(vieuxPW, nouveauPW, function(err){
 			if(err){
 				alert(err.reason);
@@ -92,22 +130,44 @@ Template.changePW.events({
 			}
 		});
 	},
+<<<<<<< HEAD
 	'click #cancelLogin': function(event){
+=======
+
+	//permettre à l'utilisateur de revenir en arrière
+	'click .cancelLogin': function(event){
+>>>>>>> 37a95ef4e1b53fde5f7e3b1ca9b0ef97180dbdb0
 		event.preventDefault();
 		FlowRouter.go('home');
 	}
 });
 
-//Suppression de l'utilisateur
 Template.delUserBtn.events({
+<<<<<<< HEAD
 	'click #deleteUser': function(event){
+=======
+	//Suppression de l'utilisateur
+	'click .deleteUser': function(event){
+>>>>>>> 37a95ef4e1b53fde5f7e3b1ca9b0ef97180dbdb0
 		event.preventDefault();
+
+		//prompt de confirmation
 		let s = confirm("Votre compte et votre présence sur le site seront supprimés de manière permanente. Êtes-vous sûr de vouloir supprimer votre compte ?");
+
+		//si l'utilisateur accepte :
 		if(s){
 			alert("Vous allez nous manquer :(");
+
+			//supprimer sa semaine
 			let maSemaine = Semaines.findOne({ id_utilisateur : Meteor.userId() });
 			let maSemaineId = maSemaine._id;
 			Semaines.remove({ _id: maSemaineId });
+
+			let mesNotifs = Notifs.findOne({ id_utilisateur : Meteor.userId() });
+			let mesNotifsId = mesNotifs._id;
+			Notifs.remove({ _id: mesNotifsId });
+
+			//supprimer les groupes dont il est admin
 			for(let i = 0; i<Groups.find({}).count(); i++){
 				let groupesUtilisateurAdmin = Groups.findOne({ admin: Meteor.userId() });
 				if(groupesUtilisateurAdmin){
@@ -115,6 +175,8 @@ Template.delUserBtn.events({
 					Groups.remove({ _id: monId });
 				}
 			}
+
+			//supprimer sa présence des autres groupes
 			for(let i = 0; i<Groups.find({}).count(); i++){
 				let monGroupe = Groups.findOne({ users: Meteor.userId() });
 				if(monGroupe){
@@ -122,6 +184,8 @@ Template.delUserBtn.events({
 					Meteor.call('groups.leaveGroup', monGroupeId, Meteor.userId());
 				}
 			}
+
+			//supprimer son compte
 			Meteor.users.remove({ _id: Meteor.userId() });
 		}
 	}

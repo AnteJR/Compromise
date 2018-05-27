@@ -11,30 +11,30 @@ import '../templates/newTd.html';
 
 //constantes pour les heures et les jours
 const mesHeures = [
-  		"08:00",
-  		"09:00",
-  		"10:00",
-  		"11:00",
-  		"12:00",
-  		"13:00",
-  		"14:00",
-  		"15:00",
-  		"16:00",
-  		"17:00",
-  		"18:00",
-  		"19:00",
-  		"20:00",
-  		"21:00",
-  		"22:00"
+  	"08:00",
+  	"09:00",
+  	"10:00",
+  	"11:00",
+  	"12:00",
+  	"13:00",
+  	"14:00",
+  	"15:00",
+  	"16:00",
+  	"17:00",
+  	"18:00",
+  	"19:00",
+  	"20:00",
+  	"21:00",
+  	"22:00"
 ];
 const mesJours = [
-      		"lundi",
-      		"mardi",
-     		"mercredi",
-      		"jeudi",
-      		"vendredi",
-      		"samedi",
-      		"dimanche"
+	"lundi",
+	"mardi",
+	"mercredi",
+	"jeudi",
+	"vendredi",
+	"samedi",
+	"dimanche"
 ];
 
 //Helpers pour les tableaux
@@ -63,6 +63,7 @@ Template.tableauSemaines.helpers({
 		},
 	],
 });
+
 Template.semaineComparee.helpers({
 	jour: [
 		{
@@ -88,85 +89,93 @@ Template.semaineComparee.helpers({
 		},
 	],
 });
-//helper pour le tableau de semaine, avec une fonction qui observe les changement dans le document de l'utilisateur
+
 Template.newTd.helpers({
+	//fonction qui observe les changement dans le document de l'utilisateur
 	periode:function(){
+		//on récupère les scores de l'utilisateur courant
 		let mesScores = [];
 		for(let i=0;i<7;i++){
 	      	const doc = Semaines.findOne({ id_utilisateur: Meteor.userId() });
 	      	const array = doc[mesJours[i]];
 	      	mesScores.push(array);
     	}
-    let superieurASept = [];
-    for(let i=0;i<mesScores.length;i++){
-      let isSuperieur;
-      let tableauIntermediaire = [];
-      for(let j=0;j<mesScores[i].length;j++){
-        if(mesScores[i][j]>=0 && mesScores[i][j]<=7){
-          isSuperieur = false;
-        }
-        else if(mesScores[i][j]>7 && mesScores[i][j]<=10){
-          isSuperieur = true;
-        }
-        tableauIntermediaire.push(isSuperieur);
-      }
-      superieurASept.push(tableauIntermediaire);
-    }
-    let entreQuatreEtSept = [];
-    for(let i=0;i<mesScores.length;i++){
-      let isSuperieur;
-      let tableauIntermediaire = [];
-      for(let j=0;j<mesScores[i].length;j++){
-        if(mesScores[i][j]>=4 && mesScores[i][j]<=7){
-          isSuperieur = true;
-        }
-        else{
-          isSuperieur = false;
-        }
-        tableauIntermediaire.push(isSuperieur);
-      }
-      entreQuatreEtSept.push(tableauIntermediaire);
-    }
 
-    //tout stocker dans une variable
-    let semaineComparaison = [];
-    for(let i=0;i<15;i++){
-      let aAjouter = {
-          heure: mesHeures[i], 
-          id_heure: i, 
-          valeurLundi: mesScores[0][i],
-          lundiIsOk: superieurASept[0][i],
-          lundiMaybe: entreQuatreEtSept[0][i],
+    	//on vérifie si chaque score est égal ou supérieur à 7
+    	let superieurASept = [];
+    	for(let i=0;i<mesScores.length;i++){
+      		let isSuperieur;
+      		let tableauIntermediaire = [];
+      			for(let j=0;j<mesScores[i].length;j++){
+        			if(mesScores[i][j]>=0 && mesScores[i][j]<=7){
+          				isSuperieur = false;
+        			}
+        			else if(mesScores[i][j]>7 && mesScores[i][j]<=10){
+          				isSuperieur = true;
+        			}
+        			tableauIntermediaire.push(isSuperieur);
+      			}
+      		superieurASept.push(tableauIntermediaire);
+    	}
 
-          valeurMardi: mesScores[1][i],
-          mardiIsOk: superieurASept[1][i],
-          mardiMaybe: entreQuatreEtSept[1][i],
+    	//on vérifie si chaque score est compris entre 4 et 7
+    	let entreQuatreEtSept = [];
+    	for(let i=0;i<mesScores.length;i++){
+      		let isSuperieur;
+      		let tableauIntermediaire = [];
+      		for(let j=0;j<mesScores[i].length;j++){
+        		if(mesScores[i][j]>=4 && mesScores[i][j]<=7){
+          			isSuperieur = true;
+        		}
+        		else{
+          			isSuperieur = false;
+        		}
+        		tableauIntermediaire.push(isSuperieur);
+      		}
+      		entreQuatreEtSept.push(tableauIntermediaire);
+    	}
 
-          valeurMercredi: mesScores[2][i],
-          mercrediIsOk: superieurASept[2][i],
-          mercrediMaybe: entreQuatreEtSept[2][i],
+    	//tout stocker dans une variable
+    	let semaineComparaison = [];
+    	for(let i=0;i<15;i++){
+      		let aAjouter = {
+          		heure: mesHeures[i], 
+          		id_heure: i,
 
-          valeurJeudi: mesScores[3][i],
-          jeudiIsOk: superieurASept[3][i],
-          jeudiMaybe: entreQuatreEtSept[3][i],
+          		valeurLundi: mesScores[0][i],
+          		lundiIsOk: superieurASept[0][i],
+          		lundiMaybe: entreQuatreEtSept[0][i],
 
-          valeurVendredi: mesScores[4][i],
-          vendrediIsOk: superieurASept[4][i],
-          vendrediMaybe: entreQuatreEtSept[4][i],
+          		valeurMardi: mesScores[1][i],
+          		mardiIsOk: superieurASept[1][i],
+          		mardiMaybe: entreQuatreEtSept[1][i],
 
-          valeurSamedi: mesScores[5][i],
-          samediIsOk: superieurASept[5][i],
-          samediMaybe: entreQuatreEtSept[5][i],
+          		valeurMercredi: mesScores[2][i],
+          		mercrediIsOk: superieurASept[2][i],
+          		mercrediMaybe: entreQuatreEtSept[2][i],
 
-          valeurDimanche: mesScores[6][i],
-          dimancheIsOk: superieurASept[6][i],
-          dimancheMaybe: entreQuatreEtSept[6][i],
-        };
-        semaineComparaison.push(aAjouter);
-    }
-    //return du résultat
-    return semaineComparaison;
-  }
+          		valeurJeudi: mesScores[3][i],
+          		jeudiIsOk: superieurASept[3][i],
+          		jeudiMaybe: entreQuatreEtSept[3][i],
+
+          		valeurVendredi: mesScores[4][i],
+          		vendrediIsOk: superieurASept[4][i],
+          		vendrediMaybe: entreQuatreEtSept[4][i],
+
+          		valeurSamedi: mesScores[5][i],
+          		samediIsOk: superieurASept[5][i],
+          		samediMaybe: entreQuatreEtSept[5][i],
+
+          		valeurDimanche: mesScores[6][i],
+          		dimancheIsOk: superieurASept[6][i],
+          		dimancheMaybe: entreQuatreEtSept[6][i],
+        	};
+        	semaineComparaison.push(aAjouter);
+    	}
+    	
+    	//return du résultat
+    	return semaineComparaison;
+  	}
 });
 
 //Code pour les boutons permettant de changer la couleur et l'état des cellules

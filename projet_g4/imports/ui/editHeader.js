@@ -9,11 +9,13 @@ import { Notifs } from '../api/notifications.js';
 //importation des fichiers
 import '../templates/header.html';
 
+//quand le header est créé, créer une variable réactive
 Template.header.onCreated(function(){
 	this.semainePrivee = new ReactiveVar(false);
 });
 
 Template.header.rendered = function(){
+	//fonction constamment active qui vérifie les arrivées de notifications en temps réel, les affiche et les supprime de la collection
 	Tracker.autorun(()=>{
 		let thisDocument=Notifs.findOne({id_utilisateur: Meteor.userId()});
 		let thisInfo=thisDocument.info;
@@ -54,6 +56,7 @@ Template.header.events({
 });
 
 Template.header.helpers({
+	//on vérifie le changement de la valeur isPrivate dans le document de l'utilisateur dans la collection Semaines
 	comptePrive: function(){
 		let monUt = Semaines.findOne({ id_utilisateur: Meteor.userId() });
 		if(monUt.isPrivate == true){
@@ -64,6 +67,8 @@ Template.header.helpers({
 		}
 		return Template.instance().semainePrivee.get();
 	},
+
+	//on récupère le nom de l'utilisateur
 	nomUt: function(){
 		let utilisateur = Meteor.users.findOne({ "_id": Meteor.userId() });
 		let nomUtilisateur = utilisateur.username;

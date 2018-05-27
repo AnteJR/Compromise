@@ -1,6 +1,10 @@
-<template name="addGroup" style="float: left top;"> 
+<template name="addGroup"> 
         <div id="groupes">
+<<<<<<< HEAD
             <h2 style="margin-left: 15px;">Mes groupes:</h2>
+=======
+            <h3 style="margin-left: 15px;">Mes groupes:</h3>
+>>>>>>> 37a95ef4e1b53fde5f7e3b1ca9b0ef97180dbdb0
             <ul>
                 {{#each mesGroupesMembre}}
                     <li>
@@ -9,9 +13,16 @@
                 {{/each}}
             </ul>
         </div>
+<<<<<<< HEAD
         <div style="margin-left: 15px; margin-bottom: 109px;">
             <h5>Créer un groupe:</h5>
             <input type="text" id="nomGroupe" class="form-control" style ="margin-bottom: 2px;" placeholder="Nom de groupe">
             <input type="submit" id="btnCreer" class="btn btn-primary btn-lg" style ="margin-top: 2px;width:100%" value="Créer">
+=======
+        <div style="margin-left: 15px;">
+            <h3>Créer un groupe:</h3>
+            <input type="text" id="nomGroupe" style =" text-align: center;background-color: rgb(216,216,216); color: black; border: none;height: 40px; margin-bottom: 2px; cursor: auto;text-align:center" placeholder="Nom de groupe">
+            <input type="submit" id="btnCreer" class="groupButton" style =" background-color: rgb(0,132,255); color: white; padding:10px 71px;text-align: center; border: none;cursor: pointer; margin-top: 2px;" value="Créer">
+>>>>>>> 37a95ef4e1b53fde5f7e3b1ca9b0ef97180dbdb0
         </div>
 </template>

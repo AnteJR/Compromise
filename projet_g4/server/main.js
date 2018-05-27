@@ -8,6 +8,7 @@ import { ReactiveVar } from 'meteor/reactive-var';
 import { Tracker } from 'meteor/tracker';
 import { Notifs } from '../imports/api/notifications.js';
 
+//publush des collections et de permissions pour celles-ci
 Meteor.startup(() => {
   Tracker.autorun(()=>{
 		Meteor.publish('semaines', function () {
@@ -46,6 +47,9 @@ Meteor.startup(() => {
 		remove() {return true}
 	});
 	Semaines.allow({
+		remove() {return true}
+	});
+	Notifs.allow({
 		remove() {return true}
 	});
 });
