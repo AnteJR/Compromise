@@ -14,7 +14,7 @@ import '../templates/deleteAccount.html';
 
 //Créer un utilisateur
 Template.regUser.events({
-	'click .validationReg': function(event){
+	'click #validationReg': function(event){
 		event.preventDefault();
 		let nomDUt = document.getElementById('nameReg').value;
 		let emailUt = document.getElementById('emailReg').value;
@@ -41,7 +41,7 @@ Template.regUser.events({
 			}
 		});
 	},
-	'click .cancelLogin': function(event){
+	'click #cancelLogin': function(event){
 		event.preventDefault();
 		FlowRouter.go('home');
 	}
@@ -62,7 +62,7 @@ Template.logUser.events({
 			}
 		});
 	},
-	'click .cancelLogin': function(event){
+	'click #cancelLogin': function(event){
 		event.preventDefault();
 		FlowRouter.go('home');
 	}
@@ -70,7 +70,7 @@ Template.logUser.events({
 
 //Logout
 Template.logOutLink.events({
-	'click .logout': function(event){
+	'click #logout': function(event){
 		event.preventDefault();
 		Meteor.logout();
 	}
@@ -78,7 +78,7 @@ Template.logOutLink.events({
 
 //Changement de mot de passe
 Template.changePW.events({
-	'click .validationPW': function(event){
+	'click #validationPW': function(event){
 		event.preventDefault();
 		let vieuxPW = document.getElementById('oldPW').value;
 		let nouveauPW = document.getElementById('newPW').value;
@@ -92,7 +92,7 @@ Template.changePW.events({
 			}
 		});
 	},
-	'click .cancelLogin': function(event){
+	'click #cancelLogin': function(event){
 		event.preventDefault();
 		FlowRouter.go('home');
 	}
@@ -100,7 +100,7 @@ Template.changePW.events({
 
 //Suppression de l'utilisateur
 Template.delUserBtn.events({
-	'click .deleteUser': function(event){
+	'click #deleteUser': function(event){
 		event.preventDefault();
 		let s = confirm("Votre compte et votre présence sur le site seront supprimés de manière permanente. Êtes-vous sûr de vouloir supprimer votre compte ?");
 		if(s){

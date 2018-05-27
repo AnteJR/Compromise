@@ -176,22 +176,22 @@ Template.tableauSemaines.events({
 	'click #red': function(event){
 		event.preventDefault();
 		$(event.target).css({"background-color":"hsl(9, 88%, 55%, 1)"});
-		$("#yellow").css({"background-color":"rgb(0,132,255)"});
-		$("#green").css({"background-color":"rgb(0,132,255)"});
+		$("#yellow").css({"background-color":"#3ea1e6"});
+		$("#green").css({"background-color":"#3ea1e6"});
 		valeur = 0;
 	},
 	'click #yellow': function(event){
 		event.preventDefault();
 		$(event.target).css({"background-color":"hsl(49, 88%, 55%, 1)"});
-		$("#red").css({"background-color":"rgb(0,132,255)"});
-		$("#green").css({"background-color":"rgb(0,132,255)"});
+		$("#red").css({"background-color":"#3ea1e6"});
+		$("#green").css({"background-color":"#3ea1e6"});
 		valeur = 4;
 	},
 	'click #green': function(event){
 		event.preventDefault();
 		$(event.target).css({"background-color":"hsl(109, 88%, 55%, 1)"});
-		$("#yellow").css({"background-color":"rgb(0,132,255)"});
-		$("#red").css({"background-color":"rgb(0,132,255)"});
+		$("#yellow").css({"background-color":"#3ea1e6"});
+		$("#red").css({"background-color":"#3ea1e6"});
 		valeur = 10;
 	}
 });

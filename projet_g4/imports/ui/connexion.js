@@ -192,7 +192,7 @@ Template.login.events({
 		}
 	},
 	//si on appuie sur le bouton retour, on change de template et on revient à celui de base
-	'click .goBack': function(event, template){
+	'click #goBack': function(event, template){
 		event.preventDefault();
 		if(template.comparaisonTriggered.get() == true){
 				template.comparaisonTriggered.set(false);
