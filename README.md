@@ -1,6 +1,6 @@
 # Compromise - README
 ### *Compromise ver. 1.0*
-*Saara Jones, Antoine Klotz, Joël Rimaz & Sorcha Walsh*
+Par *Saara Jones, Antoine Klotz, Joël Rimaz & Sorcha Walsh*
 
 Projet réalisé dans le cadre du cours *Programmation pour Internet II - Meteor.js* donné par Isaac Pante et Loris Rimaz 
 
@@ -28,4 +28,5 @@ Les principaux modules Meteor utilisés dans ce projet sont :
 * sAlert (notifications)
 * Bootstrap (style)
 Certaines libraries et modules utilisés pour le développement sont parfois soumis à un copyright par leurs auteurs respectifs.
+
 Copyright © 2018 - l'équipe de développement de Compromise : *Saara Jones - Antoine Klotz - Joël Rimaz - Sorch Walsh*
