@@ -55,7 +55,7 @@ Template.regUser.events({
 
 Template.logUser.events({
 	//Se connecter
-	'click .validationLog': function(event){
+	'click #validationLog': function(event){
 		event.preventDefault();
 
 		//récupérer les valeurs des inputs
