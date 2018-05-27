@@ -25,237 +25,286 @@ import '../templates/newTdGrp.html';
 
 //constantes pour les heures et les jours
 const mesHeures = [
-      "08:00",
-      "09:00",
-      "10:00",
-      "11:00",
-      "12:00",
-      "13:00",
-      "14:00",
-      "15:00",
-      "16:00",
-      "17:00",
-      "18:00",
-      "19:00",
-      "20:00",
-      "21:00",
-      "22:00"
+    "08:00",
+    "09:00",
+    "10:00",
+    "11:00",
+    "12:00",
+    "13:00",
+    "14:00",
+    "15:00",
+    "16:00",
+    "17:00",
+    "18:00",
+    "19:00",
+    "20:00",
+    "21:00",
+    "22:00"
 ];
 const mesJours = [
-        "lundi",
-        "mardi",
-      "mercredi",
-        "jeudi",
-        "vendredi",
-        "samedi",
-        "dimanche"
+    "lundi",
+    "mardi",
+    "mercredi",
+    "jeudi",
+    "vendredi",
+    "samedi",
+    "dimanche"
 ];
 
 //Helpers pour les tableaux
 Template.semaineDeGroupe.helpers({
-  jour: [
-    {
-      nomJour: mesJours[0]
-    },
-    {
-      nomJour: mesJours[1]
-    },
-    {
-      nomJour: mesJours[2]
-    },
-    {
-      nomJour: mesJours[3]
-    },
-    {
-      nomJour: mesJours[4]
-    },
-    {
-      nomJour: mesJours[5]
-    },
-    {
-      nomJour: mesJours[6]
-    },
-  ],
+    jour: [
+        {
+            nomJour: mesJours[0]
+        },
+        {
+            nomJour: mesJours[1]
+        },
+        {
+            nomJour: mesJours[2]
+        },
+        {
+            nomJour: mesJours[3]
+        },
+        {
+            nomJour: mesJours[4]
+        },
+        {
+            nomJour: mesJours[5]
+        },
+        {
+            nomJour: mesJours[6]
+        },
+    ],
 });
 
-//quand le template est créé, on crée un ReactiveVar
-Template.groupe.onCreated(function(){
-  this.isAdmin = new ReactiveVar(false);
-});
-
-//events du template proposant à l'utilisateur de créer un groupe
 Template.addGroup.events({
-'click #btnCreer': function(event, template){
+    //créer un groupe
+    'click #btnCreer': function(event, template){
         event.preventDefault();
+
+        //récupérer le nom entré par l'utilisateur
         let leGroupe = document.getElementById("nomGroupe").value;
+
+        //s'il a entré quelque chose
         if(leGroupe){
-           let leGroupeId;
+            //appeler la méthode groups.create et récupérer le callback, qui est l'id du groupe fraîchement créé
+            let leGroupeId;
             Meteor.call('groups.create', Meteor.userId(), leGroupe, function(err, result){
-              leGroupeId = result
+                leGroupeId = result
             });
+
+            //fonction à timeout pour aller à la route du groupe avec l'id récupéré
             setTimeout(function(){
-              FlowRouter.go('groupe', { _id: leGroupeId });
+                FlowRouter.go('groupe', { _id: leGroupeId });
             }, 250);
         }
+
+        //s'il n'a rien entrer, le lui faire savoir
         else {
             alert("Veuillez entrer un nom de groupe!");
         }
     },
 });
 
-//helpers permettant de savoir quels sont les groupes pour lesquels on est membre
 Template.addGroup.helpers({
-  mesGroupesMembre: function(){
-    let myGroups = Groups.find({users: Meteor.userId()})
-    return myGroups;
-  }
+    //savoir quels sont les groupes pour lesquels on est membre
+    mesGroupesMembre: function(){
+        let myGroups = Groups.find({users: Meteor.userId()})
+        return myGroups;
+    }
+});
+
+//quand le template groupe est créé, on crée une variable réactive
+Template.groupe.onCreated(function(){
+  this.isAdmin = new ReactiveVar(false);
 });
 
 Template.groupe.helpers({
-  //Savoir qui est admin et récupérer son nom d'utilisateur
-  monAdmin: function(){
-    let groupeId = FlowRouter.getParam('_id');
-    let requete = Groups.findOne({_id:groupeId});
-    let idAdmin = requete.admin;
-    let leAdmin = Meteor.users.findOne({_id: idAdmin});
-    let myAdmin = leAdmin.username;
-    return myAdmin;
-  },
-  //Savoir qui est membre et récupérer leurs noms d'utilisateurs
-  mesMembres: function(){
-    let groupeId = FlowRouter.getParam('_id');
-    let requete = Groups.findOne({_id: groupeId});
-    let myMembre = [];
-    for(let i = 1; i<requete.users.length;i++){
-      let membre = requete.users[i];
-      let leMembre = Meteor.users.findOne({_id: membre});
-      myMembre[(i-1)] = {
-        monMembre: leMembre.username,
-        membreId: requete.users[i]
-      };
+    //Savoir qui est admin et récupérer son nom d'utilisateur
+    monAdmin: function(){
+        let groupeId = FlowRouter.getParam('_id');
+        let requete = Groups.findOne({_id:groupeId});
+        let idAdmin = requete.admin;
+        let leAdmin = Meteor.users.findOne({_id: idAdmin});
+        let myAdmin = leAdmin.username;
+        return myAdmin;
+    },
+
+    //Savoir qui est membre et récupérer leurs noms d'utilisateurs
+    mesMembres: function(){
+        let groupeId = FlowRouter.getParam('_id');
+        let requete = Groups.findOne({_id: groupeId});
+        let myMembre = [];
+        for(let i = 1; i<requete.users.length;i++){
+            let membre = requete.users[i];
+            let leMembre = Meteor.users.findOne({_id: membre});
+            myMembre[(i-1)] = {
+                monMembre: leMembre.username,
+                membreId: requete.users[i]
+            };
+        }
+        return myMembre;
+    },
+
+    //créer une mailing list pour un mailto
+    mailingList: function(){
+        let groupeId = FlowRouter.getParam('_id');
+        let requete = Groups.findOne({_id: groupeId});
+        let myMembre = [];
+        let listeMembre=[];
+        for(let i = 1; i<requete.users.length;i++){
+            let membre = requete.users[i];
+            let leMembre = Meteor.users.findOne({_id: membre});
+            myMembre[(i-1)] = {
+                monMembre: leMembre.emails[0].address,
+                membreId: requete.users[i];
+            }
+            listeMembre.push(myMembre[(i-1)].monMembre);
+        }
+        let mailList=listeMembre.toString();
+        return mailList;
+    },
+
+    //afficher le nom du groupe
+    nomGroupe: function(){
+        let groupeId = FlowRouter.getParam('_id');
+        let requete = Groups.findOne({_id:groupeId});
+        return(requete.name);
+    },
+
+    //savoir si l'utilisateur qui observe le groupe en est l'administrateur ou non
+    estAdmin: function(){
+        let groupeId = FlowRouter.getParam('_id');
+        let requete = Groups.findOne({_id:groupeId});
+        if(Meteor.userId() == requete.admin){
+            Template.instance().isAdmin = new ReactiveVar(true);
+        }
+        else {
+            Template.instance().isAdmin = new ReactiveVar(false);
+        }
+        return Template.instance().isAdmin.get();
     }
-  return myMembre;
-  },
-  //créer une mailing list pour un mailto
-  mailingList: function(){
-    let groupeId = FlowRouter.getParam('_id');
-    let requete = Groups.findOne({_id: groupeId});
-    let myMembre = [];
-    let listeMembre=[];
-    for(let i = 1; i<requete.users.length;i++){
-      let membre = requete.users[i];
-      let leMembre = Meteor.users.findOne({_id: membre});
-      myMembre[(i-1)] = {
-        monMembre: leMembre.emails[0].address,
-        membreId: requete.users[i]
-      };
-      listeMembre.push(myMembre[(i-1)].monMembre);
-    }
-    let mailList=listeMembre.toString();
-    return mailList;
-  }
 });
 
 Template.groupe.events({
-  'submit #ajoutDUtilisateur': function(event){
-    event.preventDefault();
-    let groupeId= FlowRouter.getParam('_id');
-    let groupName = Groups.findOne({_id:groupeId}).name;
-    let nomUt = document.getElementById("addUser").value;
-    let currentAdminEmail = Meteor.users.findOne({_id:Meteor.userId()}).emails.address;
-    //vérifier que l'adresse mail correspond au format habituel
-    let re = /\S+@\S+\.\S+/;
-    // si c'est le cas...
-    if (nomUt){
-      //vérifier qu'une semaine avec l'ID de l'utilisateur en question existe.
-      let searchRes;
-      if(nomUt.match(re)){
-        searchRes = Meteor.users.findOne({"emails.address": nomUt});
-      }
-      else if(!nomUt.match(re)){
-        searchRes = Meteor.users.findOne({username: nomUt});
-      }
-      let searchSemaine = Semaines.find({"id_utilisateur":searchRes});
-      //si ce n'est pas le cas, alerter l'utilisateur.
-      if (!searchRes){
-        alert("Cet utilisateur n'existe pas!");
-        addUser.value="";
-      }
-      //si l'utilisateur essaie de s'ajouter lui-même au groupe...
-      else if (searchRes._id == Meteor.userId()){
-        alert("C'est vous!");
-        addUser.value="";
-      }
-      //si aucune des conditions précédentes sont remplies, procéder avec l'ajout au groupe.
-      else if (!searchSemaine.isPrivate){
-        let idSearch = searchRes._id;
-        let groupeId = FlowRouter.getParam('_id');
-        //réupérer l'username de l'admin
-        let admin= Groups.findOne({_id: groupeId},{admin:Meteor.userId()}).admin;
-        let adminEmail = Meteor.users.findOne({'_id':admin}).username;
-        //tester si l'utilisateur est déjà dans le groupe.
-        let groupTest = Groups.findOne({users : idSearch, _id : groupeId});
-        //si ce n'est pas le cas, procéder
-        if (!groupTest){
-          Meteor.call("groups.updateGroup", idSearch, groupeId);
-          // notifier la personne en question.
-          Meteor.call("notifs.pushGroupAdd",idSearch, groupName,adminEmail);
-          //notifier tous les membres du groupe, à l'exception de l'admin (qui occupe la position 0
-          // et le membre en question, qui occupe la dernière position de l'array "users".
-          let thisGroupMembres = Groups.findOne({_id: groupeId}).users
-            for (i=1; i<thisGroupMembres.length-1; i++){
-              Meteor.call('notifs.pushNewGroupMember',thisGroupMembres[i],groupName,addUser.value)
-          }
-          FlowRouter.go('groupe', { _id: groupeId });
-          alert(`${addUser.value} a été ajouté!`);
-          addUser.value="";
+    //quand on remplit le formulaire pour ajouter un utilisateur
+    'submit #ajoutDUtilisateur': function(event){
+        event.preventDefault();
+
+        //récupérer les infos utiles : id du groupe, nom du groupe, nom de l'utilisateur...
+        let groupeId= FlowRouter.getParam('_id');
+        let groupName = Groups.findOne({_id:groupeId}).name;
+        let nomUt = document.getElementById("addUser").value;
+        let currentAdminEmail = Meteor.users.findOne({_id:Meteor.userId()}).emails.address;
+
+        //si on a une entrée dans l'input
+        if (nomUt){
+
+            //vérifier si on a affaire à une adresse mail ou un pseudo à l'aide d'une RegEx, puis chercher la semaine de l'utilisateur
+            let searchRes;
+            let re = /\S+@\S+\.\S+/;
+            if(nomUt.match(re)){
+                searchRes = Meteor.users.findOne({"emails.address": nomUt});
+            }
+            else if(!nomUt.match(re)){
+                searchRes = Meteor.users.findOne({username: nomUt});
+            }
+            let searchResId = searchRes._id
+            let searchSemaine = Semaines.findOne({"id_utilisateur":searchResId});
+
+            //si ce n'est pas le cas, alerter l'utilisateur.
+            if (!searchRes){
+                alert("Cet utilisateur n'existe pas!");
+                addUser.value="";
+            }
+
+            //si l'utilisateur essaie de s'ajouter lui-même au groupe...
+            else if (searchResId == Meteor.userId()){
+                alert("C'est vous!");
+                addUser.value="";
+            }
+            
+            //si aucune des conditions précédentes sont remplies, procéder avec l'ajout au groupe.
+            else if (searchSemaine.isPrivate || !searchSemaine.isPrivate){
+                let groupeId = FlowRouter.getParam('_id');
+
+                //réupérer le username de l'admin
+                let admin= Groups.findOne({_id: groupeId},{admin:Meteor.userId()}).admin;
+                let adminEmail = Meteor.users.findOne({'_id':admin}).username;
+
+                //tester si l'utilisateur est déjà dans le groupe.
+                let groupTest = Groups.findOne({users : searchResId, _id : groupeId});
+
+                //si ce n'est pas le cas, procéder
+                if (!groupTest){
+                    Meteor.call("groups.updateGroup", searchResId, groupeId);
+
+                    // notifier la personne en question.
+                    Meteor.call("notifs.pushGroupAdd",searchResId, groupName,adminEmail);
+
+                    //notifier tous les membres du groupe, à l'exception de l'admin
+                    let thisGroupMembres = Groups.findOne({_id: groupeId}).users
+                    for (i=1; i<thisGroupMembres.length-1; i++){
+                        Meteor.call('notifs.pushNewGroupMember',thisGroupMembres[i],groupName,addUser.value)
+                    }
+                    FlowRouter.go('groupe', { _id: groupeId });
+                    alert(`${addUser.value} a été ajouté!`);
+                    addUser.value="";
+                }
+
+                //si l'utilisateur est déjà dans le groupe, le dire à l'admin
+                else if (groupTest){
+                    alert("Cet utilisateur est déjà dans ce groupe!");
+                    addUser.value="";
+                }
+            }
+
+            //enfin, si les informations de l'input ne sont pas valides, prévenir l'admin
+            else{
+                alert("L'utilisateur n'a pas été trouvé!")
+                addUser.value="";
+            }
         }
-        //si l'utilisateur est déjà dans le groupe...
-        else if (groupTest){
-          alert("Cet utilisateur est déjà dans ce groupe!");
-          addUser.value="";
-        }
-      }
-      //enfin, si l'adresse mail n'est pas valide...
-      else{
-        alert("L'utilisateur n'a pas été trouvé!")
-        addUser.value="";
-      }
-    }
-  },
+    },
+
     //quand on clique sur le petit crayon, on a un prompt pour changer le nom du groupe
     'click #groupNameButton': function (event){
         event.preventDefault();
         let groupeId = FlowRouter.getParam('_id');
         let groupe = Groups.findOne({_id: groupeId});
-            let newname = window.prompt("Entrez un nouvean nom");
-            if(newname != null){
-                Meteor.call('groups.changeName', groupeId, newname);
-            } else {
-                return;
-            }
+        let newname = window.prompt("Entrez un nouvean nom");
+        if(newname != null){
+            Meteor.call('groups.changeName', groupeId, newname);
+        }
     },
-    //quand on clique sur le bouton pour quitter le groupe... On quitte le groupe
+
+    //quand on clique sur le bouton pour quitter le groupe
     'click #groupLeaveButton': function (event){
         event.preventDefault();
         let groupeId = FlowRouter.getParam('_id');
         let groupe = Groups.findOne({_id: groupeId});
         let idUt = Meteor.users.findOne({_id:Meteor.userId()}).emails[0].address;
+
+        //si l'utilisateur confirme, notifier les membres du groupe qu'il l'a quitté, puis le faire quitter le groupe et revenir à son profile, sinon revenir au groupe
         let r=confirm("Voulez-vous vraiment quitter ce groupe?");
         if (r==true){
             Meteor.call("notifs.groupMemberLeave",groupe.admin, groupe.name, idUt);
             Meteor.call('groups.leaveGroup', groupeId, Meteor.userId());
             FlowRouter.go('/')
-            }
+        }
         else{
             FlowRouter.go('groupe', { _id: groupeId });
-            }
+        }
     },
-    //quand on clique sur le bouton pour effacer le groupe... on supprime son document de la collection Groups
+
+    //quand on clique sur le bouton pour effacer le groupe
     'click #groupDeleteButton': function (event){
         event.preventDefault();
         let groupeId = FlowRouter.getParam('_id');
         let groupe = Groups.findOne({_id: groupeId});
+
+        //si l'utilisateur confirme, on supprime le document de la collection, on revient au profile et on notifie les utilisateurs de la disparition du groupe
         let s = confirm("Ce groupe sera supprimé. Procéder?");
         if (s == true){
             Groups.remove({_id: groupeId});
@@ -266,63 +315,33 @@ Template.groupe.events({
             }    
         }
     },
-    //quand l'administrateur retire un utilisateur... ça le supprime
+
+    //quand l'administrateur retire un utilisateur
     'click .banUser': function (event){
         event.preventDefault();
         let groupeId = FlowRouter.getParam('_id');
         let idUt = event.currentTarget.id;
         let nomGr = Groups.findOne({_id:groupeId}).name;
+
+        //s'il confirme, supprimer l'utilisateur du group et le notifier
         let s = confirm("Cet utilisateur sera supprimé du groupe. Procéder?");
             if (s == true){
-              Meteor.call('groups.leaveGroup', groupeId, idUt);
-              Meteor.call('notifs.kickedGroup',idUt,nomGr);
-            }
+                Meteor.call('groups.leaveGroup', groupeId, idUt);
+                Meteor.call('notifs.kickedGroup',idUt,nomGr);
+        }
     }
 });
 
-//helpers pour :
-Template.groupe.helpers({
-  //1) afficher le nom du groupe
-  nomGroupe: function(){
-    let groupeId = FlowRouter.getParam('_id');
-    let requete = Groups.findOne({_id:groupeId});
-    return(requete.name);
-  },
-  //2) savoir si l'utilisateur qui observe le groupe en est l'administrateur ou non
-  estAdmin: function(){
-    let groupeId = FlowRouter.getParam('_id');
-    let requete = Groups.findOne({_id:groupeId});
-    if(Meteor.userId() == requete.admin){
-      Template.instance().isAdmin = new ReactiveVar(true);
-    }
-    else {
-      Template.instance().isAdmin = new ReactiveVar(false);
-    }
-    return Template.instance().isAdmin.get();
-  },
-});
-
-//fonction pour obtenir les tableaux des utilisateurs
-function scoresUtilisateurCourant(idUt){
-  //tableau vide pour accueillir les scores
-  const mesScores = [];
-  //boucle qui va chercher les scores de chaque jour et les stocke dans un array à deux dimensions
-  for(let i=0;i<7;i++){
-    const doc = Semaines.findOne({ id_utilisateur: idUt });
-    const array = doc[mesJours[i]];
-    mesScores.push(array);
-  }
-  return(mesScores);
-}
-
-//helper pour le tableau de semaine, avec une fonction qui observe les changement dans le document des utilisateurs
 Template.newTdGrp.helpers({
+  //fonction qui observe les changement dans le document des utilisateurs
   periode:function(){
-    //récupération des informations des utilisateurs
+    //récupération des informations du groupe et des utilisateurs
     let groupeId = FlowRouter.getParam('_id');
     let monGroupe = Groups.findOne({_id: groupeId});
     let mbrGroupe = monGroupe.users;
     let mesScores = [];
+
+    //compiler les horaires et diviser les scores par le nombre de membres
     for(let i =0;i<mbrGroupe.length;i++){
         mesScores[i] = scoresUtilisateurCourant(mbrGroupe[i]);
     }
@@ -340,6 +359,8 @@ Template.newTdGrp.helpers({
         resultat.push(placeHolder);
     }
     mesScores = resultat;
+
+    //on teste si le nombre est supérieur ou égal à 7
     let superieurASept = [];
     for(let i=0;i<mesScores.length;i++){
       let isSuperieur;
@@ -355,6 +376,8 @@ Template.newTdGrp.helpers({
       }
       superieurASept.push(tableauIntermediaire);
     }
+
+    //on teste si le nombre est compris entre 4 et 7
     let entreQuatreEtSept = [];
     for(let i=0;i<mesScores.length;i++){
       let isSuperieur;
@@ -370,6 +393,8 @@ Template.newTdGrp.helpers({
       }
       entreQuatreEtSept.push(tableauIntermediaire);
     }
+
+    //on crée dynamiquement le code pour le helper, pour éviter une trop forte redondance
     let semaineComparaison = [];
     for(let i=0;i<15;i++){
       let aAjouter = {
@@ -405,7 +430,21 @@ Template.newTdGrp.helpers({
         };
         semaineComparaison.push(aAjouter);
     }
-    //return du résultat
+
+    //return le résultat
     return semaineComparaison;
   }
 });
+
+//fonction pour obtenir les tableaux des utilisateurs
+function scoresUtilisateurCourant(idUt){
+  //tableau vide pour accueillir les scores
+  const mesScores = [];
+  //boucle qui va chercher les scores de chaque jour et les stocke dans un array à deux dimensions
+  for(let i=0;i<7;i++){
+    const doc = Semaines.findOne({ id_utilisateur: idUt });
+    const array = doc[mesJours[i]];
+    mesScores.push(array);
+  }
+  return(mesScores);
+}

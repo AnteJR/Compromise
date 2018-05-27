@@ -4,11 +4,11 @@ import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 import { Tracker } from 'meteor/tracker';
 
+//Création de constantes qui serviront à référencer les BD dans le code
 export const Groups = new Mongo.Collection('groups');
 
-//méthodes
-
 Meteor.methods({
+    //méthode 1 : créer un groupe vide
     'groups.create'(idUt, nom){
         check(idUt, String);
         check (nom, String);
@@ -22,6 +22,8 @@ Meteor.methods({
         });
         return e;
     },
+
+    //méthode 2 : ajouter un utilisateur
     'groups.updateGroup'(idUt, idGrp){
         check(idUt, String);
         check(idGrp, String);
@@ -29,7 +31,9 @@ Meteor.methods({
             {_id: idGrp},
             { $push : { users : idUt } }
         );
-      },
+    },
+
+    //méthode 3 : changer le nom du groupe
     'groups.changeName'(idGrp,newName){
         check (idGrp, String);
         check (newName, String);
@@ -39,6 +43,8 @@ Meteor.methods({
             { $set: {name: newName} },
         )
     },
+
+    //méthode 4 : quitter le groupe (pour 1 utilisateur non-admin)
     'groups.leaveGroup'(idGrp,idUt){
         check (idGrp, String);
         check (idUt, String);

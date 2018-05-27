@@ -12,13 +12,17 @@ import '../templates/logout.html';
 import '../templates/changePassword.html';
 import '../templates/deleteAccount.html';
 
-//Créer un utilisateur
 Template.regUser.events({
+	//Créer un utilisateur
 	'click .validationReg': function(event){
 		event.preventDefault();
+
+		//récupérer les valeurs des inputs
 		let nomDUt = document.getElementById('nameReg').value;
 		let emailUt = document.getElementById('emailReg').value;
 		let passwordUt = document.getElementById('passReg').value;
+
+		//créer l'utilisateur et callback s'il y a un problème.
 		Accounts.createUser({
 			username: nomDUt,
 			email: emailUt,
@@ -41,18 +45,24 @@ Template.regUser.events({
 			}
 		});
 	},
+
+	//permettre à l'utilisateur de revenir en arrière
 	'click .cancelLogin': function(event){
 		event.preventDefault();
 		FlowRouter.go('home');
 	}
 });
 
-//Se connecter
 Template.logUser.events({
+	//Se connecter
 	'click .validationLog': function(event){
 		event.preventDefault();
+
+		//récupérer les valeurs des inputs
 		let nomDUt = document.getElementById('nameLog').value;
 		let passwordUt = document.getElementById('passLog').value;
+
+		//login avec callback
 		Meteor.loginWithPassword(nomDUt, passwordUt, function(error){
 			if(error){
 				alert(error.reason);
@@ -62,27 +72,32 @@ Template.logUser.events({
 			}
 		});
 	},
+
+	//permettre à l'utilisateur de revenir en arrière
 	'click .cancelLogin': function(event){
 		event.preventDefault();
 		FlowRouter.go('home');
 	}
 });
 
-//Logout
 Template.logOutLink.events({
+	//Logout
 	'click .logout': function(event){
 		event.preventDefault();
 		Meteor.logout();
 	}
 });
 
-//Changement de mot de passe
 Template.changePW.events({
+	//Changement de mot de passe
 	'click .validationPW': function(event){
 		event.preventDefault();
+
+		//récupérer les valeurs des inputs
 		let vieuxPW = document.getElementById('oldPW').value;
 		let nouveauPW = document.getElementById('newPW').value;
-		let monUser = Meteor.users.findOne({ _id: Meteor.userId() });
+
+		//changer le mot de passe avec les informations données
 		Accounts.changePassword(vieuxPW, nouveauPW, function(err){
 			if(err){
 				alert(err.reason);
@@ -92,22 +107,32 @@ Template.changePW.events({
 			}
 		});
 	},
+
+	//permettre à l'utilisateur de revenir en arrière
 	'click .cancelLogin': function(event){
 		event.preventDefault();
 		FlowRouter.go('home');
 	}
 });
 
-//Suppression de l'utilisateur
 Template.delUserBtn.events({
+	//Suppression de l'utilisateur
 	'click .deleteUser': function(event){
 		event.preventDefault();
+
+		//prompt de confirmation
 		let s = confirm("Votre compte et votre présence sur le site seront supprimés de manière permanente. Êtes-vous sûr de vouloir supprimer votre compte ?");
+
+		//si l'utilisateur accepte :
 		if(s){
 			alert("Vous allez nous manquer :(");
+
+			//supprimer sa semaine
 			let maSemaine = Semaines.findOne({ id_utilisateur : Meteor.userId() });
 			let maSemaineId = maSemaine._id;
 			Semaines.remove({ _id: maSemaineId });
+
+			//supprimer les groupes dont il est admin
 			for(let i = 0; i<Groups.find({}).count(); i++){
 				let groupesUtilisateurAdmin = Groups.findOne({ admin: Meteor.userId() });
 				if(groupesUtilisateurAdmin){
@@ -115,6 +140,8 @@ Template.delUserBtn.events({
 					Groups.remove({ _id: monId });
 				}
 			}
+
+			//supprimer sa présence des autres groupes
 			for(let i = 0; i<Groups.find({}).count(); i++){
 				let monGroupe = Groups.findOne({ users: Meteor.userId() });
 				if(monGroupe){
@@ -122,6 +149,8 @@ Template.delUserBtn.events({
 					Meteor.call('groups.leaveGroup', monGroupeId, Meteor.userId());
 				}
 			}
+
+			//supprimer son compte
 			Meteor.users.remove({ _id: Meteor.userId() });
 		}
 	}

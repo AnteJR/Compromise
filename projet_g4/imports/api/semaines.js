@@ -6,12 +6,10 @@ import { check } from 'meteor/check';
 //Création de constantes qui serviront à référencer les BD dans le code
 export const Semaines = new Mongo.Collection('semaines');
 
-//méthodes
 Meteor.methods({
   //méthode 1 : attribution d'un document aux valeurs par défaut dans la collection Semaines
   'semaines.createDefault'(idUt){
     check(idUt, String);
-    //le document en question, qui ne nécessite que l'id de l'utilisateur comme info supplémentaire unique
     Semaines.insert({
         id_utilisateur: idUt,
         isCreated: true,
@@ -25,27 +23,32 @@ Meteor.methods({
         dimanche: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
     });
   },
+
   //méthode 2 : mettre à jour le document quand on clique sur un des td du tableau
   'semaines.updateTable'(idUt, day, hour, score){
   	check(idUt, String);
     check(day, String);
   	check(hour, Number);
   	check(score, Number);
+
     //création dynamique d'une query pour remplacer le score au bon jour et à la bonne heure
     const doc = Semaines.findOne({ id_utilisateur: idUt });
     const array = doc[day];
     array[hour] = score;
+
     //update pour modifier, avec dans le $set la query crée dynamiquement
     Semaines.update(
         { id_utilisateur: idUt },
         { $set : { [day]: array } },
     );
   },
+
   //méthode 3 : mettre à jour une colonne entière
   'semaines.dayFill'(idUt, day, score){
     check(idUt, String);
     check(day, String);
     check(score, Number);
+
     //création dynamique d'une query et update
     const doc = Semaines.findOne({ id_utilisateur: idUt });
     let array = doc[day];
@@ -55,13 +58,15 @@ Meteor.methods({
         { $set : { [day]: array } },
     );
   },
+
   //méthode 4 : mettre à jour une ligne
   'semaines.hourFill'(idUt, hour, score){
     check(idUt, String);
     check(hour, Number);
     check(score, Number);
     const doc = Semaines.findOne({ id_utilisateur: idUt });
-    //créations de multiples updates mettant à jour les bonnes cellules
+
+    //multiples updates mettant à jour les bonnes cellules
     let day = "lundi";
     let array = doc[day];
     array[hour] = score;
@@ -112,7 +117,8 @@ Meteor.methods({
         { $set : { [day]: array } },
     );
   },
-  //méthode 5 : mettre à jour l'information concernant la confidentialité du compte
+
+  //méthode 5 : mettre à jour l'information concernant la confidentialité du compte --> de publique à privé
   'semaines.updateTrue'(idUt){
   	check(idUt, String);
     const doc = Semaines.findOne({ id_utilisateur: idUt });
@@ -121,7 +127,8 @@ Meteor.methods({
         { $set : { isPrivate : true } },
     );
   },
-  //méthode 6 : mettre à jour l'information concernant la confidentialité du compte
+
+  //méthode 6 : mettre à jour l'information concernant la confidentialité du compte --> de privé à publique
   'semaines.updateFalse'(idUt){
   	check(idUt, String);
     const doc = Semaines.findOne({ id_utilisateur: idUt });
