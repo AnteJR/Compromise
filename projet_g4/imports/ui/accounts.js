@@ -13,12 +13,7 @@ import '../templates/changePassword.html';
 import '../templates/deleteAccount.html';
 
 Template.regUser.events({
-<<<<<<< HEAD
 	'click #validationReg': function(event){
-=======
-	//Créer un utilisateur
-	'click .validationReg': function(event){
->>>>>>> 37a95ef4e1b53fde5f7e3b1ca9b0ef97180dbdb0
 		event.preventDefault();
 
 		//récupérer les valeurs des inputs
@@ -52,13 +47,7 @@ Template.regUser.events({
 			}
 		});
 	},
-<<<<<<< HEAD
 	'click #cancelLogin': function(event){
-=======
-
-	//permettre à l'utilisateur de revenir en arrière
-	'click .cancelLogin': function(event){
->>>>>>> 37a95ef4e1b53fde5f7e3b1ca9b0ef97180dbdb0
 		event.preventDefault();
 		FlowRouter.go('home');
 	}
@@ -83,37 +72,21 @@ Template.logUser.events({
 			}
 		});
 	},
-<<<<<<< HEAD
 	'click #cancelLogin': function(event){
-=======
-
-	//permettre à l'utilisateur de revenir en arrière
-	'click .cancelLogin': function(event){
->>>>>>> 37a95ef4e1b53fde5f7e3b1ca9b0ef97180dbdb0
 		event.preventDefault();
 		FlowRouter.go('home');
 	}
 });
 
 Template.logOutLink.events({
-<<<<<<< HEAD
 	'click #logout': function(event){
-=======
-	//Logout
-	'click .logout': function(event){
->>>>>>> 37a95ef4e1b53fde5f7e3b1ca9b0ef97180dbdb0
 		event.preventDefault();
 		Meteor.logout();
 	}
 });
 
 Template.changePW.events({
-<<<<<<< HEAD
 	'click #validationPW': function(event){
-=======
-	//Changement de mot de passe
-	'click .validationPW': function(event){
->>>>>>> 37a95ef4e1b53fde5f7e3b1ca9b0ef97180dbdb0
 		event.preventDefault();
 
 		//récupérer les valeurs des inputs
@@ -130,25 +103,14 @@ Template.changePW.events({
 			}
 		});
 	},
-<<<<<<< HEAD
 	'click #cancelLogin': function(event){
-=======
-
-	//permettre à l'utilisateur de revenir en arrière
-	'click .cancelLogin': function(event){
->>>>>>> 37a95ef4e1b53fde5f7e3b1ca9b0ef97180dbdb0
 		event.preventDefault();
 		FlowRouter.go('home');
 	}
 });
 
 Template.delUserBtn.events({
-<<<<<<< HEAD
 	'click #deleteUser': function(event){
-=======
-	//Suppression de l'utilisateur
-	'click .deleteUser': function(event){
->>>>>>> 37a95ef4e1b53fde5f7e3b1ca9b0ef97180dbdb0
 		event.preventDefault();
 
 		//prompt de confirmation
