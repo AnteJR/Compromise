@@ -27,6 +27,7 @@ Les principaux modules Meteor utilisés dans ce projet sont :
 * Accounts-base & Accounts-password (gestion des comptes utilisateurs)
 * sAlert (notifications)
 * Bootstrap (style)
+
 Certaines libraries et modules utilisés pour le développement sont parfois soumis à un copyright par leurs auteurs respectifs.
 
 Copyright © 2018 - l'équipe de développement de Compromise : *Saara Jones - Antoine Klotz - Joël Rimaz - Sorch Walsh*
