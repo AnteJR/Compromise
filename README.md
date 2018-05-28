@@ -24,7 +24,9 @@ La collection Users gérée par Accounts-base possède des foreigns keys dans to
 La hiérarchie des collections est de ce fait la suivante : Users > Semaines & Notifs > Groups. Sans utilisateurs, aucune semaine ne peut être créée, et sans semaine, les groupes deviennent obsolètes.
 ## License
 Ce programme est un logiciel gratuit.
-Event.Org a été développé avec le framework de développement web en Javascript Meteor dans sa version 1.6.1.
+
+Compromise a été développé avec le framework de développement web en Javascript Meteor dans sa version 1.6.1.
+
 Les principaux modules Meteor utilisés dans ce projet sont :
 * reactiveVar (variables réactives)
 * FlowRouter (les liens)
