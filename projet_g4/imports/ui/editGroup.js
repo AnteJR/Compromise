@@ -80,7 +80,7 @@ Template.semaineDeGroupe.helpers({
 
 Template.addGroup.events({
     //créer un groupe
-    'click #btnCreer': function(event, template){
+    'submit .creationGrp': function(event, template){
         event.preventDefault();
 
         //récupérer le nom entré par l'utilisateur
@@ -440,6 +440,7 @@ Template.newTdGrp.helpers({
 function scoresUtilisateurCourant(idUt){
   //tableau vide pour accueillir les scores
   const mesScores = [];
+  
   //boucle qui va chercher les scores de chaque jour et les stocke dans un array à deux dimensions
   for(let i=0;i<7;i++){
     const doc = Semaines.findOne({ id_utilisateur: idUt });

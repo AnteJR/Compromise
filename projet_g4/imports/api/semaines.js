@@ -36,7 +36,7 @@ Meteor.methods({
     const array = doc[day];
     array[hour] = score;
 
-    //update pour modifier, avec dans le $set la query crée dynamiquement
+    //update pour modifier, avec dans le $set la query créé dynamiquement
     Semaines.update(
         { id_utilisateur: idUt },
         { $set : { [day]: array } },

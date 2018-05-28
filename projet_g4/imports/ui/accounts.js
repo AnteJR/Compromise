@@ -13,8 +13,7 @@ import '../templates/changePassword.html';
 import '../templates/deleteAccount.html';
 
 Template.regUser.events({
-	//Créer un utilisateur
-	'click .validationReg': function(event){
+	'click #validationReg': function(event){
 		event.preventDefault();
 
 		//récupérer les valeurs des inputs
@@ -48,9 +47,7 @@ Template.regUser.events({
 			}
 		});
 	},
-
-	//permettre à l'utilisateur de revenir en arrière
-	'click .cancelLogin': function(event){
+	'click #cancelLogin': function(event){
 		event.preventDefault();
 		FlowRouter.go('home');
 	}
@@ -58,7 +55,7 @@ Template.regUser.events({
 
 Template.logUser.events({
 	//Se connecter
-	'click .validationLog': function(event){
+	'click #validationLog': function(event){
 		event.preventDefault();
 
 		//récupérer les valeurs des inputs
@@ -75,25 +72,21 @@ Template.logUser.events({
 			}
 		});
 	},
-
-	//permettre à l'utilisateur de revenir en arrière
-	'click .cancelLogin': function(event){
+	'click #cancelLogin': function(event){
 		event.preventDefault();
 		FlowRouter.go('home');
 	}
 });
 
 Template.logOutLink.events({
-	//Logout
-	'click .logout': function(event){
+	'click #logout': function(event){
 		event.preventDefault();
 		Meteor.logout();
 	}
 });
 
 Template.changePW.events({
-	//Changement de mot de passe
-	'click .validationPW': function(event){
+	'click #validationPW': function(event){
 		event.preventDefault();
 
 		//récupérer les valeurs des inputs
@@ -110,17 +103,14 @@ Template.changePW.events({
 			}
 		});
 	},
-
-	//permettre à l'utilisateur de revenir en arrière
-	'click .cancelLogin': function(event){
+	'click #cancelLogin': function(event){
 		event.preventDefault();
 		FlowRouter.go('home');
 	}
 });
 
 Template.delUserBtn.events({
-	//Suppression de l'utilisateur
-	'click .deleteUser': function(event){
+	'click #deleteUser': function(event){
 		event.preventDefault();
 
 		//prompt de confirmation
@@ -135,6 +125,7 @@ Template.delUserBtn.events({
 			let maSemaineId = maSemaine._id;
 			Semaines.remove({ _id: maSemaineId });
 
+			//supprimer son document dans Notifs
 			let mesNotifs = Notifs.findOne({ id_utilisateur : Meteor.userId() });
 			let mesNotifsId = mesNotifs._id;
 			Notifs.remove({ _id: mesNotifsId });
