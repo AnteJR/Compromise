@@ -17,7 +17,7 @@
                         <div>
                             <h3>Ajouter un autre utilisateur</h3>
                             <form name="ajouterUtilisateur" id="ajoutDUtilisateur" class="form-inline">
-                                <input type="text" id="addUser" class="form-control" placeholder="Adresse e-mail" autocomplete="off">
+                                <input type="text" id="addUser" class="form-control" placeholder="Pseudo ou email" autocomplete="off" style="text-align: center">
                                 <input type="submit" id="ajouterUt" class="btn btn-primary btn-lg" value="Ajouter" style="margin-left: 15px;">
                             </form>
                             <br>
@@ -42,12 +42,14 @@
                             </ul>
                         </div>
                         <br>
-                        <button id="sendEmail" class="btn btn-primary btn-lg">
+                        <button id="sendEmail" class="btn btn-primary btn-lg" style="width:75%">
                             <a href="mailto:{{mailingList}}?subject=Nouveau%20message%20à%20propos%20du%20groupe%20{{nomGroupe}}" style="color:white; text-decoration: none;">Envoyer un message au groupe</a>
                         </button>
-                        <input type="button" id="groupDeleteButton" class="btn btn-danger btn-lg" value="Supprimer ce groupe" style="margin-top:2%;">
+                        <br>
+                        <input type="button" id="groupDeleteButton" class="btn btn-danger btn-lg" value="Supprimer ce groupe" style="margin-top:2%;width: 75%">
+                        <br>
                         <a href="/">
-                            <input type="button" value="Retour" class="btn btn-primary btn-lg" style="margin-top: 5px;">
+                            <input type="button" value="Retour" class="btn btn-outline-primary btn-lg" style="margin-top:2%;width: 75%">
                         </a>
                     </div>
                 {{else}}
@@ -69,9 +71,9 @@
                             </ul>
                         </div>
                         <br>
-                        <input type="button" id="groupLeaveButton" class="btn btn-primary btn-lg" value="Quitter ce groupe"><br>
+                        <input type="button" id="groupLeaveButton" class="btn btn-primary btn-lg" value="Quitter ce groupe" style="width:75%"><br>
                         <a href="/">
-                            <input type="button" value="Retour" class="btn btn-primary btn-lg" style="margin-top: 5px;">
+                            <input type="button" value="Retour" class="btn btn-outline-primary btn-lg" style="margin-top:5px;width:75%">
                         </a>
                     </div>
                 {{/if}}

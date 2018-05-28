@@ -203,6 +203,7 @@ Template.groupe.events({
 
             //vérifier si on a affaire à une adresse mail ou un pseudo à l'aide d'une RegEx, puis chercher la semaine de l'utilisateur
             let searchRes;
+            let searchResId;
             let re = /\S+@\S+\.\S+/;
             if(nomUt.match(re)){
                 searchRes = Meteor.users.findOne({"emails.address": nomUt});
@@ -210,11 +211,13 @@ Template.groupe.events({
             else if(!nomUt.match(re)){
                 searchRes = Meteor.users.findOne({username: nomUt});
             }
-            let searchResId = searchRes._id
+            if(searchRes){
+                searchResId = searchRes._id;
+            }
             let searchSemaine = Semaines.findOne({"id_utilisateur":searchResId});
 
             //si ce n'est pas le cas, alerter l'utilisateur.
-            if (!searchRes){
+            if (!searchResId){
                 alert("Cet utilisateur n'existe pas!");
                 addUser.value="";
             }
@@ -226,7 +229,7 @@ Template.groupe.events({
             }
             
             //si aucune des conditions précédentes sont remplies, procéder avec l'ajout au groupe.
-            else if (searchSemaine.isPrivate || !searchSemaine.isPrivate){
+            else if (searchSemaine){
                 let groupeId = FlowRouter.getParam('_id');
 
                 //réupérer le username de l'admin
@@ -258,12 +261,6 @@ Template.groupe.events({
                     alert("Cet utilisateur est déjà dans ce groupe!");
                     addUser.value="";
                 }
-            }
-
-            //enfin, si les informations de l'input ne sont pas valides, prévenir l'admin
-            else{
-                alert("L'utilisateur n'a pas été trouvé!")
-                addUser.value="";
             }
         }
     },
