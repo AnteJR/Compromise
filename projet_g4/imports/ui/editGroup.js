@@ -249,9 +249,10 @@ Template.groupe.events({
             input: 'text',
             inputPlaceholder: 'Entrez un nouveau nom de groupe',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
+            confirmButtonColor: '#3ea1e6',
+            cancelButtonColor: 'hsla(9, 88%, 55%, 1)',
             confirmButtonText: 'Confirmer',
+            cancelButtonText: 'Annuler',
             inputValidator: (value) => {
                 return !value && 'You need to write something!'
             }
@@ -275,12 +276,13 @@ Template.groupe.events({
 
         //si l'utilisateur confirme, notifier les membres du groupe qu'il l'a quitté, puis le faire quitter le groupe et revenir à son profile, sinon revenir au groupe
         swal({
-            title: 'Voulez-vous vraiment quitter ce groupe?',
+            title: 'Voulez-vous vraiment quitter ce groupe ?',
             type: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Confirmer'
+            confirmButtonColor: '#3ea1e6',
+            cancelButtonColor: 'hsla(9, 88%, 55%, 1)',
+            confirmButtonText: 'Confirmer',
+            cancelButtonText: 'Annuler',
           }).then((result) => {
             if (result.value) {
               swal(
@@ -305,29 +307,31 @@ Template.groupe.events({
     'click #groupDeleteButton': function (event){
         event.preventDefault();
         let groupeId = FlowRouter.getParam('_id');
-        let groupe = Groups.findOne({_id: groupeId});
+        let nomGr = Groups.findOne({_id: groupeId}).name;
 
         //si l'utilisateur confirme, on supprime le document de la collection, on revient au profile et on notifie les utilisateurs de la disparition du groupe
         swal({
-            title: 'Voulez-vous vraiment supprimer ce groupe?',
-            text: "Vous ne pouvez pas annuler cette action!",
+            title: 'Voulez-vous vraiment supprimer ce groupe ?',
+            text: "Vous ne pouvez pas annuler cette action !",
             type: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
+            confirmButtonColor: '#3ea1e6',
+            cancelButtonColor: 'hsla(9, 88%, 55%, 1)',
+            confirmButtonText: 'Confirmer',
+            cancelButtonText: 'Annuler',
             confirmButtonText: 'Confirmer'
           }).then((result) => {
             if (result.value) {
               swal(
-                'Supprimé!',
-                'Ce groupe a été supprimé.',
+                'Supprimé !',
+                'Le groupe "'+nomGr+'" a été supprimé.',
                 'success'
               )
               Groups.remove({_id: groupeId});
               FlowRouter.go('/');
               let users = groupe.users;
               for (i=0;i<users.length;i++){
-                  Meteor.call('notifs.kickedGroup',users[i],groupe.name);
+                  Meteor.call('notifs.kickedGroup',users[i],nomGr);
               }    
             }
           })
@@ -339,23 +343,25 @@ Template.groupe.events({
         let groupeId = FlowRouter.getParam('_id');
         let idUt = event.currentTarget.id;
         let nomGr = Groups.findOne({_id:groupeId}).name;
+        let nomUtKicked = Meteor.users.findOne({ _id: idUt }).username;
 
         //s'il confirme, supprimer l'utilisateur du group et le notifier
         swal({
-            title: 'Êtes-vous sûr-e?',
+            title: 'Voulez-vous vraiment supprimer '+nomUtKicked+' ?',
             text: "Vous pourrez toujours rajouter cet utilisateur plus tard.",
             type: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Confirmer'
+            confirmButtonColor: '#3ea1e6',
+            cancelButtonColor: 'hsla(9, 88%, 55%, 1)',
+            confirmButtonText: 'Confirmer',
+            cancelButtonText: 'Annuler',
           }).then((result) => {
             if (result.value) {
-              swal(
-                'Supprimé!',
-                'Cet utilisateur a été supprimé du groupe.',
-                'success'
-              )
+                swal(
+                    'Supprimé!',
+                    nomUtKicked+' a été supprimé du groupe.',
+                    'success'
+                )
               Meteor.call('groups.leaveGroup', groupeId, idUt);
               Meteor.call('notifs.kickedGroup',idUt,nomGr);
             }

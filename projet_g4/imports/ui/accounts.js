@@ -115,12 +115,14 @@ Template.delUserBtn.events({
 		event.preventDefault();
 
 		swal({
-            title: 'Voulez-vous vraiment quitter ce groupe?',
+            title: 'Voulez-vous vraiment supprimer votre compte ?',
+            text: 'Cette action est irréversible.',
             type: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Confirmer'
+            confirmButtonColor: '#3ea1e6',
+            cancelButtonColor: 'hsla(9, 88%, 55%, 1)',
+            confirmButtonText: 'Confirmer',
+            cancelButtonText: 'Annuler',
           }).then((result) => {
             if (result.value) {
             	swal(
