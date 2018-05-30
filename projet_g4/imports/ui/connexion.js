@@ -49,6 +49,7 @@ const mesHeures = [
 ];
 
 let mesScores = [];
+let nomUtilisateurComparaison;
 
 //quand on se déconnecte, qu'importe où on est sur le site, on retourne à la page d'accueil
 Accounts.onLogout(function(){
@@ -140,14 +141,14 @@ Template.login.events({
 			let idUt2 = searchRes._id;
 			let utilisateurTeste = Semaines.findOne({id_utilisateur: idUt2});
 
-			//si l'utilisateur cherché a mis son compte en privé, alors on dit à l'utilisateur qu'il ne peut pas accèder à cette semaine
-			if(utilisateurTeste.isPrivate){
-				swal("Cet utilisateur ne désire pas partager ses informations");
+			//si l'utilisateur a entré son adresse mail ou son pseudo, on lui fait savoir qu'il ne peut continuer
+			if(Meteor.userId() == idUt2){
+				swal("C'est vous !");
 			}
 
-			//si l'utilisateur a entré son adresse mail ou son pseudo, on lui fait savoir qu'il ne peut continuer
-			else if(Meteor.userId() == idUt2){
-				swal("C'est vous !");
+			//si l'utilisateur cherché a mis son compte en privé, alors on dit à l'utilisateur qu'il ne peut pas accèder à cette semaine
+			else if(utilisateurTeste.isPrivate){
+				swal("Cet utilisateur ne désire pas partager ses informations");
 			}
 
 			//si l'utilisateur existe, qu'il ne sagit pas de soi et qu'il a son compte en publique
@@ -168,6 +169,7 @@ Template.login.events({
     			}
 
     			mesScores = mesScores3;
+    			nomUtilisateurComparaison = searchRes.username;
 
     			//changer la valeur de la variable réactive comparaisonTriggered pour afficher le tableau comparé
 				if(template.comparaisonTriggered.get() == false){
@@ -188,11 +190,17 @@ Template.login.events({
 		if(template.comparaisonTriggered.get() == true){
 				template.comparaisonTriggered.set(false);
 		}
-		document.getElementById("tableauComparaison").remove();
 	}
 });
 
+//helpers pour le tableau de comparaison
 Template.semaineComparee.helpers({
+	//on récupère le nom de l'utilisateur cherché
+	nomComparaison:function(){
+		return nomUtilisateurComparaison;
+	},
+
+	//jours de la semaine pour les <th> du tableau
 	jour: [
 		{
 			nomJour: "lundi"
@@ -219,7 +227,7 @@ Template.semaineComparee.helpers({
 });
 
 Template.newTdComp.helpers({
-	//fonction qui observe les changement dans le document de l'utilisateur
+	//fonction qui observe les changement dans la variable mesScores
 	periode:function(){
     	//on vérifie si chaque score est égal ou supérieur à 7
     	let superieurASept = [];

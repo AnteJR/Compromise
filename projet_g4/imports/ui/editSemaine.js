@@ -64,32 +64,6 @@ Template.tableauSemaines.helpers({
 	],
 });
 
-Template.semaineComparee.helpers({
-	jour: [
-		{
-			nomJour: "lundi"
-		},
-		{
-			nomJour: "mardi"
-		},
-		{
-			nomJour: "mercredi"
-		},
-		{
-			nomJour: "jeudi"
-		},
-		{
-			nomJour: "vendredi"
-		},
-		{
-			nomJour: "samedi"
-		},
-		{
-			nomJour: "dimanche"
-		},
-	],
-});
-
 Template.newTd.helpers({
 	//fonction qui observe les changement dans le document de l'utilisateur
 	periode:function(){
