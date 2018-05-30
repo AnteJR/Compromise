@@ -6,7 +6,7 @@ import { Semaines } from '../api/semaines.js';
 import { Notifs } from '../api/notifications.js';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { Groups } from '../api/groups.js';
-
+import swal from 'sweetalert2';
 
 //importation des fichiers
 import './login.html';
@@ -102,7 +102,7 @@ Template.addGroup.events({
 
         //s'il n'a rien entrer, le lui faire savoir
         else {
-            alert("Veuillez entrer un nom de groupe!");
+            swal("Veuillez entrer un nom de groupe!");
         }
     },
 });
@@ -218,13 +218,13 @@ Template.groupe.events({
 
             //si ce n'est pas le cas, alerter l'utilisateur.
             if (!searchResId){
-                alert("Cet utilisateur n'existe pas!");
+                swal("Cet utilisateur n'existe pas!");
                 addUser.value="";
             }
 
             //si l'utilisateur essaie de s'ajouter lui-même au groupe...
             else if (searchResId == Meteor.userId()){
-                alert("C'est vous!");
+                swal("C'est vous!");
                 addUser.value="";
             }
             
@@ -252,13 +252,13 @@ Template.groupe.events({
                         Meteor.call('notifs.pushNewGroupMember',thisGroupMembres[i],groupName,addUser.value)
                     }
                     FlowRouter.go('groupe', { _id: groupeId });
-                    alert(`${addUser.value} a été ajouté!`);
+                    swal(`${addUser.value} a été ajouté!`);
                     addUser.value="";
                 }
 
                 //si l'utilisateur est déjà dans le groupe, le dire à l'admin
                 else if (groupTest){
-                    alert("Cet utilisateur est déjà dans ce groupe!");
+                    swal("Cet utilisateur est déjà dans ce groupe!");
                     addUser.value="";
                 }
             }
@@ -284,15 +284,31 @@ Template.groupe.events({
         let idUt = Meteor.users.findOne({_id:Meteor.userId()}).emails[0].address;
 
         //si l'utilisateur confirme, notifier les membres du groupe qu'il l'a quitté, puis le faire quitter le groupe et revenir à son profile, sinon revenir au groupe
-        let r=confirm("Voulez-vous vraiment quitter ce groupe?");
-        if (r==true){
-            Meteor.call("notifs.groupMemberLeave",groupe.admin, groupe.name, idUt);
-            Meteor.call('groups.leaveGroup', groupeId, Meteor.userId());
-            FlowRouter.go('/')
-        }
-        else{
-            FlowRouter.go('groupe', { _id: groupeId });
-        }
+        swal({
+            title: 'Voulez-vous vraiment quitter ce groupe?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Confirmer'
+          }).then((result) => {
+            if (result.value) {
+              swal(
+                'Succès.',
+                'Vous avez quitté ce groupe.',
+                'success'
+              )
+              Meteor.call("notifs.groupMemberLeave",groupe.admin, groupe.name, idUt);
+              Meteor.call('groups.leaveGroup', groupeId, Meteor.userId());
+              FlowRouter.go('/')
+            }
+            else{
+                FlowRouter.go('groupe', { _id: groupeId });
+            }
+            }
+          )
+       
+        
     },
 
     //quand on clique sur le bouton pour effacer le groupe
@@ -302,15 +318,29 @@ Template.groupe.events({
         let groupe = Groups.findOne({_id: groupeId});
 
         //si l'utilisateur confirme, on supprime le document de la collection, on revient au profile et on notifie les utilisateurs de la disparition du groupe
-        let s = confirm("Ce groupe sera supprimé. Procéder?");
-        if (s == true){
-            Groups.remove({_id: groupeId});
-            FlowRouter.go('/');
-            let users = groupe.users;
-            for (i=0;i<users.length;i++){
-                Meteor.call('notifs.kickedGroup',users[i],groupe.name);
-            }    
-        }
+        swal({
+            title: 'Voulez-vous vraiment supprimer ce groupe?',
+            text: "Vous ne pouvez pas annuler cette action!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Confirmer'
+          }).then((result) => {
+            if (result.value) {
+              swal(
+                'Supprimé!',
+                'Ce groupe a été supprimé.',
+                'success'
+              )
+              Groups.remove({_id: groupeId});
+              FlowRouter.go('/');
+              let users = groupe.users;
+              for (i=0;i<users.length;i++){
+                  Meteor.call('notifs.kickedGroup',users[i],groupe.name);
+              }    
+            }
+          })
     },
 
     //quand l'administrateur retire un utilisateur
@@ -321,11 +351,25 @@ Template.groupe.events({
         let nomGr = Groups.findOne({_id:groupeId}).name;
 
         //s'il confirme, supprimer l'utilisateur du group et le notifier
-        let s = confirm("Cet utilisateur sera supprimé du groupe. Procéder?");
-            if (s == true){
-                Meteor.call('groups.leaveGroup', groupeId, idUt);
-                Meteor.call('notifs.kickedGroup',idUt,nomGr);
-        }
+        swal({
+            title: 'Êtes-vous sûr-e?',
+            text: "Vous pourrez toujours rajouter cet utilisateur plus tard.",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Confirmer'
+          }).then((result) => {
+            if (result.value) {
+              swal(
+                'Supprimé!',
+                'Cet utilisateur a été supprimé du groupe.',
+                'success'
+              )
+              Meteor.call('groups.leaveGroup', groupeId, idUt);
+              Meteor.call('notifs.kickedGroup',idUt,nomGr);
+            }
+          })
     }
 });
 

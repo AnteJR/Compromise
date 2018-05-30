@@ -5,6 +5,7 @@ import { Mongo } from 'meteor/mongo';
 import { Semaines } from '../api/semaines.js';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { Notifs } from '../api/notifications.js';
+import swal from 'sweetalert2'
 
 //importation des fichiers
 import './login.html';
@@ -137,12 +138,12 @@ Template.login.events({
 
 			//si l'utilisateur cherché a mis son compte en privé, alors on dit à l'utilisateur qu'il ne peut pas accèder à cette semaine
 			if(utilisateurTeste.isPrivate){
-				alert("Cet utilisateur ne désire pas partager ses informations");
+				swal("Cet utilisateur ne désire pas partager ses informations");
 			}
 
 			//si l'utilisateur a entré son adresse mail ou son pseudo, on lui fait savoir qu'il ne peut continuer
 			else if(Meteor.userId() == idUt2){
-				alert("C'est vous !");
+				swal("C'est vous !");
 			}
 
 			//si l'utilisateur existe, qu'il ne sagit pas de soi et qu'il a son compte en publique
@@ -220,7 +221,7 @@ Template.login.events({
 
 		//si aucune des conditions ci-dessus n'est validée, c'est que les informations entrées par l'utilisateurs sont erronées
 		else{
-			alert("Utilisateur non trouvable !");
+			swal("Utilisateur non trouvable !");
 		}
 	},
 
