@@ -97,7 +97,7 @@ Template.changePW.events({
 		//changer le mot de passe avec les informations données
 		Accounts.changePassword(vieuxPW, nouveauPW, function(err){
 			if(err){
-				alert(err.reason);
+				swal(err.reason);
 			}
 			else{
 				FlowRouter.go('home');

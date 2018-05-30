@@ -243,10 +243,27 @@ Template.groupe.events({
         event.preventDefault();
         let groupeId = FlowRouter.getParam('_id');
         let groupe = Groups.findOne({_id: groupeId});
-        let newname = window.prompt("Entrez un nouvean nom");
-        if(newname != null){
-            Meteor.call('groups.changeName', groupeId, newname);
-        }
+
+        swal({
+            title: 'Nouveau nom de groupe !',
+            input: 'text',
+            inputPlaceholder: 'Entrez un nouveau nom de groupe',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Confirmer',
+            inputValidator: (value) => {
+                return !value && 'You need to write something!'
+            }
+        }).then((result) => {
+            if (result.value) {
+                swal(
+                    'Nouveau nom : "'+result.value+'" !',
+                    'Vous avez changé le nom du groupe !'
+                )
+                Meteor.call('groups.changeName', groupeId, result.value);
+            }
+        });
     },
 
     //quand on clique sur le bouton pour quitter le groupe
