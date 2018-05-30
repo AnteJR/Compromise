@@ -4,7 +4,8 @@ import { Mongo } from 'meteor/mongo';
 import { Semaines } from '../api/semaines.js';
 import { Groups } from '../api/groups.js';
 import { Notifs } from '../api/notifications.js';
-import { Accounts } from 'meteor/accounts-base'
+import { Accounts } from 'meteor/accounts-base';
+import swal from 'sweetalert2';
 
 import '../templates/register.html';
 import '../templates/loginUser.html';
@@ -29,19 +30,19 @@ Template.regUser.events({
 		}, function(error){
 			let re = /\S+@\S+\.\S+/;
 			if(error || !emailUt.match(re) || !nomDUt){
-				alert(error.reason);
+				swal(error.reason);
 				if(!emailUt.match(re)){
-					alert("Veuillez entrer une adresse email correcte !");
+					swal("Veuillez entrer une adresse email correcte !");
 				}
 				else if(!nomDUt){
-					alert("Veuillez entrer un nom d'utilisateur !")
+					swal("Veuillez entrer un nom d'utilisateur !")
 				}
 			}
 
 			//s'il n'y a pas de problème, diriger l'utilisateur vers son profil, lui dire que ça a fonctionné et appeler des méthodes pour lui attribuer une semaine et des notifications
 			else{
 				FlowRouter.go('home');
-				alert("Vous avez créé votre compte !");
+				swal("Vous avez créé votre compte !");
 				Meteor.call("semaines.createDefault", Meteor.userId());
 				Meteor.call('notifs.createDefault',Meteor.userId());
 			}
@@ -65,7 +66,7 @@ Template.logUser.events({
 		//login avec callback
 		Meteor.loginWithPassword(nomDUt, passwordUt, function(error){
 			if(error){
-				alert(error.reason);
+				swal(error.reason);
 			}
 			else{
 				FlowRouter.go('home');
@@ -113,43 +114,59 @@ Template.delUserBtn.events({
 	'click #deleteUser': function(event){
 		event.preventDefault();
 
-		//prompt de confirmation
-		let s = confirm("Votre compte et votre présence sur le site seront supprimés de manière permanente. Êtes-vous sûr de vouloir supprimer votre compte ?");
+		swal({
+            title: 'Voulez-vous vraiment quitter ce groupe?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Confirmer'
+          }).then((result) => {
+            if (result.value) {
+            	swal(
+                	'Vous allez nous manquer :(',
+                	'Votre compte a été supprimé avec succès.',
+                	'warning'
+              	)
+              	//supprimer sa semaine
+				let maSemaine = Semaines.findOne({ id_utilisateur : Meteor.userId() });
+				let maSemaineId = maSemaine._id;
+				Semaines.remove({ _id: maSemaineId });
 
-		//si l'utilisateur accepte :
-		if(s){
-			alert("Vous allez nous manquer :(");
+				//supprimer son document dans Notifs
+				let mesNotifs = Notifs.findOne({ id_utilisateur : Meteor.userId() });
+				let mesNotifsId = mesNotifs._id;
+				Notifs.remove({ _id: mesNotifsId });
 
-			//supprimer sa semaine
-			let maSemaine = Semaines.findOne({ id_utilisateur : Meteor.userId() });
-			let maSemaineId = maSemaine._id;
-			Semaines.remove({ _id: maSemaineId });
-
-			//supprimer son document dans Notifs
-			let mesNotifs = Notifs.findOne({ id_utilisateur : Meteor.userId() });
-			let mesNotifsId = mesNotifs._id;
-			Notifs.remove({ _id: mesNotifsId });
-
-			//supprimer les groupes dont il est admin
-			for(let i = 0; i<Groups.find({}).count(); i++){
-				let groupesUtilisateurAdmin = Groups.findOne({ admin: Meteor.userId() });
-				if(groupesUtilisateurAdmin){
-					let monId = groupesUtilisateurAdmin._id
-					Groups.remove({ _id: monId });
+				//supprimer les groupes dont il est admin
+				for(let i = 0; i<Groups.find({}).count(); i++){
+					let groupesUtilisateurAdmin = Groups.findOne({ admin: Meteor.userId() });
+					if(groupesUtilisateurAdmin){
+						let monId = groupesUtilisateurAdmin._id
+						Groups.remove({ _id: monId });
+					}
 				}
-			}
 
-			//supprimer sa présence des autres groupes
-			for(let i = 0; i<Groups.find({}).count(); i++){
-				let monGroupe = Groups.findOne({ users: Meteor.userId() });
-				if(monGroupe){
-					let monGroupeId = monGroupe._id;
-					Meteor.call('groups.leaveGroup', monGroupeId, Meteor.userId());
+				//supprimer sa présence des autres groupes
+				for(let i = 0; i<Groups.find({}).count(); i++){
+					let monGroupe = Groups.findOne({ users: Meteor.userId() });
+					if(monGroupe){
+						let monGroupeId = monGroupe._id;
+						Meteor.call('groups.leaveGroup', monGroupeId, Meteor.userId());
+					}
 				}
-			}
 
-			//supprimer son compte
-			Meteor.users.remove({ _id: Meteor.userId() });
-		}
+				//supprimer son compte
+				Meteor.users.remove({ _id: Meteor.userId() });
+              		FlowRouter.go('/')
+            }
+            else{
+            	swal(
+                	'Ouf !',
+                	'Vous nous avez fait peur !',
+                	'warning'
+              	)
+            }
+        });
 	}
 });

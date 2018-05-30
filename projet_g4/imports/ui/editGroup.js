@@ -51,33 +51,6 @@ const mesJours = [
     "dimanche"
 ];
 
-//Helpers pour les tableaux
-Template.semaineDeGroupe.helpers({
-    jour: [
-        {
-            nomJour: mesJours[0]
-        },
-        {
-            nomJour: mesJours[1]
-        },
-        {
-            nomJour: mesJours[2]
-        },
-        {
-            nomJour: mesJours[3]
-        },
-        {
-            nomJour: mesJours[4]
-        },
-        {
-            nomJour: mesJours[5]
-        },
-        {
-            nomJour: mesJours[6]
-        },
-    ],
-});
-
 Template.addGroup.events({
     //créer un groupe
     'submit .creationGrp': function(event, template){
@@ -371,6 +344,33 @@ Template.groupe.events({
             }
           })
     }
+});
+
+//Helpers pour les tableaux
+Template.semaineDeGroupe.helpers({
+    jour: [
+        {
+            nomJour: mesJours[0]
+        },
+        {
+            nomJour: mesJours[1]
+        },
+        {
+            nomJour: mesJours[2]
+        },
+        {
+            nomJour: mesJours[3]
+        },
+        {
+            nomJour: mesJours[4]
+        },
+        {
+            nomJour: mesJours[5]
+        },
+        {
+            nomJour: mesJours[6]
+        },
+    ],
 });
 
 Template.newTdGrp.helpers({
