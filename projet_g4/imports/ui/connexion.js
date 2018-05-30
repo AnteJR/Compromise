@@ -11,8 +11,10 @@ import swal from 'sweetalert2'
 import './login.html';
 import '../templates/login.html';
 import '../templates/semaine.html';
+import '../templates/semaineComparee.html';
 import '../templates/newTr.html';
 import '../templates/newTd.html';
+import '../templates/newTdComparaisons.html';
 import '../templates/header.html';
 import '../templates/recherche.html';
 import '../templates/addGroup.html';
@@ -45,6 +47,8 @@ const mesHeures = [
   	"21:00",
   	"22:00"
 ];
+
+let mesScores = [];
 
 //quand on se déconnecte, qu'importe où on est sur le site, on retourne à la page d'accueil
 Accounts.onLogout(function(){
@@ -148,73 +152,26 @@ Template.login.events({
 
 			//si l'utilisateur existe, qu'il ne sagit pas de soi et qu'il a son compte en publique
 			else{
-    		//on récupère les semaines des deux utilisateurs et on les stocke dans des arrays
-    		const mesScores1 = scoresUtilisateurCourant(Meteor.userId());
-   			const mesScores2 = scoresUtilisateurCourant(idUt2);
+    			//on récupère les semaines des deux utilisateurs et on les stocke dans des arrays
+    			const mesScores1 = scoresUtilisateurCourant(Meteor.userId());
+   				const mesScores2 = scoresUtilisateurCourant(idUt2);
 
-    		//double boucles imbriquées qui stockent les informations compilées de deux tableaux de disponibilité sous la forme d'un array à deux dimensions
-    		const mesScores3 = [];
-    		for(let i=0;i<mesScores1.length;i++){
-   				let placeHolder = [];
-   				for(let j=0;j<mesScores1[i].length;j++){
-   					let calcul = (mesScores1[i][j] + mesScores2[i][j])/2;
-   					placeHolder.push(calcul);
+    			//double boucles imbriquées qui stockent les informations compilées de deux tableaux de disponibilité sous la forme d'un array à deux dimensions
+    			const mesScores3 = [];
+    			for(let i=0;i<mesScores1.length;i++){
+   					let placeHolder = [];
+   					for(let j=0;j<mesScores1[i].length;j++){
+   						let calcul = (mesScores1[i][j] + mesScores2[i][j])/2;
+   						placeHolder.push(calcul);
+    				}
+    				mesScores3.push(placeHolder);
     			}
-    			mesScores3.push(placeHolder);
-    		}
 
-    		//changer la valeur de la variable réactive comparaisonTriggered pour afficher le tableau comparé
-			if(template.comparaisonTriggered.get() == false){
-				template.comparaisonTriggered.set(true);
-			}
+    			mesScores = mesScores3;
 
-			//création en javascript du tableau de comparaison (en js puisque nos réactif de toute façon)
-			let monTableau = document.createElement("table");
-			monTableau.setAttribute("border",1);
-			monTableau.setAttribute("id","tableauComparaison");
-			monTableau.style = "margin-left:auto;margin-right:auto;"
-			document.body.appendChild(monTableau);
-			for(let i=0;i<mesHeures.length;i++){
-				if(i==0){
-					let unTr = document.createElement("tr");
-					monTableau.appendChild(unTr);
-					let unTd = document.createElement("td");
-					unTd.style = "width:100px;height:30px;text-align:center;line-height:30px; border: white solid 5px;"
-          			unTd.innerHTML = " "
-					unTr.appendChild(unTd);
-					for(let k=0;k<mesScores3.length;k++){
-						let mesTh = document.createElement("th");
-						mesTh.innerHTML = mesJours[k];
-						mesTh.style = "width:100px;height:30px;text-align:center;line-height:30px; border: white solid 5px;"
-						unTr.appendChild(mesTh);
-					}
-				}
-				let monTr = document.createElement("tr");
-        		monTableau.appendChild(monTr);
-        		for(let j=0;j<mesScores3.length;j++){
-          			if(j==0){
-            			let unTd = document.createElement("td");
-  		  	  			unTd.style = "width:100px; border: white solid 5px; text-align: center;"
-            			unTd.innerHTML = mesHeures[i];
-            			monTr.appendChild(unTd)
-          			}
-          			monTd = document.createElement("td");
-				  	monTd.style = "background-color:hsla("+mesScores3[j][i]+"9, 88%, 55%, 1);width:100px;height:30px;text-align:center;line-height:30px;border: white solid 5px;";
-          			if(mesScores3[j][i] >= 0 && mesScores3[j][i] < 4){
-          				monTd.innerHTML = "<b> ✕ </b>";
-          				monTd.style.color = "hsla("+mesScores3[j][i]+"0, 100%, 100%, 1)";
-          			}
-          			else if(mesScores3[j][i] >= 4 && mesScores3[j][i] < 7){
-          				monTd.innerHTML = "<b> ~ </b>";
-          				monTd.style.color += "hsla("+mesScores3[j][i]+"0, 100%, 100%, 1)";
-          			}
-          			else if(mesScores3[j][i] >= 7 && mesScores3[j][i] <= 10){
-          				monTd.innerHTML = "<b> ✓ </b>";
-          				monTd.style.color += "hsla("+mesScores3[j][i]+"0, 100%, 100%, 1)";
-          			}
-          			monTd.setAttribute("value",mesScores3[j][i]);
-				  	monTr.appendChild(monTd);
-        			}
+    			//changer la valeur de la variable réactive comparaisonTriggered pour afficher le tableau comparé
+				if(template.comparaisonTriggered.get() == false){
+					template.comparaisonTriggered.set(true);
 				}
 			}
 		}
@@ -235,16 +192,122 @@ Template.login.events({
 	}
 });
 
+Template.semaineComparee.helpers({
+	jour: [
+		{
+			nomJour: "lundi"
+		},
+		{
+			nomJour: "mardi"
+		},
+		{
+			nomJour: "mercredi"
+		},
+		{
+			nomJour: "jeudi"
+		},
+		{
+			nomJour: "vendredi"
+		},
+		{
+			nomJour: "samedi"
+		},
+		{
+			nomJour: "dimanche"
+		},
+	],
+});
+
+Template.newTdComp.helpers({
+	//fonction qui observe les changement dans le document de l'utilisateur
+	periode:function(){
+    	//on vérifie si chaque score est égal ou supérieur à 7
+    	let superieurASept = [];
+    	for(let i=0;i<mesScores.length;i++){
+      		let isSuperieur;
+      		let tableauIntermediaire = [];
+      			for(let j=0;j<mesScores[i].length;j++){
+        			if(mesScores[i][j]>=0 && mesScores[i][j]<=7){
+          				isSuperieur = false;
+        			}
+        			else if(mesScores[i][j]>7 && mesScores[i][j]<=10){
+          				isSuperieur = true;
+        			}
+        			tableauIntermediaire.push(isSuperieur);
+      			}
+      		superieurASept.push(tableauIntermediaire);
+    	}
+
+    	//on vérifie si chaque score est compris entre 4 et 7
+    	let entreQuatreEtSept = [];
+    	for(let i=0;i<mesScores.length;i++){
+      		let isSuperieur;
+      		let tableauIntermediaire = [];
+      		for(let j=0;j<mesScores[i].length;j++){
+        		if(mesScores[i][j]>=4 && mesScores[i][j]<=7){
+          			isSuperieur = true;
+        		}
+        		else{
+          			isSuperieur = false;
+        		}
+        		tableauIntermediaire.push(isSuperieur);
+      		}
+      		entreQuatreEtSept.push(tableauIntermediaire);
+    	}
+
+    	//tout stocker dans une variable
+    	let semaineComparaison = [];
+    	for(let i=0;i<15;i++){
+      		let aAjouter = {
+          		heure: mesHeures[i], 
+          		id_heure: i,
+
+          		valeurLundi: mesScores[0][i],
+          		lundiIsOk: superieurASept[0][i],
+          		lundiMaybe: entreQuatreEtSept[0][i],
+
+          		valeurMardi: mesScores[1][i],
+          		mardiIsOk: superieurASept[1][i],
+          		mardiMaybe: entreQuatreEtSept[1][i],
+
+          		valeurMercredi: mesScores[2][i],
+          		mercrediIsOk: superieurASept[2][i],
+          		mercrediMaybe: entreQuatreEtSept[2][i],
+
+          		valeurJeudi: mesScores[3][i],
+          		jeudiIsOk: superieurASept[3][i],
+          		jeudiMaybe: entreQuatreEtSept[3][i],
+
+          		valeurVendredi: mesScores[4][i],
+          		vendrediIsOk: superieurASept[4][i],
+          		vendrediMaybe: entreQuatreEtSept[4][i],
+
+          		valeurSamedi: mesScores[5][i],
+          		samediIsOk: superieurASept[5][i],
+          		samediMaybe: entreQuatreEtSept[5][i],
+
+          		valeurDimanche: mesScores[6][i],
+          		dimancheIsOk: superieurASept[6][i],
+          		dimancheMaybe: entreQuatreEtSept[6][i],
+        	};
+        	semaineComparaison.push(aAjouter);
+    	}
+    	
+    	//return du résultat
+    	return semaineComparaison;
+  	}
+});
+
 //Fonction qui retourne au tableau contenant les disponibilités d'un utilisateur donné
 function scoresUtilisateurCourant(idUt){
     //tableau vide pour accueillir les scores
-    const mesScores = [];
+    const scoresEnvoyes = [];
     
     //boucle qui va chercher les scres de chaque jour et les stocke dans un array à deux dimensions
     for(let i=0;i<7;i++){
       	const doc = Semaines.findOne({ id_utilisateur: idUt });
       	const array = doc[mesJours[i]];
-      	mesScores.push(array);
+      	scoresEnvoyes.push(array);
     }
-    return(mesScores);
+    return(scoresEnvoyes);
 }
