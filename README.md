@@ -33,8 +33,9 @@ Les principaux modules Meteor utilisés dans ce projet sont :
 * Blaze Layout (render des templates)
 * Accounts-base & Accounts-password (gestion des comptes utilisateurs)
 * sAlert (notifications)
+* sweetalert2 (alert stylisées)
 * Bootstrap (style)
 
 Certaines libraries et modules utilisés pour le développement sont parfois soumis à un copyright par leurs auteurs respectifs.
 
-Copyright © 2018 - l'équipe de développement de Compromise : *Antoine Klotz - Joël Rimaz - Saara Virtanen - Sorch Walsh*
+Copyright © 2018 - l'équipe de développement de Compromise : *Antoine Klotz - Joël Rimaz - Saara Virtanen - Sorcha Walsh*
