@@ -38,4 +38,11 @@ FlowRouter.route('/profile', {
 	action(){
 		BlazeLayout.render('login');
 	}
-})
+});
+
+FlowRouter.route('/comparaison', {
+    name: 'comparaison',
+    action(){
+        BlazeLayout.render('semaineComparee');
+    }
+});

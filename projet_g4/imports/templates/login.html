@@ -2,9 +2,6 @@
 	  {{> Template.dynamic template=main}}
 		    <div id="topcontent">
         <header>{{> header}}</header>
-  		      {{#if comparaisonTriggered}}
-  			        {{> semaineComparee}}
-  		      {{else}}
   			        <table style="width:75%;margin-left:12.5%;">
   				          <tr>
   					            <td style="width:75%;height:100%;" rowspan=2>
@@ -20,7 +17,6 @@
   					            </td>
   				          </tr>
   			        </table>
-            {{/if}}
           </div>
           {{> menuDeroulant}}
 </template>

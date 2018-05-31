@@ -59,18 +59,6 @@ Accounts.onLogout(function(){
 	FlowRouter.go("/");
 });
 
-//quand le template login est créé --> on créer un variable réactive (nom de template problématique, puisqu'inchangé depuis le début de l'application --> ce n'est pas pour le login de l'utilisateur, mais son profile)
-Template.login.onCreated(function(){
-	this.comparaisonTriggered = new ReactiveVar( false );
-});
-
-//helper du template login qui réagit aux changement de la variable réactive comparaisonTriggered
-Template.login.helpers({
-	comparaisonTriggered: function(){
-		return Template.instance().comparaisonTriggered.get();
-	},
-})
-
 //events du template login
 Template.login.events({
 	//quand on clique sur le bouton ayant pour class "semaine"
@@ -174,24 +162,14 @@ Template.login.events({
     			mesScores = mesScores3;
     			nomUtilisateurComparaison = searchRes.username;
 
-    			//changer la valeur de la variable réactive comparaisonTriggered pour afficher le tableau comparé
-				if(template.comparaisonTriggered.get() == false){
-					template.comparaisonTriggered.set(true);
-				}
+    			//aller vers le template des tableaux de comparaison
+    			FlowRouter.go('comparaison');
 			}
 		}
 
 		//si aucune des conditions ci-dessus n'est validée, c'est que les informations entrées par l'utilisateurs sont erronées
 		else{
 			swal("Utilisateur non trouvable !");
-		}
-	},
-
-	//si on appuie sur le bouton retour, on change de template et on revient à celui de base
-	'click #goBack': function(event, template){
-		event.preventDefault();
-		if(template.comparaisonTriggered.get() == true){
-				template.comparaisonTriggered.set(false);
 		}
 	}
 });
@@ -228,6 +206,15 @@ Template.semaineComparee.helpers({
 		},
 	],
 });
+
+Template.semaineComparee.events({
+	//si on appuie sur le bouton retour, on change de template et on revient à celui de base
+	'click #goBack': function(event, template){
+		event.preventDefault();
+		
+		FlowRouter.go('/profile')
+	}
+})
 
 Template.newTdComp.helpers({
 	//fonction qui observe les changement dans la variable mesScores
