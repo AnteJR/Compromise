@@ -1,7 +1,7 @@
 FlowRouter.route('/', {
-    name: 'home',
+    name: 'homePage',
     action(){
-        BlazeLayout.render('login');
+        BlazeLayout.render('homePage');
     }
 });
 
@@ -32,3 +32,10 @@ FlowRouter.route('/password', {
 		BlazeLayout.render('changePW');
 	}
 });
+
+FlowRouter.route('/profile', {
+	name: 'profile',
+	action(){
+		BlazeLayout.render('login');
+	}
+})

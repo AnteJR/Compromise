@@ -41,7 +41,7 @@ Template.regUser.events({
 
 			//s'il n'y a pas de problème, diriger l'utilisateur vers son profil, lui dire que ça a fonctionné et appeler des méthodes pour lui attribuer une semaine et des notifications
 			else{
-				FlowRouter.go('home');
+				FlowRouter.go('profile');
 				swal("Vous avez créé votre compte !");
 				Meteor.call("semaines.createDefault", Meteor.userId());
 				Meteor.call('notifs.createDefault',Meteor.userId());
@@ -50,7 +50,7 @@ Template.regUser.events({
 	},
 	'click #cancelLogin': function(event){
 		event.preventDefault();
-		FlowRouter.go('home');
+		FlowRouter.go('homePage');
 	}
 });
 
@@ -69,13 +69,13 @@ Template.logUser.events({
 				swal(error.reason);
 			}
 			else{
-				FlowRouter.go('home');
+				FlowRouter.go('profile');
 			}
 		});
 	},
 	'click #cancelLogin': function(event){
 		event.preventDefault();
-		FlowRouter.go('home');
+		FlowRouter.go('homePage');
 	}
 });
 
@@ -100,13 +100,13 @@ Template.changePW.events({
 				swal(err.reason);
 			}
 			else{
-				FlowRouter.go('home');
+				FlowRouter.go('profile');
 			}
 		});
 	},
 	'click #cancelLogin': function(event){
 		event.preventDefault();
-		FlowRouter.go('home');
+		FlowRouter.go('homePage');
 	}
 });
 
@@ -160,7 +160,7 @@ Template.delUserBtn.events({
 
 				//supprimer son compte
 				Meteor.users.remove({ _id: Meteor.userId() });
-              		FlowRouter.go('/')
+              		FlowRouter.go('homePage')
             }
             else{
             	swal(
