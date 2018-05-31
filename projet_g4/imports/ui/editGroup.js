@@ -272,7 +272,7 @@ Template.groupe.events({
         event.preventDefault();
         let groupeId = FlowRouter.getParam('_id');
         let groupe = Groups.findOne({_id: groupeId});
-        let idUt = Meteor.users.findOne({_id:Meteor.userId()}).emails[0].address;
+        let nomUt = Meteor.users.findOne({_id:Meteor.userId()}).username;
 
         //si l'utilisateur confirme, notifier les membres du groupe qu'il l'a quitté, puis le faire quitter le groupe et revenir à son profile, sinon revenir au groupe
         swal({
@@ -290,7 +290,7 @@ Template.groupe.events({
                 'Vous avez quitté ce groupe.',
                 'success'
               )
-              Meteor.call("notifs.groupMemberLeave",groupe.admin, groupe.name, idUt);
+              Meteor.call("notifs.groupMemberLeave",groupe.admin, groupe.name, nomUt);
               Meteor.call('groups.leaveGroup', groupeId, Meteor.userId());
               FlowRouter.go('/')
             }
