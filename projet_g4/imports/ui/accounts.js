@@ -106,7 +106,7 @@ Template.changePW.events({
 	},
 	'click #cancelLogin': function(event){
 		event.preventDefault();
-		FlowRouter.go('homePage');
+		FlowRouter.go('profile');
 	}
 });
 

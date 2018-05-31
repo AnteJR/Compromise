@@ -1,6 +1,7 @@
 <template name="login">
 	  {{> Template.dynamic template=main}}
-		    <header>{{> header}}</header>
+		    <div id="topcontent">
+        <header>{{> header}}</header>
   		      {{#if comparaisonTriggered}}
   			        {{> semaineComparee}}
   		      {{else}}
@@ -20,4 +21,6 @@
   				          </tr>
   			        </table>
             {{/if}}
+          </div>
+          {{> menuDeroulant}}
 </template>
