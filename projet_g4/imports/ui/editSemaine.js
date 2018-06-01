@@ -153,28 +153,28 @@ Template.newTd.helpers({
 });
 
 //Code pour les boutons permettant de changer la couleur et l'état des cellules
-var valeur;
+var valeur = 10;
 
 Template.tableauSemaines.events({
 	'click #red': function(event){
 		event.preventDefault();
-		$(event.target).css({"background-color":"hsl(9, 98%, 55%, 1)"});
-		$("#yellow").css({"background-color":"#3ea1e6"});
-		$("#green").css({"background-color":"#3ea1e6"});
+		$(event.target).css({"background-color":"hsl(9, 75%, 55%, 1)"});
+		$("#yellow").css({"background-color":"hsl(49, 70%, 70%, 1)"});
+		$("#green").css({"background-color":"hsl(109, 70%, 70%, 1)"});
 		valeur = 0;
 	},
 	'click #yellow': function(event){
 		event.preventDefault();
-		$(event.target).css({"background-color":"hsl(49, 88%, 50%, 1)"});
-		$("#red").css({"background-color":"#3ea1e6"});
-		$("#green").css({"background-color":"#3ea1e6"});
+		$(event.target).css({"background-color":"hsl(49, 75%, 55%, 1)"});
+		$("#red").css({"background-color":"hsl(9, 70%, 70%, 1)"});
+		$("#green").css({"background-color":"hsl(109, 70%, 70%, 1)"});
 		valeur = 4;
 	},
 	'click #green': function(event){
 		event.preventDefault();
-		$(event.target).css({"background-color":"hsl(130, 88%, 55%, 1)"});
-		$("#yellow").css({"background-color":"#3ea1e6"});
-		$("#red").css({"background-color":"#3ea1e6"});
+		$(event.target).css({"background-color":"hsl(109, 75%, 55%, 1)"});
+		$("#yellow").css({"background-color":"hsl(49, 70%, 70%, 1)"});
+		$("#red").css({"background-color":"hsl(9, 70%, 70%, 1)"});
 		valeur = 10;
 	}
 });
@@ -185,13 +185,13 @@ Template.newTd.events({
 	'click .semaine': function(event){
 		event.preventDefault();
 		if(valeur==0){
-			$(event.target).css({"background-color":"hsl(9, 98%, 55%, 1)"});
+			$(event.target).css({"background-color":"hsl(9, 75%, 55%, 1)"});
 			$(event.target).val(valeur);
 		} else if(valeur==4){
-			$(event.target).css({"background-color":"hsl(49, 88%, 50%, 1)"});
+			$(event.target).css({"background-color":"hsl(49, 75%, 55%, 1)"});
 			$(event.target).val(valeur);
 		} else if(valeur==10){
-			$(event.target).css({"background-color":"hsl(130, 88%, 55%, 1)"});
+			$(event.target).css({"background-color":"hsl(109, 75%, 55%, 1)"});
 			$(event.target).val(valeur);
 		}
 	},
