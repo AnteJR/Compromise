@@ -56,7 +56,7 @@ let nomUtilisateurComparaison;
 
 //quand on se déconnecte, qu'importe où on est sur le site, on retourne à la page d'accueil
 Accounts.onLogout(function(){
-	FlowRouter.go("/");
+	FlowRouter.go("homePage");
 });
 
 //events du template login

@@ -12,6 +12,7 @@ import '../templates/loginUser.html';
 import '../templates/logout.html';
 import '../templates/changePassword.html';
 import '../templates/deleteAccount.html';
+import '../templates/headerWithNoOptions.html';
 
 Template.regUser.events({
 	'click #validationReg': function(event){
@@ -41,7 +42,10 @@ Template.regUser.events({
 
 			//s'il n'y a pas de problème, diriger l'utilisateur vers son profil, lui dire que ça a fonctionné et appeler des méthodes pour lui attribuer une semaine et des notifications
 			else{
-				FlowRouter.go('profile');
+				$('.boutonsPourRegister').animate({opacity:'0',width:'120px'},200);
+				setTimeout(function(){
+					FlowRouter.go('profile');
+				},200);
 				swal("Vous avez créé votre compte !");
 				Meteor.call("semaines.createDefault", Meteor.userId());
 				Meteor.call('notifs.createDefault',Meteor.userId());
@@ -50,7 +54,10 @@ Template.regUser.events({
 	},
 	'click #cancelLogin': function(event){
 		event.preventDefault();
-		FlowRouter.go('homePage');
+		$('.accCreate').animate({opacity:'0',width:'120px'},200);
+		setTimeout(function(){
+			FlowRouter.go('homePage');
+		},200);
 	}
 });
 
@@ -69,13 +76,19 @@ Template.logUser.events({
 				swal(error.reason);
 			}
 			else{
-				FlowRouter.go('profile');
+				$('.boutonsPourLogin').animate({opacity:'0',width:'120px'},200);
+				setTimeout(function(){
+					FlowRouter.go('profile');
+				},200);
 			}
 		});
 	},
 	'click #cancelLogin': function(event){
 		event.preventDefault();
-		FlowRouter.go('homePage');
+		$('.accountsLogin').animate({opacity:'0',width:'120px'},200);
+		setTimeout(function(){
+			FlowRouter.go('homePage');
+		},200);
 	}
 });
 
@@ -100,13 +113,21 @@ Template.changePW.events({
 				swal(err.reason);
 			}
 			else{
-				FlowRouter.go('profile');
+				$('.PWChange').animate({opacity:'0',width:'240px'},200);
+				$('.essai').animate({width:'100%'},200);
+				setTimeout(function(){
+					FlowRouter.go('profile');
+				},200);
 			}
 		});
 	},
 	'click #cancelLogin': function(event){
 		event.preventDefault();
-		FlowRouter.go('profile');
+		$('.PWChange').animate({opacity:'0',width:'240px'},200);
+		$('.essai').animate({width:'100%'},200);
+		setTimeout(function(){
+			FlowRouter.go('profile');
+		},200);
 	}
 });
 
@@ -160,7 +181,7 @@ Template.delUserBtn.events({
 
 				//supprimer son compte
 				Meteor.users.remove({ _id: Meteor.userId() });
-              		FlowRouter.go('homePage')
+              	FlowRouter.go('homePage')
             }
             else{
             	swal(

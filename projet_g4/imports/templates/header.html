@@ -1,13 +1,13 @@
 <template name="header">
-    <div style="height:90px;border-bottom:solid #3ea1e6 2px;">
+    <div style="height:90px;border-bottom:solid #3ea1e6 2px;" class="monElem">
         <h1 class="display-1" style="margin-left: 30px;color:#3ea1e6;">Compromise</h1>
         <nav class="form-inline" style="float:right; margin-top: -45px;margin-right: 20px;">
-            <h5 style="margin: 2px;"> Privé: </h5>
-            <button id="prive" class="btn btn-outline-primary btn-lg" style="margin: 2px;">
+            <h5 class="mesBoutons" style="margin: 2px;"> Privé: </h5>
+            <button id="prive" class="btn btn-outline-primary btn-lg mesBoutons" style="margin: 2px;">
         	    {{#if comptePrive}}oui{{else}}non{{/if}}
             </button>    
             <div> 
-            <div class="btn-group">
+            <div class="btn-group mesBoutons">
                 <button type="button" class="btn dropdown-toggle btn-primary btn-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin: 2px;">
                     {{nomUt}} 
                 </button>
@@ -20,7 +20,7 @@
                 </div>
             </div>
             </div>
-            {{> logOutLink}}
+            <div class="mesBoutons">{{> logOutLink}}</div>
         </nav>
     </div>
     {{> sAlert}}

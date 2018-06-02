@@ -1,19 +1,27 @@
 <template name="regUser">
 	{{> Template.dynamic template=main}}
-	<div class="accCreate" style="width:300px;height:300px;margin:auto;margin-top: 20px;">
+	<header class="accCreate" style="width:100px;opacity: 0">{{> headerWNO}}</header>
+	<div class="accCreate boutonsPourRegister" style="width:150px;margin:auto;margin-top: 20px;">
 		<h3 style="width:100%;text-align:center;">Créer un compte</h3>
 		<form name="userRegister" class="newUser">
-			<p style="width:300px">
+			<p style="width:100%">
 				<input type="text" name="userName" id="nameReg" class="form-control" placeholder="Entrez un nom d'utilisateur" autocomplete="off" style="width:100%;margin-bottom: 2px;text-align: center;">
 			</p>
-			<p style="width:300px">
+			<p style="width:100%">
 				<input type="text" name="userEmail" id="emailReg" class="form-control" placeholder="Entrez une adresse email" autocomplete="off" style="width:100%;margin-bottom: 2px;text-align: center;">
 			</p>
-			<p style="width:300px">
+			<p style="width:100%">
 				<input type="password" name="userPassword" id="passReg" class="form-control" placeholder="Entrez un mot de passe" autocomplete="off" style="width:100%;margin-bottom: 2px;text-align: center;">
 			</p>
 			<input type="submit" name="submitForm" id="validationReg" class="btn btn-primary btn-lg" value="Confirmer" style="width:100%;">
 		</form>
 		<input type="button" id="cancelLogin" class="btn btn-outline-primary btn-lg" value="Retour" style="margin-top: 5px;width:100%">
 	</div>
+	<script type="text/javascript">
+		$(function(){
+			$('.accCreate').ready(function(){
+				$('.accCreate').css('opacity','0.5').animate({width:'300px',opacity:'1'},500);
+			});
+		});
+	</script>
 </template>

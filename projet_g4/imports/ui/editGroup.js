@@ -292,7 +292,8 @@ Template.groupe.events({
               )
               Meteor.call("notifs.groupMemberLeave",groupe.admin, groupe.name, nomUt);
               Meteor.call('groups.leaveGroup', groupeId, Meteor.userId());
-              FlowRouter.go('/profile')
+              comesFromHalfHeader = false;
+              FlowRouter.go('profile')
             }
             else{
                 FlowRouter.go('groupe', { _id: groupeId });
@@ -328,7 +329,8 @@ Template.groupe.events({
                 'success'
               )
               Groups.remove({_id: groupeId});
-              FlowRouter.go('/profile');
+              comesFromHalfHeader = false;
+              FlowRouter.go('profile');
               let users = groupe.users;
               for (i=0;i<users.length;i++){
                   Meteor.call('notifs.kickedGroup',users[i],nomGr);

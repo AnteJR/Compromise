@@ -1,16 +1,24 @@
 <template name="logUser">
 	{{> Template.dynamic template=main}}
-	<div class="accountsLogin" style="width:300px;height:300px;margin:auto;margin-top:20px;">
+	<header class="accountsLogin" style="width:100px;opacity:0;height:90px;">{{> headerWNO}}</header>
+	<div class="accountsLogin boutonsPourLogin" style="width:120px;margin:auto;margin-top:20px; opacity: 0">
 		<h3 style="width:100%;text-align:center;">Se connecter</h3>
 		<form style="width:100%" name="userLogin" class="loginUser">
-			<p style="width:300px">
+			<p style="width:100%">
 				<input style="width:100%;margin-bottom: 2px;text-align:center;" type="text" name="userName" id="nameLog" class="form-control" placeholder="Nom d'utilisateur ou email" autocomplete="off">
 			</p>
-			<p style="width:300px">
+			<p style="width:100%">
 				<input style="width:100%;margin-bottom: 2px;text-align:center;" type="password" name="userPassword" id="passLog" class="form-control" placeholder="Mot de passe" autocomplete="off">
 			</p>
 			<input type="submit" name="submitForm" id="validationLog" class="btn btn-primary btn-lg" value="Confirmer" style="width:100%;">
 		</form>
 		<input type="button" id="cancelLogin" class="btn btn-outline-primary btn-lg" value="Retour" style="margin-top: 5px;width:100%;">
 	</div>
+	<script type="text/javascript">
+		$(function(){
+			$('.accountsLogin').ready(function(){
+				$('.accountsLogin').css('opacity','0.5').animate({width:'300px',opacity:'1'},500);
+			});
+		});
+	</script>
 </template>
