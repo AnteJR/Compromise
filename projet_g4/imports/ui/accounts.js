@@ -43,6 +43,7 @@ Template.regUser.events({
 			//s'il n'y a pas de problème, diriger l'utilisateur vers son profil, lui dire que ça a fonctionné et appeler des méthodes pour lui attribuer une semaine et des notifications
 			else{
 				$('.boutonsPourRegister').animate({opacity:'0',width:'120px'},200);
+				$('.ligneRegister').animate({width:'100%'},200);
 				setTimeout(function(){
 					FlowRouter.go('profile');
 				},200);
@@ -77,6 +78,7 @@ Template.logUser.events({
 			}
 			else{
 				$('.boutonsPourLogin').animate({opacity:'0',width:'120px'},200);
+				$('.ligneLogin').animate({width:'100%'},200);
 				setTimeout(function(){
 					FlowRouter.go('profile');
 				},200);
