@@ -22,6 +22,7 @@ import '../templates/groupe.html';
 import '../templates/homePage.html';
 import '../templates/pullUpMenu.html';
 import '../templates/instructionContent.html';
+import '../templates/messageErreur.html';
 
 //variable constante pour faciliter le parcours de la base de donnée
 const mesJours = [
