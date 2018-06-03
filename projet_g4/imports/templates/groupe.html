@@ -4,7 +4,7 @@
     <header>{{> header}}</header>
     <table style="width:75%;margin-left:12.5%;margin-top:15px;">
         <tr>
-            <td colspan=2>
+            <td colspan=2 class="nomDuGroupe" style="opacity:0">
                 {{#if estAdmin}}
                     <h1>{{nomGroupe}}<button id="groupNameButton" style="font-size: 15px; border: white; margin-left: 15px;transform: scale(-1, 1);">✎...</button></h1>
                 {{else}}
@@ -13,7 +13,7 @@
             </td>
         </tr>
         <tr>
-            <td style="width:25%">
+            <td style="width:25%;opacity:0" class="infosEtBoutonsGroupe">
                 {{#if estAdmin}}
                     <div style="margin-bottom:100%;">
                         <div>
@@ -80,13 +80,22 @@
                     </div>
                 {{/if}}
             </td>
-            <td style="width:75%;" valign="top">
+            <td style="width:75%;opacity:0" valign="top" class="tableauSemaineDuGroupe">
                 {{> semaineDeGroupe}}
             </td>
         </tr>
     </table>
     </div>
     {{> menuDeroulant}}
+    <script type="text/javascript">
+        $(function(){
+            $('.nomDuGroupe').css('opacity','0.5').animate({opacity:'1'},250);
+            $('.infosEtBoutonsGroupe').css('opacity','0.5').animate({opacity:'1'},250);
+            setTimeout(function(){
+                $('.tableauSemaineDuGroupe').css('opacity','0.5').animate({opacity:'1'},250);
+            },250)
+        });
+    </script>
     {{else}}
         {{> errorPage}}
     {{/if}}

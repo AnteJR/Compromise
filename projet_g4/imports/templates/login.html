@@ -5,21 +5,30 @@
         <header>{{> header}}</header>
   			        <table style="width:75%;margin-left:12.5%;">
   				          <tr>
-  					            <td style="width:75%;height:100%;" rowspan=2>
+  					            <td style="width:75%;height:100%;opacity:0" class="tableauSemaineProfil" rowspan=2>
   						              {{> tableauSemaines}}
   					            </td>
-  					            <td style="width:25%;height:20%%;" valign="top">
+  					            <td style="width:25%;height:20%%;opacity:0" class="rechercheUtilisateurProfil" valign="top">
   						              {{> maRecherche}}
 					              </td>
   				          </tr>
   				          <tr>
-  					            <td style="width:25%;height:80%;" valign="bottom">
+  					            <td style="width:25%;height:80%;opacity:0" class="creationGroupeProfil" valign="bottom">
   						              {{> addGroup}}
   					            </td>
   				          </tr>
   			        </table>
         </div>
         {{> menuDeroulant}}
+        <script type="text/javascript">
+          $(function(){
+            $('.tableauSemaineProfil').css('opacity','0.5').animate({opacity:'1'},250);
+            setTimeout(function(){
+              $('.rechercheUtilisateurProfil').css('opacity','0.5').animate({opacity:'1'},250);
+              $('.creationGroupeProfil').css('opacity','0.5').animate({opacity:'1'},250);
+            },250);
+          });
+        </script>
         {{else}}
           {{> errorPage}}
     {{/if}}
