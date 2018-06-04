@@ -41,25 +41,32 @@ const mesJours = [
 Template.tableauSemaines.helpers({
 	jour: [
 		{
-			nomJour: "lundi"
+			nomJour: "lundi",
+			id_jour:0,
 		},
 		{
-			nomJour: "mardi"
+			nomJour: "mardi",
+			id_jour:1,
 		},
 		{
-			nomJour: "mercredi"
+			nomJour: "mercredi",
+			id_jour:2,
 		},
 		{
-			nomJour: "jeudi"
+			nomJour: "jeudi",
+			id_jour:3,
 		},
 		{
-			nomJour: "vendredi"
+			nomJour: "vendredi",
+			id_jour:4,
 		},
 		{
-			nomJour: "samedi"
+			nomJour: "samedi",
+			id_jour:5,
 		},
 		{
-			nomJour: "dimanche"
+			nomJour: "dimanche",
+			id_jour:6,
 		},
 	],
 });
