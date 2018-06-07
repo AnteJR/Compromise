@@ -7,25 +7,25 @@
 		
 	<tr>
 		<td id="{{id_heure}}" class="heureSemaine mesHeures{{id_heure}}" value="0" style="height:30px; width:100px; text-align:center; line-height: 30px; border: white solid 5px; cursor:pointer;">{{heure}}</td>
-		<td id="lundi_{{id_heure}}" class="semaine heure{{id_heure}} jr0" value={{valeurLundi}} style="background-color:hsla({{valeurLundi}}9, 75%, 55%, 1); border: white solid 5px; text-align:center; color:white;font-weight: bold;">
+		<td id="lundi_{{id_heure}}" class="semaine" value={{valeurLundi}} data-value={{valeurLundi}} style="background-color:hsla({{valeurLundi}}9, 75%, 55%, 1); border: white solid 5px; text-align:center; color:white;font-weight: bold; cursor:pointer;">
 			{{#if lundiIsOk}} ✓ {{else}} {{#if lundiMaybe}} ~ {{else}} ✕ {{/if}} {{/if}}
 		</td>
-		<td id="mardi_{{id_heure}}" class="semaine heure{{id_heure}} jr1" value={{valeurMardi}} style="background-color:hsla({{valeurMardi}}9, 75%, 55%, 1); border: white solid 5px;text-align:center; color:white;">
+		<td id="mardi_{{id_heure}}" class="semaine" value={{valeurMardi}} data-value={{valeurMardi}} style="background-color:hsla({{valeurMardi}}9, 75%, 55%, 1); border: white solid 5px;text-align:center; color:white; cursor:pointer;">
 			{{#if mardiIsOk}} ✓ {{else}} {{#if mardiMaybe}} ~ {{else}} ✕ {{/if}} {{/if}}
 		</td>
-		<td id="mercredi_{{id_heure}}" class="semaine heure{{id_heure}} jr2" value={{valeurMercredi}} style="background-color:hsla({{valeurMercredi}}9, 75%, 55%, 1); border: white solid 5px;text-align:center; color:white;">
+		<td id="mercredi_{{id_heure}}" class="semaine" value={{valeurMercredi}} data-value={{valeurMercredi}}  style="background-color:hsla({{valeurMercredi}}9, 75%, 55%, 1); border: white solid 5px;text-align:center; color:white; cursor:pointer;">
 			{{#if mercrediIsOk}} ✓ {{else}} {{#if mercrediMaybe}} ~ {{else}} ✕ {{/if}} {{/if}}
 		</td>
-		<td id="jeudi_{{id_heure}}" class="semaine heure{{id_heure}} jr3" value={{valeurJeudi}} style="background-color:hsla({{valeurJeudi}}9, 75%, 55%, 1); border: white solid 5px;text-align:center; color:white;">
+		<td id="jeudi_{{id_heure}}" class="semaine" value={{valeurJeudi}} data-value={{valeurJeudi}} style="background-color:hsla({{valeurJeudi}}9, 75%, 55%, 1); border: white solid 5px;text-align:center; color:white; cursor:pointer;">
 			{{#if jeudiIsOk}} ✓ {{else}} {{#if jeudiMaybe}} ~ {{else}} ✕ {{/if}} {{/if}}
 		</td>
-		<td id="vendredi_{{id_heure}}" class="semaine heure{{id_heure}} jr4" value={{valeurVendredi}} style="background-color:hsla({{valeurVendredi}}9, 75%, 55%, 1); border: white solid 5px;text-align:center; color:white;">
+		<td id="vendredi_{{id_heure}}" class="semaine" value={{valeurVendredi}} data-value={{valeurVendredi}} style="background-color:hsla({{valeurVendredi}}9, 75%, 55%, 1); border: white solid 5px;text-align:center; color:white; cursor:pointer;">
 			{{#if vendrediIsOk}} ✓ {{else}} {{#if vendrediMaybe}} ~ {{else}} ✕ {{/if}} {{/if}}
 		</td>
-		<td id="samedi_{{id_heure}}" class="semaine heure{{id_heure}} jr5" value={{valeurSamedi}} style="background-color:hsla({{valeurSamedi}}9, 75%, 55%, 1); border: white solid 5px;text-align:center; color:white;">
+		<td id="samedi_{{id_heure}}" class="semaine" value={{valeurSamedi}} data-value={{valeurSamedi}} style="background-color:hsla({{valeurSamedi}}9, 75%, 55%, 1); border: white solid 5px;text-align:center; color:white; cursor:pointer;">
 			{{#if samediIsOk}} ✓ {{else}} {{#if samediMaybe}} ~ {{else}} ✕ {{/if}} {{/if}}
 		</td>
-		<td id="dimanche_{{id_heure}}" class="semaine heure{{id_heure}} jr6" value={{valeurDimanche}} style="background-color:hsla({{valeurDimanche}}9, 75%, 55%, 1); border: white solid 5px;text-align:center; color:white;">
+		<td id="dimanche_{{id_heure}}" class="semaine" value={{valeurDimanche}} data-value={{valeurDimanche}} style="background-color:hsla({{valeurDimanche}}9, 75%, 55%, 1); border: white solid 5px;text-align:center; color:white; cursor:pointer;">
 			{{#if dimancheIsOk}} ✓ {{else}} {{#if dimancheMaybe}} ~ {{else}} ✕ {{/if}} {{/if}}
 		</td>
 	</tr>

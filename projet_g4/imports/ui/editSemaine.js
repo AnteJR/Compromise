@@ -192,14 +192,14 @@ Template.newTd.events({
 	'click .semaine': function(event){
 		event.preventDefault();
 		if(valeur==0){
-			$(event.target).css({"background-color":"hsl(9, 75%, 55%, 1)"});
 			$(event.target).val(valeur);
+			event.target.dataset.value = valeur
 		} else if(valeur==4){
-			$(event.target).css({"background-color":"hsl(49, 75%, 55%, 1)"});
 			$(event.target).val(valeur);
+			event.target.dataset.value = valeur
 		} else if(valeur==10){
-			$(event.target).css({"background-color":"hsl(109, 75%, 55%, 1)"});
 			$(event.target).val(valeur);
+			event.target.dataset.value = valeur
 		}
 	},
 	//quand on clique sur les cellules ayant la class "heureSemaine", on change la couleur et la valeur d'une ligne
@@ -207,10 +207,29 @@ Template.newTd.events({
 		event.preventDefault();
 		if(valeur==0){
 			$(event.target).val(valeur);
+			event.target.dataset.value = valeur
 		} else if(valeur==4){
 			$(event.target).val(valeur);
+			event.target.dataset.value = valeur
 		} else if(valeur==10){
 			$(event.target).val(valeur);
+			event.target.dataset.value = valeur
+		}
+	},
+	'mouseenter .semaine': function(event){
+		event.preventDefault();
+		$(event.target).css({"background-color":"hsl("+valeur+"9, 75%, 75%, 1)"});
+	},
+	'mouseleave .semaine': function(event){
+		event.preventDefault();
+		if(parseInt(event.target.dataset.value) == 0){
+			$(event.target).css({"background-color":"hsl(9, 75%, 55%, 1)"});
+		}
+		else if(parseInt(event.target.dataset.value) == 4){
+			$(event.target).css({"background-color":"hsl(49, 75%, 55%, 1)"});
+		}
+		else if(parseInt(event.target.dataset.value) == 10){
+			$(event.target).css({"background-color":"hsl(109, 75%, 55%, 1)"});
 		}
 	}
 });
@@ -221,10 +240,13 @@ Template.newTr.events({
 		event.preventDefault();
 		if(valeur==0){
 			$(event.target).val(valeur);
+			event.target.dataset.value = valeur
 		} else if(valeur==4){
 			$(event.target).val(valeur);
+			event.target.dataset.value = valeur
 		} else if(valeur==10){
 			$(event.target).val(valeur);
+			event.target.dataset.value = valeur
 		}
 	},
 });
