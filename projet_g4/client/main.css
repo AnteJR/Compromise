@@ -15,10 +15,3 @@
     background: hsla(49, 75%, 55%, 1);
     color: #fff;
 }
-.heureSemaine:hover{
-   background: rgb(214, 203, 203);
-
-}
-.joursSemaine:hover{
-    background: rgb(214, 203, 203);
-}

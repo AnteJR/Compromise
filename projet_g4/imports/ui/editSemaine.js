@@ -231,6 +231,14 @@ Template.newTd.events({
 		else if(parseInt(event.target.dataset.value) == 10){
 			$(event.target).css({"background-color":"hsl(109, 75%, 55%, 1)"});
 		}
+	},
+	'mouseenter .heureSemaine':function(event){
+		event.preventDefault();
+		$(event.target).css({"background-color":"hsl("+valeur+"9, 75%, 75%, 1)", "color":"white"});
+	},
+	'mouseleave .heureSemaine':function(event){
+		event.preventDefault();
+		$(event.target).css({"background-color":"white", "color":"black"});
 	}
 });
 
@@ -248,5 +256,42 @@ Template.newTr.events({
 			$(event.target).val(valeur);
 			event.target.dataset.value = valeur
 		}
-	},
+	}
 });
+
+Template.tableauSemaines.events({
+	'mouseenter .joursSemaine': function(event){
+		event.preventDefault();
+		let monJour = parseInt(event.currentTarget.dataset.jour)
+		let mesTd = document.querySelectorAll('.j'+monJour);
+		changeBg(mesTd)
+	},
+	'mouseleave .joursSemaine': function(event){
+		event.preventDefault();
+		let monJour = parseInt(event.currentTarget.dataset.jour);
+		let mesTd = document.querySelectorAll('.j'+monJour);
+		testValeur(mesTd);
+	}
+});
+
+function changeBg(desTd){
+	for(let i=0;i<desTd.length;i++){
+		if(desTd[i].dataset.value != valeur){
+			desTd[i].style.backgroundColor = "hsl("+valeur+"9, 75%, 75%, 1)"
+		}
+	}
+}
+
+function testValeur(desTd){
+	for(let i=0;i<desTd.length;i++){
+		if(desTd[i].dataset.value == 0){
+			desTd[i].style.backgroundColor = "hsl(9, 75%, 55%, 1)"
+		}
+		else if(desTd[i].dataset.value == 4){
+			desTd[i].style.backgroundColor = "hsl(49, 75%, 55%, 1)"
+		}
+		else if(desTd[i].dataset.value == 10){
+			desTd[i].style.backgroundColor = "hsl(109, 75%, 55%, 1)"
+		}
+	}
+}
