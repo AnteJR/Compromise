@@ -94,6 +94,22 @@ Template.groupe.onCreated(function(){
 });
 
 Template.groupe.helpers({
+    estMembre: function(){
+        let groupeId = FlowRouter.getParam('_id');
+        let requete = Groups.findOne({_id:groupeId});
+        let mesUsers = requete.users;
+        let isMember = true;
+        for(let i=0;i<mesUsers.length;i++){
+            if(mesUsers[i] == Meteor.userId()){
+                isMember = true;
+                break;
+            }
+            else{
+                isMember = false;
+            }
+        }
+        return isMember;
+    },
     //Savoir qui est admin et récupérer son nom d'utilisateur
     monAdmin: function(){
         let groupeId = FlowRouter.getParam('_id');
@@ -284,6 +300,7 @@ Template.groupe.events({
             cancelButtonColor: 'hsla(9, 88%, 55%, 1)',
             confirmButtonText: 'Confirmer',
             cancelButtonText: 'Annuler',
+            reverseButtons: true,
           }).then((result) => {
             if (result.value) {
               swal(

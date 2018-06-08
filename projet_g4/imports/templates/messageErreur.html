@@ -1,4 +1,5 @@
 <template name="errorPage">
+  <header class="headerError" style="width:100px;opacity:0;height:90px;">{{> headerWNO}}</header>
 	<div class="erreurUtilisateur" style="opacity:0;">
     	<h1 class="display-1" style="color:#3ea1e6;margin-left:auto;margin-right:auto;text-align:center;width:300px;margin-top:13%;">
     		Erreur !
@@ -15,6 +16,7 @@
     <script type="text/javascript">
     	$(function(){
         	$('.erreurUtilisateur').animate({opacity:'1'},500);
+          $('.headerError').css('opacity','0.5').animate({width:'300px',opacity:'1'},500);
       	});    
     </script>
 </template>

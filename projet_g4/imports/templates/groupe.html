@@ -1,101 +1,107 @@
 <template name="groupe">
     {{#if currentUser}}
-    <div id="topcontent">
-    <header>{{> header}}</header>
-    <table style="width:75%;margin-left:12.5%;margin-top:15px;">
-        <tr>
-            <td colspan=2 class="nomDuGroupe" style="opacity:0">
-                {{#if estAdmin}}
-                    <h1>{{nomGroupe}}<button id="groupNameButton" style="font-size: 15px; border: white; margin-left: 15px;transform: scale(-1, 1);">✎...</button></h1>
-                {{else}}
-                    <h1>{{nomGroupe}}</h1>
-                {{/if}}
-            </td>
-        </tr>
-        <tr>
-            <td style="width:25%;opacity:0" class="infosEtBoutonsGroupe">
-                {{#if estAdmin}}
-                    <div style="margin-bottom:100%;">
-                        <div>
-                            <h3>Ajouter un autre utilisateur</h3>
-                            <form name="ajouterUtilisateur" id="ajoutDUtilisateur" class="form-inline">
-                                <input type="text" id="addUser" class="form-control" placeholder="Pseudo ou email" autocomplete="off" style="text-align: center">
-                                <input type="submit" id="ajouterUt" class="btn btn-primary btn-lg" value="Ajouter" style="margin-left: 15px;">
-                            </form>
+        {{#if estMembre}}
+        <div id="topcontent">
+        <header>{{> header}}</header>
+        <table style="width:75%;margin-left:12.5%;margin-top:15px;">
+            <tr>
+                <td colspan=2 class="nomDuGroupe" style="opacity:0">
+                    {{#if estAdmin}}
+                        <h1>{{nomGroupe}}<button id="groupNameButton" style="font-size: 15px; border: white; margin-left: 15px;transform: scale(-1, 1);">✎...</button></h1>
+                    {{else}}
+                        <h1>{{nomGroupe}}</h1>
+                    {{/if}}
+                </td>
+            </tr>
+            <tr>
+                <td style="width:25%;opacity:0" class="infosEtBoutonsGroupe">
+                    {{#if estAdmin}}
+                        <div style="margin-bottom:100%;">
+                            <div>
+                                <h3>Ajouter un autre utilisateur</h3>
+                                <form name="ajouterUtilisateur" id="ajoutDUtilisateur" class="form-inline">
+                                    <input type="text" id="addUser" class="form-control" placeholder="Pseudo ou email" autocomplete="off" style="text-align: center">
+                                    <input type="submit" id="ajouterUt" class="btn btn-primary btn-lg" value="Ajouter" style="margin-left: 15px;">
+                                </form>
+                                <br>
+                            </div>
+                            <div id="groupes">
+                                <h2>Admin:</h2>
+                                <ul>
+                                    <li>
+                                        <h4>{{monAdmin}}</h4>
+                                    </li>       
+                                </ul>
+                                <h2>Membres:</h2>
+                                <ul>
+                                    {{#each mesMembres}}
+                                        <li>
+                                            <h4 id="nomUser" class="mb-0">
+                                                {{monMembre}} 
+                                                <button class="banUser" id="{{membreId}}" style="border: white;">✕</button>
+                                            </h4> 
+                                        </li>
+                                    {{/each}}
+                                </ul>
+                            </div>
                             <br>
+                            <button id="sendEmail" class="btn btn-primary btn-lg" style="width:85%">
+                                <a href="mailto:{{mailingList}}?subject=Nouveau%20message%20à%20propos%20du%20groupe%20{{nomGroupe}}" style="color:white; text-decoration: none;">
+                                    Envoyer un message au groupe
+                                </a>
+                            </button>
+                            <br>
+                            <input type="button" id="groupDeleteButton" class="btn btn-danger btn-lg" value="Supprimer ce groupe" style="margin-top:2%;width: 85%">
+                            <br>
+                            <a href="/profile">
+                                <input type="button" value="Retour" class="btn btn-outline-primary btn-lg" style="margin-top:2%;width: 85%">
+                            </a>
                         </div>
-                        <div id="groupes">
-                            <h2>Admin:</h2>
-                            <ul>
-                                <li>
-                                    <h4>{{monAdmin}}</h4>
-                                </li>       
-                            </ul>
-                            <h2>Membres:</h2>
-                            <ul>
+                    {{else}}
+                        <div style="margin-bottom:100%">
+                            <div>
+                                <h2>Admin:</h2>
+                                <ul>
+                                    <li>
+                                        <h4>{{monAdmin}}</h4>
+                                    </li>
+                                </ul>
+                                <h2>Membres:</h2>
+                                <ul>
                                 {{#each mesMembres}}
                                     <li>
-                                        <h4 id="nomUser" class="mb-0">
-                                            {{monMembre}} 
-                                            <button class="banUser" id="{{membreId}}" style="border: white;">✕</button>
-                                        </h4> 
+                                        <h4>{{monMembre}}</h4>
                                     </li>
                                 {{/each}}
-                            </ul>
+                                </ul>
+                            </div>
+                            <br>
+                            <input type="button" id="groupLeaveButton" class="btn btn-primary btn-lg" value="Quitter ce groupe" style="width:75%"><br>
+                            <a href="/profile">
+                                <input type="button" value="Retour" class="btn btn-outline-primary btn-lg" style="margin-top:5px;width:75%">
+                            </a>
                         </div>
-                        <br>
-                        <button id="sendEmail" class="btn btn-primary btn-lg" style="width:85%">
-                            <a href="mailto:{{mailingList}}?subject=Nouveau%20message%20à%20propos%20du%20groupe%20{{nomGroupe}}" style="color:white; text-decoration: none;">Envoyer un message au groupe</a>
-                        </button>
-                        <br>
-                        <input type="button" id="groupDeleteButton" class="btn btn-danger btn-lg" value="Supprimer ce groupe" style="margin-top:2%;width: 85%">
-                        <br>
-                        <a href="/profile">
-                            <input type="button" value="Retour" class="btn btn-outline-primary btn-lg" style="margin-top:2%;width: 85%">
-                        </a>
-                    </div>
-                {{else}}
-                    <div style="margin-bottom:100%">
-                        <div>
-                            <h2>Admin:</h2>
-                            <ul>
-                                <li>
-                                    <h4>{{monAdmin}}</h4>
-                                </li>
-                            </ul>
-                            <h2>Membres:</h2>
-                            <ul>
-                            {{#each mesMembres}}
-                                <li>
-                                    <h4>{{monMembre}}</h4>
-                                </li>
-                            {{/each}}
-                            </ul>
-                        </div>
-                        <br>
-                        <input type="button" id="groupLeaveButton" class="btn btn-primary btn-lg" value="Quitter ce groupe" style="width:75%"><br>
-                        <a href="/profile">
-                            <input type="button" value="Retour" class="btn btn-outline-primary btn-lg" style="margin-top:5px;width:75%">
-                        </a>
-                    </div>
-                {{/if}}
-            </td>
-            <td style="width:75%;opacity:0" valign="top" class="tableauSemaineDuGroupe">
-                {{> semaineDeGroupe}}
-            </td>
-        </tr>
-    </table>
-    </div>
-    {{> menuDeroulant}}
-    <script type="text/javascript">
-        $(function(){
-            $('.nomDuGroupe').css('opacity','0.5').animate({opacity:'1'},250);
-            $('.infosEtBoutonsGroupe').css('opacity','0.5').animate({opacity:'1'},250);
-            setTimeout(function(){
-                $('.tableauSemaineDuGroupe').css('opacity','0.5').animate({opacity:'1'},250);
-            },250)
-        });
-    </script>
+                    {{/if}}
+                </td>
+                <td style="width:75%;opacity:0" valign="top" class="tableauSemaineDuGroupe">
+                    {{> semaineDeGroupe}}
+                </td>
+            </tr>
+        </table>
+        </div>
+        {{> menuDeroulant}}
+        <script type="text/javascript">
+            $(function(){
+                $('.nomDuGroupe').css('opacity','0.5').animate({opacity:'1'},250);
+                $('.infosEtBoutonsGroupe').css('opacity','0.5').animate({opacity:'1'},250);
+                setTimeout(function(){
+                    $('.tableauSemaineDuGroupe').css('opacity','0.5').animate({opacity:'1'},250);
+                },250)
+            });
+        </script>
+        {{else}}
+            {{> errorPageGroupe}}
+        {{/if}}
     {{else}}
         {{> errorPage}}
     {{/if}}

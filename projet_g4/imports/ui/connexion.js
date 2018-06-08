@@ -23,6 +23,7 @@ import '../templates/homePage.html';
 import '../templates/pullUpMenu.html';
 import '../templates/instructionContent.html';
 import '../templates/messageErreur.html';
+import '../templates/messageErreurGrp.html';
 import '../templates/messageErreurComparaison.html';
 
 //variable constante pour faciliter le parcours de la base de donnée
