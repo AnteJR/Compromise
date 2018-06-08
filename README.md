@@ -12,7 +12,7 @@ Le public cible de cette application est très large. Il ne vise pas d'audience 
 ## Interface
 Cette section décrit les différentes étapes d'utilisation.
 * L'utilisateur, à l'écran d'accueil, peut soit se créer un compte, soit se connecter
-![Alt text](C:\Users\antoi\Desktop\projetgr4\projet_g4\compromise/Capture_compromise_login_page.png "Page d'accueil")
+![Alt text](https://github.com/sorchawalsh/projetgr4/compromise/Capture_compromise_login_page.png "Page d'accueil")
 * Il est ensuite dirigé vers la page principale, contenant un tableau alors rempli comme étant entièrement indisponible.
 ![Alt text](C:\Users\antoi\Desktop\projetgr4\projet_g4\compromise/Capture_compromise_main_page_indisponible.png "Page d'utilisateur vierge")
 * Il peut ici modifier ses disponibilités en utilisant les boutons situés sous le tableau, chercher un utilisateur avec un email ou un pseudo pour comparer son horaire avec le sien, ainsi que créer et accéder à ses groupes.
