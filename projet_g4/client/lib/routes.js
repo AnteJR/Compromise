@@ -40,7 +40,7 @@ FlowRouter.route('/profile', {
 	}
 });
 
-FlowRouter.route('/comparaison', {
+FlowRouter.route('/comparaison/:_id', {
     name: 'comparaison',
     action(){
         BlazeLayout.render('semaineComparee');

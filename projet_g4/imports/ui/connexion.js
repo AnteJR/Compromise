@@ -52,9 +52,6 @@ const mesHeures = [
   	"22:00"
 ];
 
-let mesScores = [];
-let nomUtilisateurComparaison;
-
 //quand on se déconnecte, qu'importe où on est sur le site, on retourne à la page d'accueil
 Accounts.onLogout(function(){
 	FlowRouter.go("homePage");
@@ -145,26 +142,8 @@ Template.login.events({
 
 			//si l'utilisateur existe, qu'il ne sagit pas de soi et qu'il a son compte en publique
 			else{
-    			//on récupère les semaines des deux utilisateurs et on les stocke dans des arrays
-    			const mesScores1 = scoresUtilisateurCourant(Meteor.userId());
-   				const mesScores2 = scoresUtilisateurCourant(idUt2);
-
-    			//double boucles imbriquées qui stockent les informations compilées de deux tableaux de disponibilité sous la forme d'un array à deux dimensions
-    			const mesScores3 = [];
-    			for(let i=0;i<mesScores1.length;i++){
-   					let placeHolder = [];
-   					for(let j=0;j<mesScores1[i].length;j++){
-   						let calcul = (mesScores1[i][j] + mesScores2[i][j])/2;
-   						placeHolder.push(calcul);
-    				}
-    				mesScores3.push(placeHolder);
-    			}
-
-    			mesScores = mesScores3;
-    			nomUtilisateurComparaison = searchRes.username;
-
     			//aller vers le template des tableaux de comparaison
-    			FlowRouter.go('comparaison');
+    			FlowRouter.go('comparaison', { _id: idUt2 });
 			}
 		}
 
@@ -179,7 +158,9 @@ Template.login.events({
 Template.semaineComparee.helpers({
 	//on récupère le nom de l'utilisateur cherché
 	nomComparaison:function(){
-		return nomUtilisateurComparaison;
+		let idUtCompare = FlowRouter.getParam('_id');
+		let monUt = Meteor.users.findOne({ _id: idUtCompare });
+		return monUt.username;
 	},
 
 	//jours de la semaine pour les <th> du tableau
@@ -218,8 +199,27 @@ Template.semaineComparee.events({
 })
 
 Template.newTdComp.helpers({
-	//fonction qui observe les changement dans la variable mesScores
+	//fonction qui observe les changement dans les semaines des utilisateurs et compile leurs tableaux
 	periode:function(){
+		let mesScores = [];
+		let idUt2 = FlowRouter.getParam('_id');
+
+		//on récupère les semaines des deux utilisateurs et on les stocke dans des arrays
+    	const mesScores1 = scoresUtilisateurCourant(Meteor.userId());
+   		const mesScores2 = scoresUtilisateurCourant(idUt2);
+
+    	//double boucles imbriquées qui stockent les informations compilées de deux tableaux de disponibilité sous la forme d'un array à deux dimensions
+    	const mesScores3 = [];
+    	for(let i=0;i<mesScores1.length;i++){
+   			let placeHolder = [];
+   			for(let j=0;j<mesScores1[i].length;j++){
+   				let calcul = (mesScores1[i][j] + mesScores2[i][j])/2;
+   				placeHolder.push(calcul);
+    		}
+    		mesScores3.push(placeHolder);
+   		}
+    	mesScores = mesScores3;
+
     	//on vérifie si chaque score est égal ou supérieur à 7
     	let superieurASept = [];
     	for(let i=0;i<mesScores.length;i++){
