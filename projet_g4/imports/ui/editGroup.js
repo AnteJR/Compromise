@@ -253,6 +253,7 @@ Template.groupe.events({
             cancelButtonColor: 'hsla(9, 88%, 55%, 1)',
             confirmButtonText: 'Confirmer',
             cancelButtonText: 'Annuler',
+            reverseButtons: true,
             inputValidator: (value) => {
                 return !value && 'You need to write something!'
             }
@@ -320,7 +321,8 @@ Template.groupe.events({
             cancelButtonColor: 'hsla(9, 88%, 55%, 1)',
             confirmButtonText: 'Confirmer',
             cancelButtonText: 'Annuler',
-            confirmButtonText: 'Confirmer'
+            confirmButtonText: 'Confirmer',
+            reverseButtons: true,
           }).then((result) => {
             if (result.value) {
               swal(
@@ -357,6 +359,7 @@ Template.groupe.events({
             cancelButtonColor: 'hsla(9, 88%, 55%, 1)',
             confirmButtonText: 'Confirmer',
             cancelButtonText: 'Annuler',
+            reverseButtons: true,
           }).then((result) => {
             if (result.value) {
                 swal(
