@@ -216,10 +216,12 @@ Template.newTd.events({
 			event.target.dataset.value = valeur
 		}
 	},
+	//quand on entre sur une cellule ayant la class "semaine", on change sa couleur avec celle de la valeur
 	'mouseenter .semaine': function(event){
 		event.preventDefault();
 		$(event.target).css({"background-color":"hsl("+valeur+"9, 75%, 75%, 1)"});
 	},
+	//quand on quitte une cellule ayant la class "semaine", on réinitialise sa couleur
 	'mouseleave .semaine': function(event){
 		event.preventDefault();
 		if(parseInt(event.target.dataset.value) == 0){
@@ -231,14 +233,6 @@ Template.newTd.events({
 		else if(parseInt(event.target.dataset.value) == 10){
 			$(event.target).css({"background-color":"hsl(109, 75%, 55%, 1)"});
 		}
-	},
-	'mouseenter .heureSemaine':function(event){
-		event.preventDefault();
-		$(event.target).css({"background-color":"hsl("+valeur+"9, 75%, 75%, 1)", "color":"white"});
-	},
-	'mouseleave .heureSemaine':function(event){
-		event.preventDefault();
-		$(event.target).css({"background-color":"white", "color":"black"});
 	}
 });
 
@@ -260,20 +254,37 @@ Template.newTr.events({
 });
 
 Template.tableauSemaines.events({
+	//quand on passe sur une cellule ayant la class "joursSemaine", on récupère le numréo du jour et on lance la fonction changeBg()
 	'mouseenter .joursSemaine': function(event){
 		event.preventDefault();
 		let monJour = parseInt(event.currentTarget.dataset.jour)
 		let mesTd = document.querySelectorAll('.j'+monJour);
 		changeBg(mesTd)
 	},
+	//quand on quitte une cellule ayant la class "joursSemaine", on récupère le numéro du jour et on lance la fonction testValeur()
 	'mouseleave .joursSemaine': function(event){
 		event.preventDefault();
 		let monJour = parseInt(event.currentTarget.dataset.jour);
 		let mesTd = document.querySelectorAll('.j'+monJour);
 		testValeur(mesTd);
+	},
+	//quand on passe sur une celleul ayant la class "heureSemaine", on récupère le numéro de l'heure et on lance la fonction changeBg()
+	'mouseenter .heureSemaine': function(event){
+		event.preventDefault();
+		let monHeure = parseInt(event.currentTarget.dataset.heure);
+		let monTd = document.querySelectorAll('.heure'+monHeure);
+		changeBg(monTd);
+	},
+	//quand on quitte une cellule ayant la class "heureSemaine", on récupère le numéro de l'heure et on lance la fonction testValeur()
+	'mouseleave .heureSemaine': function(event){
+		event.preventDefault();
+		let monHeure = parseInt(event.currentTarget.dataset.heure);
+		let monTd = document.querySelectorAll('.heure'+monHeure);
+		testValeur(monTd);
 	}
 });
 
+//fonction changeBg() qui change la background-color de toutes les cellules ayant une valeur différente de celle sélectionnée
 function changeBg(desTd){
 	for(let i=0;i<desTd.length;i++){
 		if(desTd[i].dataset.value != valeur){
@@ -281,7 +292,7 @@ function changeBg(desTd){
 		}
 	}
 }
-
+//fonction testValeur() qui réinitialise les couleurs de background des cellules dont la couleur a été changée
 function testValeur(desTd){
 	for(let i=0;i<desTd.length;i++){
 		if(desTd[i].dataset.value == 0){
