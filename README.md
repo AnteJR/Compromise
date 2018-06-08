@@ -12,14 +12,14 @@ Le public cible de cette application est très large. Il ne vise pas d'audience 
 ## Interface
 Cette section décrit les différentes étapes d'utilisation.
 * L'utilisateur, à l'écran d'accueil, peut soit se créer un compte, soit se connecter
-![Alt text](compromise/Capture_compromise_login_page.png "Page d'accueil")
+![Alt text](C:\Users\antoi\Desktop\projetgr4\projet_g4\compromise/Capture_compromise_login_page.png "Page d'accueil")
 * Il est ensuite dirigé vers la page principale, contenant un tableau alors rempli comme étant entièrement indisponible.
-![Alt text](compromise/Capture_compromise_main_page_indisponible.png "Page d'utilisateur vierge")
+![Alt text](C:\Users\antoi\Desktop\projetgr4\projet_g4\compromise/Capture_compromise_main_page_indisponible.png "Page d'utilisateur vierge")
 * Il peut ici modifier ses disponibilités en utilisant les boutons situés sous le tableau, chercher un utilisateur avec un email ou un pseudo pour comparer son horaire avec le sien, ainsi que créer et accéder à ses groupes.
-![Alt text](compromise/Capture_compromise_main_page.png "Page d'utilisateur complète")
+![Alt text](C:\Users\antoi\Desktop\projetgr4\projet_g4\compromise/Capture_compromise_main_page.png "Page d'utilisateur complète")
 * Il y a également un header, en haut, où l'utilisateur peut se déconnecter, changer son mot de passe, supprimer son compte, ou le passer en privé
-* S'il crée ou se connecte à un groupe, il est redirigé vers une interface en deux temps : **s'il est admin**,  il peut ajouter des utilisateur, contacter le groupe par email et supprimer le groupe,![Alt text](compromise/Capture_compromise_comparaison_utilisateur_groupe.png "Comparaison utilisateur-groupe")
- et **s'il est un membre normal**, il peut quitter le groupe. Dans les deux cas, le groupe affiche l'horaire comparant celui de tous les membres.![Alt text](compromise/Capture_compromise_groupe.membre_groupe.png "Page d'un groupe pour un membre")
+* S'il crée ou se connecte à un groupe, il est redirigé vers une interface en deux temps : **s'il est admin**,  il peut ajouter des utilisateur, contacter le groupe par email et supprimer le groupe,![Alt text](C:\Users\antoi\Desktop\projetgr4\projet_g4\compromise/Capture_compromise_comparaison_utilisateur_groupe.png "Comparaison utilisateur-groupe")
+ et **s'il est un membre normal**, il peut quitter le groupe. Dans les deux cas, le groupe affiche l'horaire comparant celui de tous les membres.![Alt text](C:\Users\antoi\Desktop\projetgr4\projet_g4\compromise/Capture_compromise_groupe.membre_groupe.png "Page d'un groupe pour un membre")
 ## Base de données
 L'application contient 4 collections MongoDB. La première est gérée par un des plugins (Accounts-base) et gère les comptes utilisateurs. Les 3 autres, Semaines, Groups et Notifs, gèrent respectivement les semaines des utilisateurs et l'état de chaque cellule des tableaux, les groupes et leurs membres, et les notifications.
 
