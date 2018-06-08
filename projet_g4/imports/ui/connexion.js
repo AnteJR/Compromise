@@ -23,6 +23,7 @@ import '../templates/homePage.html';
 import '../templates/pullUpMenu.html';
 import '../templates/instructionContent.html';
 import '../templates/messageErreur.html';
+import '../templates/messageErreurComparaison.html';
 
 //variable constante pour faciliter le parcours de la base de donnée
 const mesJours = [
@@ -142,8 +143,10 @@ Template.login.events({
 
 			//si l'utilisateur existe, qu'il ne sagit pas de soi et qu'il a son compte en publique
 			else{
+				let monUt2 = Meteor.users.findOne({ _id:idUt2 }).username;
+				let monUt1 = Meteor.users.findOne({ _id:Meteor.userId() }).username
     			//aller vers le template des tableaux de comparaison
-    			FlowRouter.go('comparaison', { _id: idUt2 });
+    			FlowRouter.go('comparaison', { _id1: monUt2, _id2: monUt1 });
 			}
 		}
 
@@ -156,11 +159,21 @@ Template.login.events({
 
 //helpers pour le tableau de comparaison
 Template.semaineComparee.helpers({
+	peutAcceder:function(){
+		let utConnecte = FlowRouter.getParam('_id2');
+		let idUtConnecte = Meteor.users.findOne({ username:utConnecte })._id;
+
+		if(idUtConnecte == Meteor.userId()){
+			return true;
+		}
+		else{
+			return false;
+		}
+	},
 	//on récupère le nom de l'utilisateur cherché
 	nomComparaison:function(){
-		let idUtCompare = FlowRouter.getParam('_id');
-		let monUt = Meteor.users.findOne({ _id: idUtCompare });
-		return monUt.username;
+		let utCompare = FlowRouter.getParam('_id1');
+		return utCompare;
 	},
 
 	//jours de la semaine pour les <th> du tableau
@@ -202,99 +215,125 @@ Template.newTdComp.helpers({
 	//fonction qui observe les changement dans les semaines des utilisateurs et compile leurs tableaux
 	periode:function(){
 		let mesScores = [];
-		let idUt2 = FlowRouter.getParam('_id');
+		let ut1 = FlowRouter.getParam('_id2');
+		let ut2 = FlowRouter.getParam('_id1');
 
-		//on récupère les semaines des deux utilisateurs et on les stocke dans des arrays
-    	const mesScores1 = scoresUtilisateurCourant(Meteor.userId());
-   		const mesScores2 = scoresUtilisateurCourant(idUt2);
+		let idUt1 = Meteor.users.findOne({ username:ut1 })._id;
+		let idUt2 = Meteor.users.findOne({ username:ut2 })._id;
 
-    	//double boucles imbriquées qui stockent les informations compilées de deux tableaux de disponibilité sous la forme d'un array à deux dimensions
-    	const mesScores3 = [];
-    	for(let i=0;i<mesScores1.length;i++){
-   			let placeHolder = [];
-   			for(let j=0;j<mesScores1[i].length;j++){
-   				let calcul = (mesScores1[i][j] + mesScores2[i][j])/2;
-   				placeHolder.push(calcul);
+		//si la semaine est privée (si quelqu'un entre le pseudo dans l'url)
+		let semaineUt2 = Semaines.findOne({ id_utilisateur:idUt2 }).isPrivate;
+
+		if(!semaineUt2){
+			//on récupère les semaines des deux utilisateurs et on les stocke dans des arrays
+    		const mesScores1 = scoresUtilisateurCourant(idUt1);
+   			const mesScores2 = scoresUtilisateurCourant(idUt2);
+
+    		//double boucles imbriquées qui stockent les informations compilées de deux tableaux de disponibilité sous la forme d'un array à deux dimensions
+    		const mesScores3 = [];
+    		for(let i=0;i<mesScores1.length;i++){
+   				let placeHolder = [];
+   				for(let j=0;j<mesScores1[i].length;j++){
+   					let calcul = (mesScores1[i][j] + mesScores2[i][j])/2;
+   					placeHolder.push(calcul);
+    			}
+    			mesScores3.push(placeHolder);
+   			}
+    		mesScores = mesScores3;
+
+    		//on vérifie si chaque score est égal ou supérieur à 7
+    		let superieurASept = [];
+    		for(let i=0;i<mesScores.length;i++){
+      			let isSuperieur;
+    	  		let tableauIntermediaire = [];
+      				for(let j=0;j<mesScores[i].length;j++){
+        				if(mesScores[i][j]>=0 && mesScores[i][j]<=7){
+          					isSuperieur = false;
+        				}
+	        			else if(mesScores[i][j]>7 && mesScores[i][j]<=10){
+    	      				isSuperieur = true;
+        				}
+        				tableauIntermediaire.push(isSuperieur);
+      				}
+      			superieurASept.push(tableauIntermediaire);
     		}
-    		mesScores3.push(placeHolder);
-   		}
-    	mesScores = mesScores3;
 
-    	//on vérifie si chaque score est égal ou supérieur à 7
-    	let superieurASept = [];
-    	for(let i=0;i<mesScores.length;i++){
-      		let isSuperieur;
-      		let tableauIntermediaire = [];
-      			for(let j=0;j<mesScores[i].length;j++){
-        			if(mesScores[i][j]>=0 && mesScores[i][j]<=7){
-          				isSuperieur = false;
-        			}
-        			else if(mesScores[i][j]>7 && mesScores[i][j]<=10){
+	    	//on vérifie si chaque score est compris entre 4 et 7
+    		let entreQuatreEtSept = [];
+    		for(let i=0;i<mesScores.length;i++){
+      			let isSuperieur;
+	      		let tableauIntermediaire = [];
+    	  		for(let j=0;j<mesScores[i].length;j++){
+        			if(mesScores[i][j]>=4 && mesScores[i][j]<=7){
           				isSuperieur = true;
+        			}
+	        		else{
+    	      			isSuperieur = false;
         			}
         			tableauIntermediaire.push(isSuperieur);
       			}
-      		superieurASept.push(tableauIntermediaire);
-    	}
+      			entreQuatreEtSept.push(tableauIntermediaire);
+    		}
 
-    	//on vérifie si chaque score est compris entre 4 et 7
-    	let entreQuatreEtSept = [];
-    	for(let i=0;i<mesScores.length;i++){
-      		let isSuperieur;
-      		let tableauIntermediaire = [];
-      		for(let j=0;j<mesScores[i].length;j++){
-        		if(mesScores[i][j]>=4 && mesScores[i][j]<=7){
-          			isSuperieur = true;
-        		}
-        		else{
-          			isSuperieur = false;
-        		}
-        		tableauIntermediaire.push(isSuperieur);
-      		}
-      		entreQuatreEtSept.push(tableauIntermediaire);
-    	}
+	    	//tout stocker dans une variable
+    		let semaineComparaison = [];
+    		for(let i=0;i<15;i++){
+      			let aAjouter = {
+          			heure: mesHeures[i], 
+	          		id_heure: i,
 
-    	//tout stocker dans une variable
-    	let semaineComparaison = [];
-    	for(let i=0;i<15;i++){
-      		let aAjouter = {
-          		heure: mesHeures[i], 
-          		id_heure: i,
+    	      		valeurLundi: mesScores[0][i],
+        	  		lundiIsOk: superieurASept[0][i],
+          			lundiMaybe: entreQuatreEtSept[0][i],
 
-          		valeurLundi: mesScores[0][i],
-          		lundiIsOk: superieurASept[0][i],
-          		lundiMaybe: entreQuatreEtSept[0][i],
+          			valeurMardi: mesScores[1][i],
+	          		mardiIsOk: superieurASept[1][i],
+    	      		mardiMaybe: entreQuatreEtSept[1][i],
 
-          		valeurMardi: mesScores[1][i],
-          		mardiIsOk: superieurASept[1][i],
-          		mardiMaybe: entreQuatreEtSept[1][i],
+        	  		valeurMercredi: mesScores[2][i],
+          			mercrediIsOk: superieurASept[2][i],
+          			mercrediMaybe: entreQuatreEtSept[2][i],
 
-          		valeurMercredi: mesScores[2][i],
-          		mercrediIsOk: superieurASept[2][i],
-          		mercrediMaybe: entreQuatreEtSept[2][i],
+	          		valeurJeudi: mesScores[3][i],
+    	      		jeudiIsOk: superieurASept[3][i],
+        	  		jeudiMaybe: entreQuatreEtSept[3][i],
 
-          		valeurJeudi: mesScores[3][i],
-          		jeudiIsOk: superieurASept[3][i],
-          		jeudiMaybe: entreQuatreEtSept[3][i],
+          			valeurVendredi: mesScores[4][i],
+          			vendrediIsOk: superieurASept[4][i],
+	          		vendrediMaybe: entreQuatreEtSept[4][i],
 
-          		valeurVendredi: mesScores[4][i],
-          		vendrediIsOk: superieurASept[4][i],
-          		vendrediMaybe: entreQuatreEtSept[4][i],
+    	      		valeurSamedi: mesScores[5][i],
+        	  		samediIsOk: superieurASept[5][i],
+          			samediMaybe: entreQuatreEtSept[5][i],
 
-          		valeurSamedi: mesScores[5][i],
-          		samediIsOk: superieurASept[5][i],
-          		samediMaybe: entreQuatreEtSept[5][i],
-
-          		valeurDimanche: mesScores[6][i],
-          		dimancheIsOk: superieurASept[6][i],
-          		dimancheMaybe: entreQuatreEtSept[6][i],
-        	};
-        	semaineComparaison.push(aAjouter);
-    	}
+          			valeurDimanche: mesScores[6][i],
+	          		dimancheIsOk: superieurASept[6][i],
+    	      		dimancheMaybe: entreQuatreEtSept[6][i],
+        		};
+        		semaineComparaison.push(aAjouter);
+    		}
     	
-    	//return du résultat
-    	return semaineComparaison;
-  	}
+    		//return du résultat
+    		return semaineComparaison;
+  		}
+  		//si un utilisateur veut accéder aux infos d'un autre utilisateur au compte privé en entrant son nom dans la recherche, le rediriger
+  		else{
+  			swal({
+            	title: 'Erreur !!',
+	            text: "Vous essayez d'accéder à un horaire privé.",
+    	        type: 'error',
+        	    showCancelButton: false,
+            	allowOutsideClick: false,
+            	allowEscapeKey: false,
+            	confirmButtonColor: '#3ea1e6',
+            	confirmButtonText: 'Retour',
+          	}).then((result) => {
+            	if (result.value) {
+              		FlowRouter.go('profile');
+            	}
+        	});
+  		}
+	}
 });
 
 //Fonction qui retourne au tableau contenant les disponibilités d'un utilisateur donné

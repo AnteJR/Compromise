@@ -146,6 +146,7 @@ Template.delUserBtn.events({
             cancelButtonColor: 'hsla(9, 88%, 55%, 1)',
             confirmButtonText: 'Confirmer',
             cancelButtonText: 'Annuler',
+            reverseButtons: true,
           }).then((result) => {
             if (result.value) {
             	swal(

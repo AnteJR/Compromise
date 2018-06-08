@@ -1,37 +1,41 @@
 <template name="semaineComparee">
 	{{> Template.dynamic template=main}}
 	{{#if currentUser}}
-	<div id="topcontent">
-		<header>{{> header}}</header>
-		<h1 style="width:50%;text-align:center;margin-left:25%; margin-top: 15px;opacity:0" class="firstToAppear">
-			Votre horaire comparé avec {{nomComparaison}}
-		</h1>
-		<input type="button" id="goBack" class="btn btn-outline-primary btn-lg firstToAppear" value="Retour" style="margin-top: 5px;margin-left:47.5%;width:5%;opacity:0">
-		<table style="margin-left:auto;margin-right:auto;opacity:0" class="secondToAppear">
-			<tr>
-				<td style="width:100%;">
-					<table border=1>
-						<tr>
-							<td style="height:30px; border: white solid 5px;">&nbsp;</td>
-							{{#each jour}}
-								{{> newTrGrp}}
-							{{/each}}
-						</tr>
-						{{> newTdComp}}
-					</table>
-				</td>
-			</tr>
-		</table>
-	</div>
-	{{> menuDeroulant}}
-	<script type="text/javascript">
-		$(function(){
-			$('.firstToAppear').css('opacity','0.5').animate({opacity:'1'},250);
-			setTimeout(function(){
-				$('.secondToAppear').css('opacity','0.5').animate({opacity:'1'},250);
-			},250);
-		});
-	</script>
+		{{#if peutAcceder}}
+		<div id="topcontent">
+			<header>{{> header}}</header>
+			<h1 style="width:50%;text-align:center;margin-left:25%; margin-top: 15px;opacity:0" class="firstToAppear">
+				Votre horaire comparé avec {{nomComparaison}}
+			</h1>
+			<input type="button" id="goBack" class="btn btn-outline-primary btn-lg firstToAppear" value="Retour" style="margin-top: 5px;margin-left:47.5%;width:5%;opacity:0">
+			<table style="margin-left:auto;margin-right:auto;opacity:0" class="secondToAppear">
+				<tr>
+					<td style="width:100%;">
+						<table border=1>
+							<tr>
+								<td style="height:30px; border: white solid 5px;">&nbsp;</td>
+								{{#each jour}}
+									{{> newTrGrp}}
+								{{/each}}
+							</tr>
+							{{> newTdComp}}
+						</table>
+					</td>
+				</tr>
+			</table>
+		</div>
+		{{> menuDeroulant}}
+		<script type="text/javascript">
+			$(function(){
+				$('.firstToAppear').css('opacity','0.5').animate({opacity:'1'},250);
+				setTimeout(function(){
+					$('.secondToAppear').css('opacity','0.5').animate({opacity:'1'},250);
+				},250);
+			});
+		</script>
+		{{else}}
+			{{> errorPageComparaison}}
+		{{/if}}
 	{{else}}
 		{{> errorPage}}
 	{{/if}}
