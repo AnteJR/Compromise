@@ -219,7 +219,9 @@ Template.newTd.events({
 	//quand on entre sur une cellule ayant la class "semaine", on change sa couleur avec celle de la valeur
 	'mouseenter .semaine': function(event){
 		event.preventDefault();
-		$(event.target).css({"background-color":"hsl("+valeur+"9, 75%, 75%, 1)"});
+		if(event.target.dataset.value != valeur){
+			$(event.target).css({"background-color":"hsl("+valeur+"9, 75%, 75%, 1)"});
+		}
 	},
 	//quand on quitte une cellule ayant la class "semaine", on réinitialise sa couleur
 	'mouseleave .semaine': function(event){
