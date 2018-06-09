@@ -124,13 +124,20 @@ Template.groupe.helpers({
     mesMembres: function(){
         let groupeId = FlowRouter.getParam('_id');
         let requete = Groups.findOne({_id: groupeId});
+        let nomsMembres = [];
         let myMembre = [];
         for(let i = 1; i<requete.users.length;i++){
             let membre = requete.users[i];
-            let leMembre = Meteor.users.findOne({_id: membre});
-            myMembre[(i-1)] = {
-                monMembre: leMembre.username,
-                membreId: requete.users[i]
+            let leMembre = Meteor.users.findOne({_id: membre}).username;
+            nomsMembres.push(leMembre);
+        }
+        nomsMembres.sort();
+        for(let i=0;i<nomsMembres.length;i++){
+            let monMembre = Meteor.users.findOne({ username:nomsMembres[i] });
+            let monMembreId = monMembre._id;
+            myMembre[i] = {
+                monMembre: nomsMembres[i],
+                membreId: monMembreId
             };
         }
         return myMembre;
