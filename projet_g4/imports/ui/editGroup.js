@@ -83,7 +83,7 @@ Template.addGroup.events({
 Template.addGroup.helpers({
     //savoir quels sont les groupes pour lesquels on est membre
     mesGroupesMembre: function(){
-        let myGroups = Groups.find({users: Meteor.userId()})
+        let myGroups = Groups.find({users: Meteor.userId()}, {sort:{name:1}});
         return myGroups;
     }
 });
