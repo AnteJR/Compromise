@@ -1,6 +1,6 @@
 # Compromise - README
 ### *Compromise ver. 1.0*
-Par *Antoine Klotz, Joël Rimaz, Saara Virtanen & Sorcha Walsh*
+Par *Antoine Klotz, Joël Rimaz, Saara Jones & Sorcha Walsh*
 
 Projet réalisé dans le cadre du cours *Programmation pour Internet II - Meteor.js* donné par Isaac Pante et Loris Rimaz 
 
